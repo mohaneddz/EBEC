@@ -1,0 +1,22 @@
+id,name,dep,role,src
+1,Kermache Adlene,Executive,President,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Executive-President.jpg
+2,Menadi Mohamed,Executive,Vice_President,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Executive-Vice_President.jpg
+3,Daif Oumaima,Executive,General_Secretary,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Executive-General_Secretary.jpg?t=2024-12-11T08%3A23%3A15.903Z
+4,Boucekkine Oumaima,Events,Manager,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Event-Manager.jpg?t=2024-12-11T08%3A21%3A49.828Z
+5,Maroua Bouzira,Events,Co1,
+6,Lassel Asma,Events,Co2,
+7,Arbaoui Khadidja,Design,Manager,
+8,Asma Bekhadda,Design,Co1,
+9,,Design,Co2,
+10,Ahsatal Imad,Multimedia,Manager,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Multimedia-Manager.jpg?t=2024-12-11T08%3A26%3A35.562Z
+11,Gasmi Ghezlene,Multimedia,Co1,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Multimedia-Co1.jpg?t=2024-12-11T08%3A26%3A42.800Z
+12,,Multimedia,Co2,
+13,Berbaoui Ashref,HR,Manager,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/HR-Manager.jpg?t=2024-12-11T08%3A24%3A00.924Z
+14,Imane Aissat,HR,Co1,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/HR-Co1.jpg?t=2024-12-11T08%3A23%3A58.083Z
+15,Bendjebbara Ahmed,HR,Co2,
+16,Manaa Mohaned,IT,Manager,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/IT-Manager.jpg?t=2024-12-11T08%3A26%3A22.812Z
+17,Khadraoui Afaf,IT,Co1,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/IT-Co1.jpg?t=2024-12-11T08%3A24%3A14.687Z
+18,,IT,Co2,
+19,Chaabnia Enzo,Relex,Manager,https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Members/Relex-Manager.jpg?t=2024-12-11T08%3A26%3A48.485Z
+20,Hendou Anis,Relex,Co1,
+21,,Relex,Co2,

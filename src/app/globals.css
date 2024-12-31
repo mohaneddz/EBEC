@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap'); */
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+		'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background-color: #eef1f6;
+	overflow-x: hidden;
+}
+
+code {
+	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+
+#root {
+	overflow-x: hidden;
+}
+
+:root {
+	--sunrise-yellow: #fbbe12;
+	--golden-orange: #fba919;
+	--deep-blue: #1b3766;
+	--midnight-navy: #102a4d;
+	--colorTesting: rgb(115, 239, 255);
+}
+
+::selection {
+	background-color: var(--golden-orange);
+	color: white;
+}
+
+/* WebKit browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+	width: 12px;
+	/* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+	background: #1e085e;
+	/* Background of the scrollbar track */
+}
+
+::-webkit-scrollbar-thumb {
+	background: #25097f;
+	/* Color of the scrollbar thumb */
+	border-radius: 10px;
+	/* Rounded corners */
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #1f1479;
+	/* Color of the scrollbar thumb on hover */
+}
+
+* {
+	scrollbar-width: thin;
+	/* Thin scrollbar */
+	scrollbar-color: #fda916 #eef1f6;
+	/* Color of the scrollbar thumb and track */
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Task Management Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="s.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Profile Section -->
+        <div class="profile-header">
+            <div class="profile-info">
+                <img src="https://via.placeholder.com/120" alt="Profile Picture">
+                <div>
+                    <h1>John Doe</h1>
+                    <p>johndoe@example.com</p>
+                    <div class="role-badge">IT Manager</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Task Management Section -->
+        <h2 style="margin-bottom: 20px; color: var(--text-color);">Assigned Tasks</h2>
+        <div class="tasks" id="taskList">
+            <!-- Task 1 -->
+            <div class="task" data-task-id="1">
+                <div>
+                    <h3>Website Update</h3>
+                    <p>Update the homepage layout for the new season.</p>
+                </div>
+                <div class="task-status">
+                    <button class="in-progress">
+                        <i class="fas fa-spinner"></i> In Progress
+                    </button>
+                    <button class="done">
+                        <i class="fas fa-check"></i> Done
+                    </button>
+                    <button class="decline">
+                        <i class="fas fa-times"></i> Decline
+                    </button>
+                    <button class="reassign">
+                        <i class="fas fa-exchange-alt"></i> Reassign
+                    </button>
+                </div>
+            </div>
+
+            <!-- Task 2 -->
+            <div class="task" data-task-id="2">
+                <div>
+                    <h3>Bug Fixing</h3>
+                    <p>Fix the critical bug affecting the dashboard login.</p>
+                </div>
+                <div class="task-status">
+                    <button class="in-progress">
+                        <i class="fas fa-spinner"></i> In Progress
+                    </button>
+                    <button class="done">
+                        <i class="fas fa-check"></i> Done
+                    </button>
+                    <button class="decline">
+                        <i class="fas fa-times"></i> Decline
+                    </button>
+                    <button class="reassign">
+                        <i class="fas fa-exchange-alt"></i> Reassign
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reassign Task Form -->
+        <div class="form-container" id="reassignForm">
+            <h3>Reassign Task</h3>
+            <form id="reassignTaskForm">
+                <label for="assignTo">Assign To:</label>
+                <select id="assignTo" name="assignTo">
+                    <option value="user1">Jane Smith</option>
+                    <option value="user2">Michael Johnson</option>
+                    <option value="user3">Emily Davis</option>
+                </select>
+                <button type="submit">Reassign Task</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="s.js"></script>
+</body>
+</html>

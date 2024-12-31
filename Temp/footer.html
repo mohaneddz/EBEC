@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Developer Footer</title>
+    <style>
+        :root {
+            --primary-dark: #0a192f;
+            --accent-blue: #64ffda;
+            --gradient-purple: linear-gradient(135deg, #8A2BE2, #4B0082);
+            --text-light: #e6e6e6;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--primary-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            perspective: 1000px;
+        }
+
+        .footer {
+            position: relative;
+            background: var(--primary-dark);
+            padding: 4rem 2rem;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        .footer-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 107%, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.2) 80%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            transform: translateZ(20px);
+            will-change: transform;
+        }
+
+        .footer-section:hover {
+            transform: scale(1.05) translateZ(40px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+        }
+
+        .footer-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--gradient-purple);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .footer-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--accent-blue);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s;
+        }
+
+        .footer-section:hover .footer-title::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-link {
+            color: var(--text-light);
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
+            opacity: 0.7;
+            transform: translateX(-10px);
+            will-change: transform, opacity;
+        }
+
+        .footer-link::before {
+            content: '→';
+            position: absolute;
+            left: -20px;
+            opacity: 0;
+            transition: all 0.3s ease;
+            color: var(--accent-blue);
+        }
+
+        .footer-link:hover {
+            opacity: 1;
+            transform: translateX(0);
+            color: var(--accent-blue);
+        }
+
+        .footer-link:hover::before {
+            opacity: 1;
+            left: -25px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 2rem;
+            justify-content: center;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            fill: var(--text-light);
+            transition: all 0.4s ease;
+            position: relative;
+            transform: perspective(500px) rotateX(15deg);
+            will-change: transform;
+        }
+
+        .social-icon:hover {
+            fill: var(--accent-blue);
+            transform: perspective(500px) rotateX(0) scale(1.2);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 2rem 0 1rem;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.5);
+            position: relative;
+            z-index: 10;
+        }
+
+        .quantum-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            background: rgba(100, 255, 218, 0.1);
+            border-radius: 50%;
+            animation: quantum-float linear infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes quantum-float {
+            0% {
+                transform: translateY(0) scale(0.5) rotate(0deg);
+                opacity: 0.2;
+            }
+            50% {
+                transform: translateY(-100vh) scale(1.2) rotate(360deg);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(100vh) scale(0.3) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <footer class="footer">
+        <div class="quantum-background" id="quantumParticles"></div>
+        <div class="footer-overlay"></div>
+        <div class="footer-grid">
+            <div class="footer-section">
+                <h3 class="footer-title">Explore</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Developer Hub</a>
+                    <a href="#" class="footer-link">Innovation Playground</a>
+                    <a href="#" class="footer-link">Tech Insights</a>
+                    <a href="#" class="footer-link">Community Pulse</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Connect</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Global Network</a>
+                    <a href="#" class="footer-link">Collaboration Spaces</a>
+                    <a href="#" class="footer-link">Mentorship Program</a>
+                    <a href="#" class="footer-link">Expert Forums</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Learn</h3>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Cutting-Edge Courses</a>
+                    <a href="#" class="footer-link">Interactive Workshops</a>
+                    <a href="#" class="footer-link">Tech Masterclasses</a>
+                    <a href="#" class="footer-link">Future Skills</a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-title">Connect</h3>
+                <div class="social-icons">
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.784 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.066 9.645c.183 4.04-2.83 8.544-8.164 8.544-1.622 0-3.131-.476-4.402-1.291 1.524.18 3.045-.244 4.252-1.189-1.256-.023-2.317-.854-2.684-1.995.451.086.895.061 1.298-.049-1.381-.278-2.335-1.522-2.304-2.853.388.215.83.344 1.301.359-1.279-.855-1.641-2.544-.889-3.835 1.416 1.738 3.533 2.881 5.92 3.001-.419-1.796.944-3.527 2.799-3.527.825 0 1.572.349 2.096.907.654-.128 1.27-.367 1.824-.697-.215.671-.67 1.233-1.263 1.589.581-.07 1.135-.224 1.649-.453-.384.578-.87 1.084-1.433 1.489z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Quantum Developer Ecosystem. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const quantumParticles = document.getElementById('quantumParticles');
+
+            function createQuantumParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('quantum-particle');
+                
+                // Random sizing
+                const size = Math.random() * 15 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Random positioning
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = '0';
+                
+                // Random animation duration and delay
+                particle.style.animationDuration = `${Math.random() * 15 + 10}s`;
+                particle.style.animationDelay = `${Math.random() * 5}s`;
+                
+                quantumParticles.appendChild(particle);
+
+                // Remove particle after animation
+                setTimeout(() => {
+                    quantumParticles.removeChild(particle);
+                }, 20000);
+            }
+
+            // Create particles periodically
+            const particleInterval = setInterval(createQuantumParticle, 300);
+
+            // Cleanup interval on page unload
+            window.addEventListener('beforeunload', () => {
+                clearInterval(particleInterval);
+            });
+        });
+    </script>
+</body>
+</html>

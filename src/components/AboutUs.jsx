@@ -107,7 +107,7 @@ export const AboutUs = () => {
 
             if (error) {
                 setFetchError('Could not fetch the Departments!');
-                Departments(null);
+                setDepartments(null);
                 console.log('Fetch error:', error);
             }
             if (data) {
@@ -129,8 +129,8 @@ export const AboutUs = () => {
     return (
 
         <div className="relative bg-gradient-to-br from-primary-dark to-primary-light flex flex-col
-                      h-[30rem] huge:max-w-[100rem] sm:h-[40rem] md:h-[50rem] lg:h-[70rem] justify-center shadow-xl 
-                      shadow-slate-900/50 -mb-5 z-10 huge:rounded-lg huge:hover:scale-105 transition duration-200 overflow-hidden">
+                      h-[30rem] sm:h-[40rem] md:h-[50rem] lg:h-[70rem] justify-center shadow-xl 
+                      shadow-slate-900/50 -mb-5 z-10 huge:hover:shadow-2xl huge:hover:shadow-slate-900/90 transition duration-200 overflow-hidden">
             <div className="relative grid grid-cols-2 pr-16 md:pr-4 gap-16 w-full h-full align-center justify-center items-center">
 
                 {/* The Circle */}
@@ -152,7 +152,11 @@ export const AboutUs = () => {
                             opacity: [0, 1, 1, 0],
                             rotate: [-30, 0, 0, 30],
                         }}
-                        onUpdate={handlePicAnimation} // Trigger change on animation complete
+                        onUpdate={(latest) => {
+                            if (latest.opacity === 0 && !picAnimation) {
+                                setPicAnimation(true);
+                            }
+                        }} // Trigger change on animation complete
                     >
                         {/* The Pictures! */}
                         {Departments && Members &&
@@ -246,7 +250,11 @@ export const AboutUs = () => {
                                     repeat: Infinity,
                                     repeatDelay: 0.05,
                                 }}
-                                onUpdate={handletTextAnimation}
+                                onUpdate={(latest) => {
+                                    if (latest.opacity === 0 && !textAnimation) {
+                                        setTextAnimation(true);
+                                    }
+                                }}
                             >
                                 {Departments[AboutUsIndex].name}
                             </motion.h1>

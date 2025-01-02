@@ -2,7 +2,7 @@
 import { useScroll, useTransform, motion } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
 import { TypewriterEffectDemo } from "./Typewriter-effect";
-import { TextGenerateEffect } from "../widgets/TextGenerator";
+import { TextGenerateEffect } from "./TextGenerator";
 
 export const Timeline = ({ data }) => {
   const ref = useRef(null);

@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import { ExpandableCardDemo } from "../../components/ExpandableCards";
 import supabase from '@/config/supabaseClient';
 
-const EventsGallery = () => { = useRef(null);
+const EventsGallery = () => { useRef(null);
     const [Events, setEvents] = useState(null);
     const [fetchError, setFetchError] = useState(null);
 

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "../lib/utils";
@@ -33,12 +35,12 @@ export const WobbleCard = ({
           ? `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0) scale3d(1, 1, 1)`
           : "translate3d(0px, 0px, 0) scale3d(1, 1, 1)",
         transition: "transform 0.1s ease-out",
-        backgroundImage: `url(${backgroundImage.src})`,
+        backgroundImage: `url(${backgroundImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
       className={cn(
-        "mx-auto w-full relative rounded-2xl overflow-hidden group",
+        "mx-auto w-full relative rounded-2xl overflow-hidden group hover:cursor-pointer",
         containerClassName
       )}
     >

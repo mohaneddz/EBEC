@@ -2,29 +2,35 @@
 
 import React from "react";
 import { InfiniteMovingCards } from "@/components/Infinite-moving-cards";
+import { TextGenerateEffect } from "@/components/TextGenerator";
 
-export default function InfiniteMovingCardsDemo() {
+export default function InfiniteMovingCardsSection() {
   return (
-    <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 rounded-md flex flex-col antialiased items-center justify-center overflow-hidden">
-      {/* <div className="h-[30rem] rounded-md flex flex-col antialiased items-center justify-center relative overflow-hidden m-0 p-0"> */}
-        {/* <h1 className="text-3xl font-bold text-center mt-12 mb-8 text-[--midnight-navy]">
-          Voices from Our Community
-        </h1> */}
-        {/* <InfiniteMovingCards
-          items={testimonials}
-          direction="right"
-          speed="slow"
-        /> */}
-      {/* </div> */}
-      <div className="w-full max-w-7xl">
-        <InfiniteMovingCards
-          items={testimonials}
-          direction="right"
-          speed="slow"
-          className="w-full"
-        />
+
+    <div id="InfiniteMovingCardsSection"
+      className="w-full bg-gradient-to-br from-slate-50 to-slate-200 ">
+
+      <TextGenerateEffect
+        words="Voices from Our Community"
+        className="my-16 md:my-40 text-xl sm:text-2xl md:text-3xl lg:text-4xl text-center"
+        color={"primary-dark"}
+      />
+
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8 rounded-md flex flex-col antialiased items-center justify-center mb-40 ">
+        
+        <div className="w-full max-w-7xl">
+          <InfiniteMovingCards
+            items={testimonials}
+            direction="right"
+            speed="slow"
+            className="w-full"
+          />
+        </div>
+
       </div>
+
     </div>
+
   );
 }
 

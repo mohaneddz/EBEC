@@ -5,6 +5,8 @@ import { cn } from "../lib/utils";
 
 export const TextGenerateEffect = ({
   words,
+  color,
+  margin,
   className,
   filter = true,
   duration = 1,
@@ -54,12 +56,12 @@ export const TextGenerateEffect = ({
 
   const renderWords = () => {
     return (
-      <motion.div ref={scope} className="my-20">
+      <motion.div ref={scope} className={margin}>
         {wordsArray.map((word, idx) => {
           return (
             <motion.span
               key={word + idx}
-              className="opacity-0 text-2xl sm:text-3xl md:text-5xl font-bold text-center mt-12 -mb-8 text-[--midnight-navy]"
+              className={`opacity-0 text-2xl sm:text-3xl md:text-5xl font-bold text-center mt-12 -mb-8 text-${color}`}
               style={{
                 filter: filter ? "blur(10px)" : "none",
               }}

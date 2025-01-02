@@ -1,51 +1,51 @@
 "use client";
-
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import logo from "../../public/EBEC.png"
-// import { UserCircle } from "lucide-react";
-// import { Link, useNavigate } from "react-router-dom";
+import logo from "../../public/EBEC.png";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [activePage, setActivePage] = useState("Home");
-  // const navigate = useNavigate();
+  const router = useRouter();
 
   const navItems = [
     { name: "Home", path: "/" },
     { name: "Events", path: "/events" },
-    { name: "About us", path: "/about" },
     { name: "FAQ", path: "/faq" },
   ];
 
   const handleNavigation = (item) => {
     if (item.path) {
-      navigate(item.path);
+      router.push(item.path);
       setActivePage(item.name);
     }
   };
 
   const handleLogoClick = () => {
-    navigate("/");
+    router.push("/");
     setActivePage("Home");
   };
 
   return (
-    <header className="sticky w-full top-0 z-50 bg-white/95 backdrop-blur-sm shadow-md">
-      <nav className="container mx-auto px-4 py-2">
+    <header className="sticky w-full top-0 z-50 shadow-md bg-white">
+      <nav className="container mx-auto px-4 z-50 py-2 ">
         <div className="flex items-center">
-          <div 
+          <div
             className="flex items-center gap-3 cursor-pointer"
             onClick={handleLogoClick}
           >
             <Image
               src={logo}
               alt="EBEC Logo"
-              className="w-16 h-16 object-contain"
+              width={64}
+              height={64}
+              className="object-contain"
+              priority
             />
             <div>
-              <div className="font-semibold text-lg text-[var(--deep-blue)] md:hidden">
+              <div className="font-semibold text-lg text-[var(--deep-blue)] ">
                 EBEC
               </div>
             </div>
@@ -60,11 +60,10 @@ const Navbar = () => {
                 whileHover={{ scale: 1.05 }}
               >
                 <span
-                  className={`${
-                    activePage === item.name
+                  className={`${activePage === item.name
                       ? "text-[var(--sunrise-yellow)]"
                       : "text-gray-600 hover:text-[var(--deep-blue)]"
-                  }`}
+                    }`}
                 >
                   {item.name}
                 </span>
@@ -78,29 +77,24 @@ const Navbar = () => {
             ))}
           </div>
 
-          <div className="hidden md:flex items-center ml-auto mr-4">
-            {/* <UserCircle className="w-8 h-8 text-[var(--deep-blue)] cursor-pointer hover:text-[var(--sunrise-yellow)] transition-colors" /> */}
-          </div>
+          <div className=" md:flex items-center ml-auto mr-4"></div>
 
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden ml-auto p-2"
+            className=" ml-auto p-2"
           >
             <div className="space-y-2">
               <span
-                className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-all ${
-                  isOpen ? "rotate-45 translate-y-2.5" : ""
-                }`}
+                className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-all ${isOpen ? "rotate-45 translate-y-2.5" : ""
+                  }`}
               />
               <span
-                className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-opacity ${
-                  isOpen ? "opacity-0" : ""
-                }`}
+                className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-opacity ${isOpen ? "opacity-0" : ""
+                  }`}
               />
               <span
-                className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-all ${
-                  isOpen ? "-rotate-45 -translate-y-2.5" : ""
-                }`}
+                className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-all ${isOpen ? "-rotate-45 -translate-y-2.5" : ""
+                  }`}
               />
             </div>
           </button>
@@ -115,23 +109,21 @@ const Navbar = () => {
                   handleNavigation(item);
                   setIsOpen(false);
                 }}
-                className={`block px-3 py-2 cursor-pointer ${
-                  activePage === item.name
+                className={`block px-3 py-2 cursor-pointer ${activePage === item.name
                     ? "text-[var(--sunrise-yellow)]"
                     : "text-gray-600 hover:text-[var(--deep-blue)]"
-                }`}
+                  }`}
               >
                 {item.name}
               </div>
             ))}
             <div
               onClick={() => {
-                navigate("/profile");
+                router.push("/profile");
                 setIsOpen(false);
               }}
               className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-[var(--deep-blue)] cursor-pointer"
             >
-              {/* <UserCircle className="w-5 h-5" /> */}
               <span>Profile</span>
             </div>
           </div>

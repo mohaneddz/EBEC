@@ -42,7 +42,9 @@ const Hero = ({ }) => {
     ];
 
     return (
-        <div ref={titleRef} >
+        <div ref={titleRef}
+            id='HeroSection'
+        >
             < HeroParallax products={products} />
         </div>
     );

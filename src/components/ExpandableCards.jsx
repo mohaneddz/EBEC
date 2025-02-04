@@ -29,6 +29,7 @@ export function ExpandableCardDemo({ cards, className }) {
   useOutsideClick(ref, () => setActive(null));
 
   return (<>
+
     <AnimatePresence>
       {active && typeof active === "object" && (
         <motion.div
@@ -38,7 +39,9 @@ export function ExpandableCardDemo({ cards, className }) {
           className="fixed inset-0 bg-black/20 h-full w-full z-10" />
       )}
     </AnimatePresence>
+
     <AnimatePresence>
+
       {active && typeof active === "object" ? (
         <div className="fixed inset-0 grid place-items-center z-[100] mx-auto">
           <motion.button
@@ -63,11 +66,12 @@ export function ExpandableCardDemo({ cards, className }) {
           <motion.div
             layoutId={`card-${active.title}-${id}`}
             ref={ref}
-            className="w-full max-w-[500px]  h-full md:h-fit md:max-h-[90%]  flex flex-col bg-primary-dark sm:rounded-3xl overflow-hidden">
+            className="w-full h-full md:max-w-[500px] md:h-fit md:max-h-[90%]  flex flex-col md:rounded-3xl bg-primary-dark overflow-hidden">
+
             <motion.div layoutId={`image-${active.title}-${id}`}>
               <Image
-                width={200}
-                height={200}
+                width={400}
+                height={400}
                 src={active.src}
                 alt={active.title}
                 className="w-full h-80 lg:h-80 sm:rounded-tr-lg sm:rounded-tl-lg object-cover object-top" />
@@ -91,10 +95,10 @@ export function ExpandableCardDemo({ cards, className }) {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  href={active.ctaLink || "Join Us"}
+                  href={active.ctaLink || "Learn More!"}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  target="_blank"
+                  target="_self"
                   className="px-4 py-3 text-sm rounded-full font-bold bg-secondary-dark hover:bg-secondary-light  text-white hover:text-black">
                   {active.ctaText}
                 </motion.a>
@@ -116,7 +120,8 @@ export function ExpandableCardDemo({ cards, className }) {
         </div>
       ) : null}
     </AnimatePresence>
-    <ul className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center items-start gap-14 mt-5 flex-wrap justify-center align-top bg-slate-200 rounded-3xl my-16 p-8">
+
+    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center items-start gap-8 mt-5 flex-wrap justify-center align-top  my-16 p-8 py-20">
 
       {cards.map((card) => (
         <motion.div
@@ -124,12 +129,12 @@ export function ExpandableCardDemo({ cards, className }) {
           key={card.title}
           onClick={() => setActive(card)}
           whileHover={{ scale: 1.05, translateY: -10 }}
-          className="sm:px-4 px-0 pb-6 pt-4 flex flex-col bg-primary-dark hover:bg-primary-light rounded-xl cursor-pointer hover:drop-shadow-lg hover:shadow-secondary-dark">
+          className="sm:px-4 px-0 pb-8 pt-8 flex flex-col bg-primary-dark hover:bg-primary-light rounded-xl cursor-pointer hover:drop-shadow-lg hover:shadow-secondary-dark">
           <motion.div className="flex gap-4 flex-col w-full align-center">
             <motion.div layoutId={` image-${card.title}-${id}`} className="flex items-center align-center justify-center">
               <Image
-                width={100}
-                height={100}
+                width={300}
+                height={300}
                 src={card.src}
                 alt={card.title}
                 className="h-60 rounded-md object-cover object-top w-4/5 sm:w-full" />
@@ -152,6 +157,7 @@ export function ExpandableCardDemo({ cards, className }) {
             </motion.div>
           </motion.div>
         </motion.div>
+
       ))}
     </ul>
   </>);

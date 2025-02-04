@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Accordion } from "../../components/Accordion";
+import { Accordion } from "@/components/Accordion";
 import { motion } from "motion/react";
 
 const accordionData = [
@@ -35,7 +35,7 @@ const Faq = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-primary-dark to-primary-light py-20 px-4 sm:px-6 lg:px-8">
+        <>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ const Faq = () => {
                     />
                 </motion.div>
             </motion.div >
-        </div >
+        </ >
     );
 };
 

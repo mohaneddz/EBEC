@@ -134,7 +134,7 @@ export const AboutUsSection = () => {
 
 
             <div
-                className="relative bg-gradient-to-br from-primary-dark to-primary-light flex flex-col
+                className="mt-40 relative bg-gradient-to-br from-primary-dark to-primary-light flex flex-col
                       h-[40rem] sm:h-[50rem] md:h-[60rem] lg:h-[70rem] justify-center shadow-xl 
                       shadow-slate-900/50 -mb-5 z-10 huge:hover:shadow-2xl huge:hover:shadow-slate-900/90 transition duration-200 overflow-hidden">
 

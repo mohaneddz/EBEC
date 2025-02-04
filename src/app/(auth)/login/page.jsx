@@ -36,51 +36,54 @@ const Login = () => {
 
     }
 
-
     return (
         <div className="relative w-full h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-primary-dark">
+            {/* TOP Holder */}
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`container relative bg-white rounded-lg overflow-hidden shadow-lg w-[100%] md:w-[60rem] h-[35rem] sm:h-[40rem] transition-transform duration-700 ${isSignup ? "right-panel-active" : ""}`}
+                className={`Holder relative bg-white rounded-lg overflow-hidden shadow-lg w-screen sm:w-[45rem] lg:w-[65rem] md:h-[35rem] h-screen sm:h-[40rem] transition-transform duration-700 ${isSignup ? "right-panel-active" : ""}`}
             >
                 {/* Login Form */}
-                <motion.div
-                    className="w-[50%] top-0 absolute z-20"
-                    initial={{ x: "100%" }}
-                    animate={{ x: isSignup ? "100%" : "0%", opacity: isSignup ? 0 : 1, zIndex: isSignup ? 0 : 10 }}
-                    transition={{
-                        x: { duration: 0.5, ease: "easeInOut" },
-                        opacity: { duration: 0.0001, ease: "easeInOut", delay: 0.25 },
-                        zIndex: { duration: 0.0001, ease: "easeInOut", delay: 0.25 },
-                    }}
-                >
-                    <form className="px-4 md:px-8 py-8 flex flex-col items-center gap-4 h-full bg-white">
-                        <h1 className="text-3xl sm:text-5xl font-bold text-center m-8 text-secondary-500">Login</h1>
-                        <Input
-                            type="email"
-                            placeholder="Email"
-                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
-                            visible={isSignup ? "none" : ""}
-                        />
-                        <Input
-                            type="password"
-                            placeholder="Password"
-                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
-                            visible={isSignup ? "none" : ""}
-                        />
-                        <Button
-                            text="Login"
-                            color1="#FFC208"
-                            color2="#FDA916"
-                            visible={isSignup ? "none" : ""}
-                        />
-                    </form>
+                <motion.div className="w-[50%] z-20 flex flex-col justify-center items-center h-full">
+                    <motion.div
+                        className="relative"
+                        initial={{ x: "100%" }}
+                        animate={{ x: isSignup ? "100%" : "0%", opacity: isSignup ? 0 : 1, zIndex: isSignup ? 0 : 10 }}
+                        transition={{
+                            x: { duration: 0.5, ease: "easeInOut" },
+                            opacity: { duration: 0.0001, ease: "easeInOut", delay: 0.25 },
+                            zIndex: { duration: 0.0001, ease: "easeInOut", delay: 0.25 },
+                        }}
+                    >
+                        <form className="px-4 md:px-8 flex flex-col items-center gap-4 h-full bg-white">
+                            <h1 className="text-3xl sm:text-5xl font-bold text-center mb-8 text-secondary-500">Login</h1>
+                            <Input
+                                type="email"
+                                placeholder="Email"
+                                className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
+                                visible={isSignup ? "none" : ""}
+                            />
+                            <Input
+                                type="password"
+                                placeholder="Password"
+                                className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
+                                visible={isSignup ? "none" : ""}
+                            />
+                            <Button
+                                text="Login"
+                                color1="#1B3764"
+                                color2="#0E2A4D"
+                                visible={isSignup ? "none" : ""}
+                                className={'lg:px-12 px-8'}
+                            />
+                        </form>
+                    </motion.div>
                 </motion.div>
 
                 {/* Sign Up Form */}
                 <motion.div
-                    className={`w-[50%] top-0 absolute ${isSignup ? "z-10" : ""}`}
+                    className={`w-[50%] top-0 h-full absolute ${isSignup ? "z-10" : ""}`}
                     initial={{ x: "0%", opacity: 0 }}
                     animate={{ x: isSignup ? "100%" : "0%", opacity: isSignup ? 1 : 0 }}
                     transition={{
@@ -89,44 +92,48 @@ const Login = () => {
                         zIndex: { duration: 0.0001, ease: "easeInOut", delay: 0.25 },
                     }}
                 >
-                    <form className="px-4 md:px-8 py-8 flex flex-col items-center justify-around h-full gap-4 bg-white">
-                        <h1 className="text-3xl sm:text-5xl m-8 font-bold text-center text-nowrap text-secondary-500">Sign Up</h1>
-                        <div className="flex gap-4 flex-wrap sm:flex-nowrap">
+                    <motion.div className=" z-20 flex flex-col justify-center items-center h-full">
+                        <form className="px-4 md:px-8 flex flex-col items-center justify-center h-min gap-4 bg-white">
+
+                            <h1 className="text-3xl sm:text-5xl m-8 font-bold text-center text-nowrap text-secondary-500">Sign Up</h1>
+                            <div className="flex gap-4 flex-wrap sm:flex-nowrap">
+                                <Input
+                                    type="text"
+                                    placeholder="First Name"
+                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
+                                    visible={isSignup ? "" : "none"}
+                                />
+                                <Input
+                                    type="text"
+                                    placeholder="Last Name"
+                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
+                                    visible={isSignup ? "" : "none"}
+                                />
+                            </div>
                             <Input
-                                type="text"
-                                placeholder="First Name"
+                                type="email"
+                                placeholder="Email"
                                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                 visible={isSignup ? "" : "none"}
-                                />
+                            />
                             <Input
-                                type="text"
-                                placeholder="Last Name"
+                                type="password"
+                                placeholder="Password"
                                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                 visible={isSignup ? "" : "none"}
-                                />
-                        </div>
-                        <Input
-                            type="email"
-                            placeholder="Email"
-                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
-                            visible={isSignup ? "" : "none"}
-                        />
-                        <Input
-                            type="password"
-                            placeholder="Password"
-                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
-                            visible={isSignup ? "" : "none"}
-                        />
-                        <Button
-                            text="Register"
-                            color1="#FFC208"
-                            color2="#FDA916"
-                            visible={isSignup ? "" : "none"}
-                        />
-                    </form>
+                            />
+                            <Button
+                                text="Register"
+                                color1="#1B3764"
+                                color2="#0E2A4D"
+                                className={'lg:px-12 px-8'}
+                                visible={isSignup ? "" : "none"}
+                            />
+                        </form>
+                    </motion.div>
                 </motion.div>
 
-                {/* Overlay Container */}
+                {/* Overlay Holder */}
                 <motion.div
                     className="w-[50%] absolute inset-0 z-50 overflow-hidden left-[50%]"
                     initial={{ x: "50%" }}
@@ -150,6 +157,7 @@ const Login = () => {
                             <Button
                                 text="Login"
                                 onClick={isSignup ? handleSignInClick : handleSignUpClick}
+                                className={'lg:px-12 px-8'}
                             />
                         </motion.div>
 
@@ -163,6 +171,7 @@ const Login = () => {
                             <Button
                                 text="Sign Up"
                                 onClick={isSignup ? handleSignInClick : handleSignUpClick}
+                                className={'lg:px-12 px-8'}
                             />
                         </motion.div>
                     </motion.div>

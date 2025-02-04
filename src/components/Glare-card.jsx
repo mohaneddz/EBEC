@@ -5,17 +5,7 @@ import { useRef } from "react";
 
 export function GlareCardDemo({ cards }) {
     return (
-        <div className="
-        justify-around
-        grid grid-cols-1 md:grid-cols-3 
-        justify-items-center gap-8
-        my-16 px-8 lg:px-12 py-20
-        bg-slate-300 rounded-3xl 
-        shadow-slate-700/20 
-        hover:shadow-slate-700/35 
-        shadow-[0_20px_50px_rgba(0,0,0,0)] 
-        transition-shadow duration-300
-        max-w-7xl">
+        <div className="justify-around justify-items-center inline-grid grid-cols-1 md:grid-cols-3 gap-8 mx-auto">
             {cards.map((card) => (
                 <GlareCard key={card.id} className="flex flex-col items-center justify-center">
                     {!card.src && (

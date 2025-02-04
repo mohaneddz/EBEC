@@ -14,6 +14,12 @@ body {
 	overflow-x: hidden;
 }
 
+html,
+body {
+	height: 100%;
+	margin: 0;
+}
+
 code {
 	font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
@@ -72,17 +78,59 @@ code {
 	/* Color of the scrollbar thumb and track */
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
+.bg-radial-gradient {
+	background: radial-gradient(circle at center, var(--tw-gradient-from) 0%, var(--tw-gradient-via) 50%, var(--tw-gradient-to) 100%);
+}
+
+.navbar::before {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 5%;
+	background-color: var(--sunrise-yellow);
+background: linear-gradient(to right, var(--golden-orange), var(--sunrise-yellow));
+}
+
 @keyframes quantum-float {
 	0% {
-	  transform: translateY(0) scale(0.5) rotate(0deg);
-	  opacity: 0.2;
+		transform: translateY(0) scale(0.5) rotate(0deg);
+		opacity: 0.2;
 	}
+
 	50% {
-	  transform: translateY(-100vh) scale(1.2) rotate(360deg);
-	  opacity: 0.5;
+		transform: translateY(-100vh) scale(1.2) rotate(360deg);
+		opacity: 0.5;
 	}
+
 	100% {
-	  transform: translateY(100vh) scale(0.3) rotate(720deg);
-	  opacity: 0;
+		transform: translateY(100vh) scale(0.3) rotate(720deg);
+		opacity: 0;
 	}
-  }
+}
+
+.custom-shape-divider-top-1738426196 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+	z-index: -1;
+}
+
+.custom-shape-divider-top-1738426196 svg {
+    position: relative;
+    display: block;
+    width: calc(300% + 1.3px);
+    height: 30rem;
+}
+
+.custom-shape-divider-top-1738426196 .shape-fill {
+    fill: #062a58;
+}

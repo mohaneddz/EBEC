@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { cn } from "../lib/utils";
-import Image from "next/image";
 
 export const WobbleCard = ({
   children,

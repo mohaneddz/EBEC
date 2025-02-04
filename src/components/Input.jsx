@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 export const Input = ({
     id,
     name,
-    label,
     value,
     type = "text",
     placeholder = "",
@@ -14,6 +13,7 @@ export const Input = ({
     leftIcon,
     rightIcon,
     onChange,
+    readonly,
     onBlur,
     visible
 }) => {
@@ -46,6 +46,7 @@ export const Input = ({
                     onBlur={handleBlur}
                     disabled={disabled}
                     required={required}
+                    readOnly={readonly}
                     placeholder=""
                     className={`
                         peer

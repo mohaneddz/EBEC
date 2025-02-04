@@ -3,6 +3,7 @@
 # Workspace
 /.vscode
 /.history
+/.Next.js-15-Tutorials-main
 
 # dependencies
 /node_modules

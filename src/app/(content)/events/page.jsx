@@ -3,10 +3,22 @@
 import React from "react";
 import Image from "next/image";
 import EventsGallery from "@/widgets/Events/EventsGallery";
+
 import { UpcomingEvents } from "@/widgets/Events/UpcomingEvents";
 import { TypewriterEffectDemo } from "@/components/Typewriter-effect";
 import { Button } from "@/components/Button";
+import LogoSlider from "@/components/logoSlider";
+
 const image1 = "/Assets/Hero/2.jpg";
+
+const image2 = "/Assets/Companies/Ooredoo.png";
+const image3 = "/Assets/Companies/Ooredoo.png";
+const image4 = "/Assets/Companies/Ooredoo.png";
+const image5 = "/Assets/Companies/Ooredoo.png";
+const image6 = "/Assets/Companies/Ooredoo.png";
+
+
+const images = [image2, image3, image4, image5, image6];
 
 const Events = () => {
 
@@ -16,12 +28,7 @@ const Events = () => {
     { text: "Horizons.", className: "text-secondary-light dark:text-secondary-light" },
   ];
 
-  const words2 = [
-    { text: "Stay " },
-    { text: "Up" },
-    { text: "To" },
-    { text: "Date.", className: "text-secondary-light dark:text-secondary-light" },
-  ];
+
 
   return (
     <>
@@ -53,7 +60,6 @@ const Events = () => {
           />
 
         </div>
-
         {/* Vignette overlay */}
         <div className="absolute inset-0 z-10 bg-gradient-to-br from-black/30 via-transparent to-black/30" />
         {/* Light gradient overlay */}
@@ -62,8 +68,11 @@ const Events = () => {
         <div className="absolute inset-0 z-10 backdrop-blur-[2px]" />
       </div>
 
+      <div className="relative h-full w-screen my-16">
+        <LogoSlider images={images} />
+      </div>
+
       {/* Upcoming Events */}
-      <TypewriterEffectDemo words={words2} className={"text-lg"} />
       <UpcomingEvents id="upcoming" />
 
       {/* General Even.ts */}

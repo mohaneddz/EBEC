@@ -1,4 +1,4 @@
-import FormRegistrationCard from "@/components/cards/EventRequest";
+import FormRegistrationCard from "@/components/emailCards/EventRequest";
 
 const image1 = "/Assets/FakePFP/1.jpg";
 const image2 = "/Assets/FakePFP/6.jpg";

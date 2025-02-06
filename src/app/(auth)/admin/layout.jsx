@@ -20,14 +20,14 @@ export default function AdminLayout({ children, dashboard, team, members, emails
     const [DashboardState, setDashboardState] = useState(false);
     const [teamState, setTeamState] = useState(false);
     const [membersState, setMembersState] = useState(false);
-    const [emailsState, setEmailsState] = useState(true);
-    const [eventsState, setEventsState] = useState(false);
+    const [emailsState, setEmailsState] = useState(false);
+    const [eventsState, setEventsState] = useState(true);
 
     const toggleAll = () => {
         setDashboardState(false);
         setTeamState(false);
         setMembersState(false);
-        setEmailsState(false);
+        setEmailsState(false); 
         setEventsState(false);
     }
 

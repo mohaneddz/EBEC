@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/Button';
 
 const Modal = ({ children, isVisible, close }) => {
-
     useEffect(() => {
         if (isVisible) {
             document.body.style.overflow = 'hidden';
@@ -26,14 +25,14 @@ const Modal = ({ children, isVisible, close }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.25 }}
-            className="w-screen h-screen rounded-lg shadow-lg absolute bg-black/25 flex justify-center items-center z-30"
+            className="fixed inset-0 bg-black/25 backdrop-blur-sm flex justify-center items-center z-50"
             onClick={close}
         >
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.25 }}
-                className="bg-white w-[28rem] h-80 rounded-lg shadow-lg flex flex-col justify-center items-center z-40"
+                className="bg-white w-[28rem] h-80 rounded-lg shadow-lg flex flex-col justify-center items-center"
                 onClick={(e) => e.stopPropagation()}
             >
                 {children}

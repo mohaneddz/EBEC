@@ -39,7 +39,8 @@ const EventsGallery = () => {
     }, []);
 
     return (
-        <div className="Events__Gallery flex justify-around w-screen bg-gradient-to-tr from-secondary-600 to-secondary-500 mb-80">            {
+        // <div className="Events__Gallery flex justify-around w-screen bg-gradient-to-tr from-secondary-600 to-secondary-500 mb-80">            {
+        <div className="Events__Gallery flex justify-around w-screen bg-gradient-to-tr from-slate-400 to-slate-300 mb-80">            {
             Events && (
                 < ExpandableCardDemo cards={Events} />
             )

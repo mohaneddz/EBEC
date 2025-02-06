@@ -1,4 +1,4 @@
-import NewMemberRequestCard from "@/components/cards/NewMemberRequest";
+import NewMemberRequestCard from "@/components/emailCards/NewMemberRequest";
 
 const NewMemList = [
   {
@@ -66,7 +66,7 @@ export default function page() {
         New Members</a>
 
       <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll">
-        <div className="w-full grid grid-cols-[repeat(3,min-content)] gap-16">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] justify-items-center gap-16">
 
           {NewMemList.map((member) => (
             <NewMemberRequestCard key={member.id} {...member} />

@@ -14,12 +14,12 @@ export default function WobbleCardSection() {
     return (
 
         <div id="WobbleCardSection"
-            className="w-full bg-gradient-to-br from-secondary-light to-secondary-dark pb-24 ">
+            className="w-full bg-gradient-to-br from-primary-light to-primary-dark pb-24 ">
                 
             <TextGenerateEffect
                 words="Moments To Remember"
                 className="my-16 md:my-20 text-center"
-                color={"primary-dark"}
+                color={"white"}
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8">
@@ -29,10 +29,10 @@ export default function WobbleCardSection() {
                     backgroundImage={image1}
                 >
                     <div className="max-w-xs md:max-w-md">
-                        <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+                        <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-bold tracking-[-0.015em] text-primary-dark">
                             Opening Day
                         </h2>
-                        <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-neutral-200">
+                        <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-primary-dark">
                             Opening Day marks the launch of our dynamic journey, bringing
                             together visionaries, innovators, and aspiring professionals to
                             celebrate new beginnings, set goals, and ignite collaborations for
@@ -46,10 +46,10 @@ export default function WobbleCardSection() {
                     backgroundImage={image2}
                 >
                     <div className="w-full">
-                        <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+                        <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-bold tracking-[-0.015em] text-primary-dark">
                             NETLIXIX
                         </h2>
-                        <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-neutral-200">
+                        <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-primary-dark">
                             Empowering future professionals with expert tips on crafting
                             standout CVs and acing interviews, fostering confidence and growth.
                         </p>
@@ -61,10 +61,10 @@ export default function WobbleCardSection() {
                     backgroundImage={image3}
                 >
                     <div className="max-w-xs md:max-w-md">
-                        <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+                        <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-bold tracking-[-0.015em] text-primary-dark">
                             IGNITE EVENT
                         </h2>
-                        <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-neutral-200">
+                        <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-primary-dark">
                             IGNITE, our flagship event, connects aspiring interns with
                             innovative enterprises through networking, training, and
                             collaboration, fostering growth and opportunity for all

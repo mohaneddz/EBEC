@@ -52,14 +52,14 @@ export const WobbleCard = ({
       >
         {/* Background Image Overlay */}
         <div
-          className={`absolute inset-0 bg-[#102a4d] transition-opacity duration-300 ${isHovering ? "opacity-70" : "opacity-0"}`}
+          className={`absolute inset-0 bg-[#FFC208] transition-opacity duration-300 ${isHovering ? "opacity-70" : "opacity-0"}`}
         />
 
         {/* Text Overlay */}
         <motion.div
           className={`absolute inset-0 flex flex-col justify-center p-6 transition-opacity duration-300 ${
             isHovering
-              ? "opacity-100 bg-gradient-to-b from-[#102a4d]/70 to-[#102a4d80]"
+              ? "opacity-100 bg-gradient-to-br from-[#ffb74d]/70 to-[#ff9800]"
               : "opacity-0"
           }`}
         >

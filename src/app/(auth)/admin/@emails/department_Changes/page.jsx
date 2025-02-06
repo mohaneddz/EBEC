@@ -1,4 +1,4 @@
-import DepartmentSwitch from "@/components/cards/DepartmentSwitchRequest";
+import DepartmentSwitch from "@/components/emailCards/DepartmentSwitchRequest";
 
 const DepChangesList = [
   { id: '1', name: 'John Doe', role: 'Manager', department: 'Sales', newDepartment: 'Marketing' },

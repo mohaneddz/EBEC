@@ -129,7 +129,7 @@ export function ExpandableCardDemo({ cards, className }) {
           key={card.title}
           onClick={() => setActive(card)}
           whileHover={{ scale: 1.05, translateY: -10 }}
-          className="sm:px-4 px-0 pb-8 pt-8 flex flex-col bg-primary-dark hover:bg-primary-light rounded-xl cursor-pointer hover:drop-shadow-lg hover:shadow-secondary-dark">
+          className="sm:px-4 px-0 pb-8 pt-8 flex flex-col bg-[#141f4b] hover:bg-primary-light rounded-xl cursor-pointer hover:drop-shadow-lg hover:shadow-secondary-dark">
           <motion.div className="flex gap-4 flex-col w-full align-center">
             <motion.div layoutId={` image-${card.title}-${id}`} className="flex items-center align-center justify-center">
               <Image

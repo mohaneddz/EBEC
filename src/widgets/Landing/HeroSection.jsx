@@ -1,5 +1,6 @@
 "use client";
 
+
 import { useEffect, useRef } from "react";
 import { HeroParallax } from "@/components/Hero-parallax";
 
@@ -44,6 +45,7 @@ const Hero = ({ }) => {
     return (
         <div ref={titleRef}
             id='HeroSection'
+            className=""
         >
             < HeroParallax products={products} />
         </div>

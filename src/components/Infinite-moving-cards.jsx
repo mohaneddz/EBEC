@@ -75,12 +75,12 @@ export const InfiniteMovingCards = ({
       <ul
         ref={scrollerRef}
         className={cn(
-          "flex min-w-full shrink-0 gap-4 py-14 w-max flex-nowrap", // Added more vertical padding
+          "flex min-w-full shrink-0 gap-4 py-14 w-max flex-nowrap", 
           start && "animate-scroll ",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
-        {items?.map((item) => ( // Removed unused idx parameter
+        {items?.map((item) => ( 
           <li
             className="w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] hover:-translate-y-10 transition-transform duration-300 ease-in-out"
             style={{

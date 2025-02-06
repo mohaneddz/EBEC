@@ -1,6 +1,6 @@
-import DepartmentSwitch from "@/components/cards/DepartmentSwitchRequest";
-import NewMemberRequestCard from "@/components/cards/NewMemberRequest";
-import FormRegistrationCard from "@/components/cards/EventRequest";
+import DepartmentSwitch from "@/components/emailCards/DepartmentSwitchRequest";
+import NewMemberRequestCard from "@/components/emailCards/NewMemberRequest";
+import FormRegistrationCard from "@/components/emailCards/EventRequest";
 
 const image1 = "/Assets/FakePFP/1.jpg";
 const image2 = "/Assets/FakePFP/6.jpg";
@@ -122,8 +122,8 @@ export default function Page() {
         className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
         Event Forms &rarr;
       </a>
-      <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll">
-        <div className="w-full grid grid-cols-[repeat(3,min-content)] gap-16">
+      <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll flex justify-center">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] gap-16 justify-items-center justify-center">
 
           {FormRegList.slice(0, 3).map((registration) => (
             <FormRegistrationCard key={registration.id} {...registration} />
@@ -138,7 +138,7 @@ export default function Page() {
         New Members &rarr;
       </a>
       <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll">
-        <div className="w-full grid grid-cols-[repeat(3,min-content)] gap-16">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] gap-16 justify-items-center justify-center">
 
           {NewMemList.slice(0, 3).map((member) => (
             <NewMemberRequestCard key={member.id} {...member} />
@@ -153,7 +153,7 @@ export default function Page() {
         Deparmtent Changes &rarr;
       </a>
       <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll">
-        <div className="w-full grid grid-cols-[repeat(3,min-content)] gap-16">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] gap-16 justify-items-center justify-center">
 
           {DepChangesList.slice(0, 3).map((item) => (
             <DepartmentSwitch

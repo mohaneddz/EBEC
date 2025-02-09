@@ -4,6 +4,8 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
+import { delay } from "motion";
+
 export const HeroParallax = ({ products }) => {
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
@@ -56,34 +58,45 @@ export const HeroParallax = ({ products }) => {
         className=""
       >
         <motion.div className="flex flex-row-reverse space-x-reverse space-x-20 mb-20">
-          {firstRow.map((product) => (
+          {firstRow.map((product, i) => (
             <ProductCard
               product={product}
               translate={translateX}
               key={product.id}
-            />
-          ))}
-        </motion.div>
-        <motion.div className="flex flex-row  mb-20 space-x-20 ">
-          {secondRow.map((product) => (
-            <ProductCard
-              product={product}
-              translate={translateXReverse}
-              key={product.id}
-            />
-          ))}
-        </motion.div>
-        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
-          {thirdRow.map((product) => (
-            <ProductCard
-              product={product}
-              translate={translateX}
-              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: i * 0.15, ease: "easeInOut" }}
             />
           ))}
         </motion.div>
 
+        <motion.div className="flex flex-row mb-20 space-x-20">
+          {secondRow.map((product, i) => (
+            <ProductCard
+              product={product}
+              translate={translateXReverse}
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: i * 0.15 + 0.75, ease: "easeInOut" }}
+            />
+          ))}
+        </motion.div>
+
+        <motion.div className="flex flex-row-reverse space-x-reverse space-x-20">
+          {thirdRow.map((product, i) => (
+            <ProductCard
+              product={product}
+              translate={translateX}
+              key={product.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: i * 0.15 + 1.5, ease: "easeInOut" }}
+            />
+          ))}
+        </motion.div>
       </motion.div>
+
     </div>
   );
 };
@@ -119,45 +132,61 @@ export const Header = () => {
 
   return (
     <div className="w-screen relative mx-auto py-20 md:py-40 px-4 left-0 top-0 flex align-center items-start flex-col">
-      <h1 className="md:text-center max-w-[80%] inline-block
-      text-3xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold text-primary-dark pl-8 text-start" style={{ textAlign: "start" }}>
+      <motion.h1
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 3, duration: 0.5 }}
+        className="md:text-center max-w-[80%] inline-block text-3xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold text-primary-dark pl-8 text-start"
+        style={{ textAlign: "start" }}
+      >
         {isSmallScreen ? smallTitle : title}
-      </h1>
-      <p className="text-start w-full text-wrap max-w-2xl text-sm md:text-md lg:text-xl mt-8 text-primary-light pl-8">
+      </motion.h1>
+      <motion.p
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay: 3.5 }}
+        className="text-start w-full text-wrap max-w-2xl text-sm md:text-md lg:text-xl mt-8 text-primary-light pl-8"
+      >
         We build beautiful products with the latest technologies and frameworks.
         We are a team of passionate developers and designers that love to build
         amazing products.
-      </p>
+      </motion.p>
     </div>
   );
 };
 
-export const ProductCard = ({ product, translate }) => {
+export const ProductCard = ({ product, translate, transition, animate, initial }) => {
   return (
     <motion.div
       style={{
         x: translate,
       }}
+      initial={initial}
+      animate={animate}
+      transition={transition}
       whileHover={{
         y: -20,
       }}
       key={product.title}
       className="group/product h-96 w-full sm:w-[30rem] relative flex-shrink-0"
     >
-      <Link href="/events" className="block group-hover/product:shadow-2xl ">
-        <Image
+      <Link href="/events" className="block group-hover/product:shadow-2xl">
+        <motion.img
           src={product.thumbnail}
           height="600"
           width="600"
           className="object-cover object-left-top absolute h-full w-full inset-0"
           alt={product.title}
+          initial={{ opacity: 0 }} // Ensure images also fade in
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, ease: "easeInOut" }}
         />
       </Link>
       <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div>
       <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
         <Link
           href={'/events'}
-          className="object-cover object-left-top absolute h-full w-full inset-0 rounded-lg "
+          className="object-cover object-left-top absolute h-full w-full inset-0 rounded-lg"
           alt={product.title}
         ></Link>
       </h2>
@@ -168,3 +197,4 @@ export const ProductCard = ({ product, translate }) => {
     </motion.div>
   );
 };
+

@@ -4,7 +4,7 @@ import { cn } from "../lib/utils";
 import { motion, stagger, useAnimate, useInView } from "motion/react";
 import { useEffect } from "react";
 
-export function TypewriterEffectDemo({ words, className }) {
+export default function TypewriterEffectDemo({ words, className }) {
   return (
     <div className="flex flex-col items-center justify-center  h-[10rem] text-lg">
       <TypewriterEffect words={words} className={className} />

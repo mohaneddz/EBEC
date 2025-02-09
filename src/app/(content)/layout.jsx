@@ -5,9 +5,9 @@ import Navbar from "@/layout/Navbar";
 
 export default function Body({ children }) {
   return (
-    <>
+    <div className="">
       <Navbar />
       {children}
-    </>
+    </div>
   );
 }

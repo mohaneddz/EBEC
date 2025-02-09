@@ -10,7 +10,7 @@ import { IconUser, IconHome, IconCalendarEvent, IconHelp } from "@tabler/icons-r
 const Navbar = ({ onHeightChange }) => {
 
   const [isOpen, setIsOpen] = useState(false);
-  const [activePage, setActivePage] = useState("Home");
+  const [activePage, setActivePage] = useState(null);
   const router = useRouter();
   const navbarRef = useRef(null);
 

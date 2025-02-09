@@ -43,6 +43,7 @@ export const InfiniteMovingCards = ({
 
   const addAnimation = useCallback(() => {
     if (containerRef.current && scrollerRef.current) {
+      containerRef.current.style.setProperty("--font-family", "Poppins");
       const scrollerContent = Array.from(scrollerRef.current.children);
 
       scrollerContent.forEach((item) => {
@@ -68,7 +69,7 @@ export const InfiniteMovingCards = ({
     <div
       ref={containerRef}
       className={cn(
-        "scroller relative z-20 h-full max-w-7xl overflow-x-hidden overflow-y-visible [mask-image:linear-gradient(to_right,transparent,#eef1f6_20%,#eef1f6_50%,transparent)]",
+        "scroller relative z-20 h-full w-screen max-w-7xl overflow-x-hidden overflow-y-visible [mask-image:linear-gradient(to_right,transparent,#eef1f6_10%,#eef1f6_90%,transparent)]",
         className
       )}
     >
@@ -85,6 +86,7 @@ export const InfiniteMovingCards = ({
             className="w-[350px] max-w-full relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700 px-8 py-6 md:w-[450px] hover:-translate-y-10 transition-transform duration-300 ease-in-out"
             style={{
               background: "linear-gradient(180deg, #1e293b, #0f172a)",
+              fontFamily: "monospace"
             }}
             key={item.name}
           >
@@ -98,7 +100,7 @@ export const InfiniteMovingCards = ({
               </span>
               <div className="relative z-20 mt-6 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className="text-secondary-700 text-sm leading-[1.6] font-normal">
+                  <span className="text-secondary-dark font-semibold text-sm leading-[1.6]">
                     {item.name}
                   </span>
                   <span className=" text-sm leading-[1.6] text-gray-400 font-normal">

@@ -14,10 +14,10 @@ export default function WobbleCardSection() {
     return (
 
         <div id="WobbleCardSection"
-            className="w-full bg-gradient-to-br from-primary-light to-primary-dark pb-24 ">
+            className="h-screen flex flex-col justify-center w-full bg-gradient-to-br from-primary-light to-primary-dark pb-24 ">
                 
             <TextGenerateEffect
-                words="Moments To Remember"
+                words="Memorable Moments"
                 className="my-16 md:my-20 text-center"
                 color={"white"}
             />

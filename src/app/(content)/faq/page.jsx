@@ -40,14 +40,14 @@ const Faq = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="max-w-4xl mx-auto"
+                className="h-full pt-24"
             >
                 <div className="text-center mb-16">
                     <motion.h1
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="select-none text-4xl sm:text-5xl font-bold text-secondary-dark mb-4 hover:cursor-pointer active:scale-95 hover:scale-110 hover:-translate-y-3 transition duration-200"
+                        className="select-none text-4xl sm:text-5xl text-secondary-dark mb-8 hover:cursor-pointer active:scale-95 hover:scale-110 hover:-translate-y-3 transition duration-200 font-black"
                     >
                         Frequently Asked Questions
                     </motion.h1>

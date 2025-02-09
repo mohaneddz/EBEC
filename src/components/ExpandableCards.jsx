@@ -66,7 +66,7 @@ export function ExpandableCardDemo({ cards, className }) {
           <motion.div
             layoutId={`card-${active.title}-${id}`}
             ref={ref}
-            className="w-full h-full md:max-w-[500px] md:h-fit md:max-h-[90%]  flex flex-col md:rounded-3xl bg-primary-dark overflow-hidden">
+            className="w-full h-full md:max-w-[500px] md:h-fit md:max-h-[90%]  flex flex-col md:rounded-3xl bg-primary-light overflow-hidden">
 
             <motion.div layoutId={`image-${active.title}-${id}`}>
               <Image
@@ -121,8 +121,7 @@ export function ExpandableCardDemo({ cards, className }) {
       ) : null}
     </AnimatePresence>
 
-    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 justify-items-center items-start gap-8 mt-5 flex-wrap justify-center align-top  my-16 p-8 py-20">
-
+    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 mt-5 p-8 py-20 lg:w-[70%] mx-auto [&>*]:w-full [&>*]:h-full [&>*]:aspect-[3/3]">
       {cards.map((card) => (
         <motion.div
           layoutId={`card-${card.title}-${id}`}
@@ -141,7 +140,7 @@ export function ExpandableCardDemo({ cards, className }) {
             </motion.div>
             <motion.div
               layout
-              className="flex justify-center items-center flex-col"
+              className="flex justify-center gap-2 pt-4 items-center flex-col"
             >
               <motion.h3
                 layoutId={`title-${card.title}-${id}`}

@@ -4,7 +4,11 @@ import { motion } from "motion/react";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import Modal from "@/components/Modal";
+
 import { useState } from "react";
+
+import UserInfo from "@/components/UserInfo";
+
 import Image from 'next/image'
 const image1 = "/Assets/FakePFP/9.jpg";
 
@@ -49,6 +53,7 @@ export const UserPage = ({ id }) => {
                 </div>
                 <Button text={'Send Request'} color1={'#1e4b8a'} color2={'#1b3764'} className="w-2/5 mt-8" onClick={closeModal} />
             </Modal>
+
             <div className="custom-shape-divider-top-1738426196">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
@@ -97,41 +102,8 @@ export const UserPage = ({ id }) => {
                 </g>
             </svg>
 
-            <div className="userSection mt-10 flex flex-col items-center justify-center">
-                <Image
-                    src={image1}
-                    alt="pfp"
-                    width={200}
-                    height={200}
-                    className="rounded-full border-solid border-4 border-secondary-600 z-20
-                    shadow-lg">
-                </Image>
-                <motion.div className="settings bg-white
-                 rounded-lg p-12 flex flex-col items-center  
-                 -translate-y-4">
-                    <h1 className="text-3xl text-slate-700 font-semibold mb-6">Settings</h1>
-                    <div className="w-full flex flex-col gap-4">
-                        <div>
-                            <Input value={'Jhon'} placeholder="First Name" readonly />
-                        </div>
-                        <div>
-                            <Input value={'Doe'} placeholder="Last Name" readonly />
-                        </div>
-                        <div>
-                            <Input value={'JhonDoe@ensia.edu.dz'} placeholder="Email" type="email" readonly />
-                        </div>
-                        <div>
-                            <Input value={'Manager'} placeholder="Role" readonly />
-                        </div>
-                        <div>
-                            <Input value={'IT'} placeholder="Department" readonly />
-                        </div>
-                        <Button className="mt-4" text={'Change Department'} color1={'#1B3764'} color2={'#0E2A4D'} onClick={openModal}/>
-                        <Button className="mt-4" text={'Logout'} color1={'#FFC208'} color2={'#FDA916'} onClick={handleLogOut} />
-                    </div>
+            <UserInfo fname={'Jhon'} lname={'Doe'} email={'JhonDoe@ensia.edu.dz'} role={'Manager'} department={'IT'} openModal={openModal} handleLogOut={handleLogOut} image={image1} />
 
-                </motion.div>
-            </div>
         </div>
     );
 };

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import DepartmentSwitch from "@/components/emailCards/DepartmentSwitchRequest";
 import NewMemberRequestCard from "@/components/emailCards/NewMemberRequest";
 import FormRegistrationCard from "@/components/emailCards/EventRequest";
@@ -112,41 +113,104 @@ const FormRegList = [
   },
 ];
 
+// A reusable slider component
+function Slider({ items, renderItem, slidesToShow = 3 }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Advance the slider by slidesToShow items (if possible)
+  const next = () => {
+    if (currentIndex + slidesToShow < items.length) {
+      setCurrentIndex(currentIndex + slidesToShow);
+    }
+  };
+
+  // Go back by slidesToShow items (if possible)
+  const prev = () => {
+    if (currentIndex - slidesToShow >= 0) {
+      setCurrentIndex(currentIndex - slidesToShow);
+    }
+  };
+
+  const visibleItems = items.slice(currentIndex, currentIndex + slidesToShow);
+
+  return (
+    <div className="relative my-8">
+      {/* Previous Button */}
+      <button
+        onClick={prev}
+        disabled={currentIndex === 0}
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded disabled:opacity-50"
+      >
+        Prev
+      </button>
+      {/* Slider Container */}
+      <div className="flex overflow-hidden gap-4 mx-16">
+        {visibleItems.map((item) => renderItem(item))}
+      </div>
+      {/* Next Button */}
+      <button
+        onClick={next}
+        disabled={currentIndex + slidesToShow >= items.length}
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded disabled:opacity-50"
+      >
+        Next
+      </button>
+    </div>
+  );
+}
+
 export default function Page() {
   return (
-    <div className="">
+    <div className="p-4">
+      {/* Event Forms Section */}
       <a 
-      href='/event_Requests'
-      className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
+        href='/event_Requests'
+        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8 block"
+      >
         Event Forms
       </a>
-      <div className="flex flex-wrap justify-center gap-4 m-8 bg-zinc-50 rounded-xl">
-        {FormRegList.slice(0, 3).map((registration) => (
-          <FormRegistrationCard key={registration.id} {...registration} />
-        ))}
+      <div className="bg-zinc-50 rounded-xl p-4">
+        <Slider
+          items={FormRegList}
+          slidesToShow={3}
+          renderItem={(registration) => (
+            <FormRegistrationCard key={registration.id} {...registration} />
+          )}
+        />
       </div>
+
+      {/* New Members Section */}
       <a 
-      href='/new_Members'
-      className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
+        href='/new_Members'
+        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8 block"
+      >
         New Members
       </a>
-      <div className="flex flex-wrap justify-center gap-4 m-8 bg-zinc-50 rounded-xl">
-        {NewMemList.slice(0, 3).map((member) => (
-          <NewMemberRequestCard key={member.id} {...member} />
-        ))}
+      <div className="bg-zinc-50 rounded-xl p-4">
+        <Slider
+          items={NewMemList}
+          slidesToShow={3}
+          renderItem={(member) => (
+            <NewMemberRequestCard key={member.id} {...member} />
+          )}
+        />
       </div>
+
+      {/* Department Changes Section */}
       <a 
-      href='/department_Changes'
-      className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
+        href='/department_Changes'
+        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8 block"
+      >
         Department Changes
       </a>
-      <div className="flex flex-wrap justify-center gap-4 m-8 bg-zinc-50 rounded-xl">
-        {DepChangesList.slice(0, 3).map((item) => (
-          <DepartmentSwitch
-            key={item.id}
-            {...item}
-          />
-        ))}
+      <div className="bg-zinc-50 rounded-xl p-4">
+        <Slider
+          items={DepChangesList}
+          slidesToShow={3}
+          renderItem={(item) => (
+            <DepartmentSwitch key={item.id} {...item} />
+          )}
+        />
       </div>
     </div>
   );

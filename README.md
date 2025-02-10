@@ -44,6 +44,10 @@ This repository contains the codebase for the official website of EBEC (ENSIA Bu
 
 **Discover our previous events!**: Browse through our event gallery.
 
+<img src="screenshots/faq.png" alt="Screenshot 9" width="100%"/>
+
+**Questions & Answers**: To feed all your curiosities! ( waiting for a report of the most asked questions)
+
 <img src="screenshots/admin.png" alt="Screenshot 10" width="100%"/>
 
 **A portion of the Admin board**: Manage and organize all parts of the club!

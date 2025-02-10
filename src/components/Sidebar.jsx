@@ -33,7 +33,7 @@ export const LogoIcon = () => {
     );
 };
 
-export const Dashboard = ({ children }) => {
+export default function Dashboard ({ children }) {
     return (
         (<div className="flex flex-1 w-full">
             <div

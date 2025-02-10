@@ -126,10 +126,10 @@ const AdminEventCard = ({ initialData, onDelete }) => {
         return mainImage ? mainImage.url : null;
     }, [data.images]);
 
-    const cardHeight = "h-[35rem]"; // Define a fixed height for the card
+    const cardHeight = "h-[35rem]";
 
     return (
-        <div className={`bg-[#03113e] rounded-xl overflow-hidden shadow-lg flex flex-col w-full my-16 mx-8 relative transition-shadow duration-300 hover:shadow-2xl hover:shadow-black/20 min-w-[25rem] ${cardHeight}`}>
+        <div className={`bg-[#03113e] w-min rounded-xl overflow-hidden shadow-lg flex flex-col relative transition-shadow duration-300 hover:shadow-2xl hover:shadow-black/20 min-w-[25rem] ${cardHeight}`}>
 
             {isEditing ? (
                 <div className={`flex flex-col justify-start h-full ${cardHeight}`}>
@@ -255,12 +255,12 @@ const AdminEventCard = ({ initialData, onDelete }) => {
                 </div>
 
             ) : (
-                <div className={`flex flex-col h-full ${cardHeight}`}>
+                <div className={`relative flex flex-col h-full ${cardHeight}`}>
                     {getMainImage() && (
                         <Image
                             src={getMainImage()}
                             alt={data.name}
-                            width={500}  // Explicit width and height
+                            width={500}
                             height={300}
                             className="w-full h-52 object-cover overflow-hidden"
                         />
@@ -281,11 +281,11 @@ const AdminEventCard = ({ initialData, onDelete }) => {
                         </p>
                     </div>
                     <div className="flex justify-between items-center mt-auto">
-                        <button onClick={handleEditClick} className="bg-secondary-light hover:bg-secondary-dark text-white font-bold py-2 px-4  focus:outline-none focus:shadow-outline w-1/2">
-                            <IconEdit size={16} className="mr-1 inline-block" />Edit
-                        </button>
                         <button onClick={handleDeleteClick} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4  focus:outline-none focus:shadow-outline w-1/2">
                             <IconTrash size={16} className="mr-1 inline-block" />Delete
+                        </button>
+                        <button onClick={handleEditClick} className="bg-secondary-light hover:bg-secondary-dark text-white font-bold py-2 px-4  focus:outline-none focus:shadow-outline w-1/2">
+                            <IconEdit size={16} className="mr-1 inline-block" />Edit
                         </button>
                     </div>
                 </div>

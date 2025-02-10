@@ -3,7 +3,7 @@ import UpcomingEventCard from "@/components/eventsCards/AdminUpcomingEventCard";
 import AdminEventCard from "@/components/eventsCards/AdminEventCard";
 import { useState } from "react";
 
-// Image Assets
+
 const image1 = "/Assets/Hero/5.jpg";
 const image2 = "/Assets/Hero/8.jpg";
 const image3 = "/Assets/Hero/12.jpg";
@@ -26,7 +26,7 @@ export default function EventsPage() {
             longDescription: "A deep dive into the latest trends in technology...",
             date: "2024-11-15",
             location: "San Francisco, CA",
-            images: [{ id: 'img1', url: image1, isMain: true }] // Use image1
+            images: [{ id: 'img1', url: image1, isMain: true }]
         },
         {
             id: '2',
@@ -36,7 +36,7 @@ export default function EventsPage() {
             longDescription: "Experience a weekend of artistic expression...",
             date: "2024-07-22",
             location: "Austin, TX",
-            images: [{ id: 'img2', url: image2, isMain: true }] // Use image2
+            images: [{ id: 'img2', url: image2, isMain: true }]
         },
         {
             id: '3',
@@ -46,7 +46,7 @@ export default function EventsPage() {
             longDescription: "Indulge in a culinary adventure featuring renowned chefs...",
             date: "2024-09-08",
             location: "New York, NY",
-            images: [{ id: 'img3', url: image3, isMain: true }] // Use image3
+            images: [{ id: 'img3', url: image3, isMain: true }]
         },
         {
             id: '4',
@@ -56,7 +56,7 @@ export default function EventsPage() {
             longDescription: "Get ready for your next outdoor escapade!...",
             date: "2024-06-10",
             location: "Denver, CO",
-            images: [{ id: 'img4', url: image4, isMain: true }] // Use image4
+            images: [{ id: 'img4', url: image4, isMain: true }]
         },
         {
             id: '5',
@@ -66,7 +66,7 @@ export default function EventsPage() {
             longDescription: "Transform your career with our intensive coding bootcamp!...",
             date: "2024-08-01",
             location: "Online",
-            images: [{ id: 'img5', url: image5, isMain: true }] // Use image5
+            images: [{ id: 'img5', url: image5, isMain: true }]
         },
         {
             id: '6',
@@ -76,7 +76,7 @@ export default function EventsPage() {
             longDescription: "Empower yourself to live a more sustainable life!...",
             date: "2024-10-20",
             location: "Portland, OR",
-            images: [{ id: 'img6', url: image6, isMain: true }] // Use image6
+            images: [{ id: 'img6', url: image6, isMain: true }]
         },
         {
             id: '7',
@@ -86,7 +86,7 @@ export default function EventsPage() {
             longDescription: "Unleash your inner photographer!...",
             date: "2024-12-05",
             location: "Los Angeles, CA",
-            images: [{ id: 'img7', url: image7, isMain: true }] // Use image7
+            images: [{ id: 'img7', url: image7, isMain: true }]
         }
     ]);
 
@@ -125,9 +125,9 @@ export default function EventsPage() {
     return (
         <div>
             <div className="">
-                <h2 className='text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8'>Upcoming Events</h2>
-                <div className="m-8 bg-zinc-50 rounded-xl overflow-x-auto overflow-y-visible">
-                    <div className="w-full grid grid-cols-[repeat(3,minmax(min-content,1fr))] overflow-y-visible gap-16">
+                <h2 className='w-full mr-24 hover:cursor-pointer select-none text-5xl font-bold flex items-center gap-8 text-white bg-gradient-to-br from-primary-light to-primary-dark font-poppins p-8 rounded-lg'>Upcoming Events</h2>
+                <div className="relative w-full my-8 mr-24 py-8 px-16 bg-zinc-50 rounded-xl overflow-x-auto flex justify-center items-center overflow-y-visible">
+                    <div className="flex justify-center w-min gap-16">
                         {featuredEvents.map(event => (
                             <UpcomingEventCard
                                 key={event.id}
@@ -136,9 +136,10 @@ export default function EventsPage() {
                         ))}
                     </div>
                 </div>
-                <h2 className='text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8'>Events List</h2>
-                <div className="m-8 bg-zinc-50 rounded-xl overflow-x-auto overflow-y-visible">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 p-4">
+                <h2 className='w-full mr-24 hover:cursor-pointer select-none text-5xl font-bold flex items-center gap-8 text-white bg-gradient-to-br from-primary-light to-primary-dark font-poppins p-8 rounded-lg'
+                >Events List</h2>
+                <div className="my-8 p-8  w-full mr-24 bg-zinc-50 rounded-xl overflow-x-auto overflow-y-visible">
+                    <div className="flex flex-wrap gap-8 p-16 justify-center items-center content-center">
                         {allEvents.map(event => (
                             <AdminEventCard
                                 key={event.id}

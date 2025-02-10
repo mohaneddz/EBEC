@@ -1,3 +1,5 @@
+import Slider from '@/components/Slider'
+
 import DepartmentSwitch from "@/components/emailCards/DepartmentSwitchRequest";
 import NewMemberRequestCard from "@/components/emailCards/NewMemberRequest";
 import FormRegistrationCard from "@/components/emailCards/EventRequest";
@@ -114,54 +116,56 @@ const FormRegList = [
 
 export default function Page() {
   return (
-    <div className="">
-
-      {/* Event Forms */}
+    <div className="p-4">
+      {/* Event Forms Section */}
       <a
-        href='/admin/event_Requests'
-        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
-        Event Forms &rarr;
+        href='#'
+        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8 block"
+      >
+        Event Forms
       </a>
-      <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll flex justify-center">
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] gap-16 justify-items-center justify-center">
-
-          {FormRegList.slice(0, 3).map((registration) => (
+      <div className="bg-zinc-50 rounded-xl p-4 flex justify-center">
+        <Slider
+          items={FormRegList}
+          slidesToShow={3}
+          renderItem={(registration) => (
             <FormRegistrationCard key={registration.id} {...registration} />
-          ))}
-        </div>
+          )}
+        />
       </div>
 
-      {/* New Members */}
+      {/* New Members Section */}
       <a
-        href='/admin/new_Members'
-        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
-        New Members &rarr;
+        href='#'
+        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8 block"
+      >
+        New Members
       </a>
-      <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll">
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] gap-16 justify-items-center justify-center">
-
-          {NewMemList.slice(0, 3).map((member) => (
+      <div className="bg-zinc-50 rounded-xl p-4 flex justify-center">
+        <Slider
+          items={NewMemList}
+          slidesToShow={3}
+          renderItem={(member) => (
             <NewMemberRequestCard key={member.id} {...member} />
-          ))}
-        </div>
+          )}
+        />
       </div>
 
-      {/* Deparmtent Changes */}
+      {/* Department Changes Section */}
       <a
-        href='/admin/department_Changes'
-        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8">
-        Deparmtent Changes &rarr;
+        href='#'
+        className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8 block"
+      >
+        Department Changes
       </a>
-      <div className="m-8 bg-zinc-50 rounded-xl overflow-x-scroll">
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(3,min-content)] gap-16 justify-items-center justify-center">
-
-          {DepChangesList.slice(0, 3).map((item) => (
-            <DepartmentSwitch
-              key={item.id}
-              {...item}
-            />
-          ))}
-        </div>
+      <div className="bg-zinc-50 rounded-xl p-4 flex justify-center">
+        <Slider
+          items={DepChangesList}
+          slidesToShow={3}
+          renderItem={(item) => (
+            <DepartmentSwitch key={item.id} {...item} />
+          )}
+        />
       </div>
     </div>
   );

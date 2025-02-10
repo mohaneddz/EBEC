@@ -40,7 +40,7 @@ const UpcomingEventCard = ({ initialData }) => {
     };
 
     return (
-        <div className="bg-[#03113e] rounded-xl overflow-hidden shadow-lg flex flex-col w-full my-16 mx-8 relative h-[30rem] transition-shadow duration-300 hover:shadow-2xl hover:shadow-black/20 min-w-[25rem]">
+        <div className="bg-[#03113e] rounded-xl overflow-hidden shadow-lg flex flex-col w-min relative h-[30rem] transition-shadow duration-300 hover:shadow-2xl hover:shadow-black/20 min-w-[25rem]">
 
             {isEditing ? (
                 <div className="flex flex-col justify-end h-full">

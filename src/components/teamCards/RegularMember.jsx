@@ -52,7 +52,7 @@ const saveButtonVariants = {
 
 };
 
-export default function ClubTeamMemberCard({
+export default function RegularMember({
     id,
     name,
     role,
@@ -141,7 +141,7 @@ export default function ClubTeamMemberCard({
 
     return (
         <motion.div
-            className="relative m-8 w-96 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300  bg-white overflow-hidden"
+            className="relative m-8 min-w-min w-96 rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300  bg-white overflow-hidden"
             variants={cardVariants}
             initial="hidden"
             animate="visible"

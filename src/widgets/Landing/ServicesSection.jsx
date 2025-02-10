@@ -1,11 +1,12 @@
 "use client";
 
 import React from 'react';
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion"; // Import useScroll and useTransform
 import { IconBook, IconUsers, IconCalendarEvent, IconTrophy, IconArrowRight } from '@tabler/icons-react';
 import Link from 'next/link';
 
 export default function ServicesSection() {
+
     const services = [
         {
             title: "Training & Workshops",
@@ -36,13 +37,22 @@ export default function ServicesSection() {
     const ref = React.useRef(null);
     const isInView = useInView(ref, { once: true });
 
+    const { scrollYProgress } = useScroll({ 
+        target: ref,
+        offset: ["start end", "end start"]
+    });
+
+    const translateYLeft = useTransform(scrollYProgress, [0, 1], [0, 70]); // Parallax for left side (text)
+    const translateYRight = useTransform(scrollYProgress, [0, 1], [0, -100]); // Parallax for right side (items)
+
+
     const containerVariants = {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
             transition: {
-                staggerChildren: 0.2, 
-                delayChildren: 0.3  
+                staggerChildren: 0.2,
+                delayChildren: 0.3
             }
         }
     };
@@ -60,11 +70,9 @@ export default function ServicesSection() {
         }
     };
 
-
-
     return (
         <div
-            ref={ref} // Attach the ref to the main container
+            ref={ref}
             className="flex flex-col w-screen h-screen justify-center bg-white"
             style={{
                 backgroundImage: `url("data:image/svg+xml,${backgroundSvg}")`,
@@ -79,8 +87,7 @@ export default function ServicesSection() {
                     className="relative grid grid-cols-1 lg:grid-cols-2 gap-20 items-center"
                     variants={containerVariants}
                     initial="hidden"
-                    animate={isInView ? "visible" : "hidden"} // Animate based on isInView
-
+                    animate={isInView ? "visible" : "hidden"}
                 >
 
                     <svg xmlns="http://www.w3.org/2000/svg" width="100.27" height="98.45" viewBox="0 0 100.27 98.45" className='absolute -left-32 top-0'>
@@ -103,7 +110,7 @@ export default function ServicesSection() {
                     </svg>
 
                     {/* Left side - Text Content */}
-                    <motion.div className="max-w-xl" variants={itemVariants}>
+                    <motion.div style={{ translateY: translateYLeft }} className="max-w-xl" variants={itemVariants}>
                         <h2 className="text-7xl font-bold text-gray-900 mb-4">
                             Why EBEC?
                         </h2>
@@ -114,7 +121,7 @@ export default function ServicesSection() {
                     </motion.div>
 
                     {/* Right side - Services Grid */}
-                    <div className="grid grid-cols-2 gap-4">
+                    <motion.div style={{ translateY: translateYRight }} className="grid grid-cols-2 gap-4">
                         {services.map((service, index) => {
                             const Icon = service.icon;
                             return (
@@ -139,7 +146,7 @@ export default function ServicesSection() {
                                 </motion.div>
                             );
                         })}
-                    </div>
+                    </motion.div>
                 </motion.div>
             </div>
         </div>

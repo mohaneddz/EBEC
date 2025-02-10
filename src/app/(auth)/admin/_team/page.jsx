@@ -1,6 +1,7 @@
 "use client";
 
-import ClubTeamMemberCard from '@/components/teamCards/TeamMember';
+import TeamMember from '@/components/teamCards/TeamMember';
+
 const executiveTeam = [
   { id: 1, name: "John Smith", role: "President", department: "Executive", userPfp: "/Assets/FakePFP/4.jpg" },
   { id: 2, name: "Jane Doe", role: "Vice President", department: "Executive", userPfp: "/Assets/FakePFP/1.jpg" },
@@ -44,34 +45,42 @@ const relexTeam = [
 ];
 
 const departmentData = [
-    { name: "Executive", team: executiveTeam },
-    { name: "Events", team: eventsTeam },
-    { name: "Design", team: designTeam },
-    { name: "Multimedia", team: multimediaTeam },
-    { name: "HR", team: hrTeam },
-    { name: "IT", team: itTeam },
-    { name: "Relex", team: relexTeam },
+  { name: "Executive", team: executiveTeam },
+  { name: "Events", team: eventsTeam },
+  { name: "Design", team: designTeam },
+  { name: "Multimedia", team: multimediaTeam },
+  { name: "HR", team: hrTeam },
+  { name: "IT", team: itTeam },
+  { name: "Relex", team: relexTeam },
 ];
 
 export default function TeamPage() {
-    return (
-        <div>
-            {departmentData.map((department) => (
-                <div key={department.name} className="dep">
-                    <h2 className='text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-primary-600 to-primary-800 font-poppins p-8'>{department.name} Department</h2>
-                    <div className="m-8 bg-zinc-50 rounded-xl overflow-x-auto overflow-y-visible">
-                        <div className="w-full grid grid-cols-[repeat(3,minmax(min-content,1fr))] overflow-y-visible justify-items-center justify-center">
-                            {department.team.map((member) => (
-                                <ClubTeamMemberCard
-                                    key={member.id}
-                                    {...member}
-                                    availableDepartments={department.name === "Executive" ? ["President", "Vice President", "Secretary General"] : ["Executive", "Events", "Design", "Multimedia", "HR", "IT", "Relex"]}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            ))}
+  return (
+
+    <div>
+
+      {departmentData.map((department) => (
+
+        <div key={department.name} className="dep mb-24">
+          <h2 className='w-full mr-24 hover:cursor-pointer select-none text-5xl font-bold flex items-center gap-8 text-white bg-gradient-to-br from-primary-light to-primary-dark font-poppins p-8 rounded-lg'
+          >{department.name} Department</h2>
+          <div className="m-8 bg-zinc-50 rounded-xl overflow-x-auto overflow-y-visible">
+
+            <div className="w-full grid grid-cols-[repeat(3,minmax(min-content,1fr))] overflow-y-visible justify-items-center justify-center">
+              {department.team.map((member) => (
+                <TeamMember
+                  key={member.id}
+                  {...member}
+                  availableDepartments={department.name === "Executive" ? ["President", "Vice President", "Secretary General"] : ["Executive", "Events", "Design", "Multimedia", "HR", "IT", "Relex"]}
+                />
+              ))}
+            </div>
+
+          </div>
         </div>
-    );
+
+      ))}
+
+    </div>
+  );
 }

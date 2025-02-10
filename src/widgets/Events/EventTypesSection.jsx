@@ -2,13 +2,12 @@
 
 import Button from '@/components/Button';
 import ShowcaseCard from '@/components/ShowcaseCard';
-import { motion, useScroll, useTransform } from 'framer-motion'; // Import useScroll and useTransform
-import { useRef } from 'react'; // Import useRef
+import { motion, useScroll, useTransform } from 'framer-motion'; 
+import { useRef } from 'react';
 
 const image1 = "/Assets/Hero/8.jpg";
 const image2 = "/Assets/Hero/5.jpg";
 const image3 = "/Assets/Hero/12.jpg";
-
 
 export default function EventTypesSection() {
     const ref = useRef(null); 

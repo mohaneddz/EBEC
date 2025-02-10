@@ -1,6 +1,8 @@
 # Welcome To EBEC's Official Website Repository
 Private repo, available for IT responsibles only
 
+This repository contains the codebase for the official website of EBEC (ENSIA Business & Entrepreneurship Club). The website serves as a central hub for information about the club, its events, team members, and resources. It is built using modern web technologies such as ReactJs, NextJs, SupaBase, and Tailwind CSS to provide a responsive and engaging experience for visitors.
+
 ## Getting Started
 
 First, run the development server:

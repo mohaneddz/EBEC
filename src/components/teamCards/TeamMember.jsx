@@ -1,4 +1,5 @@
 "use client";
+
 // TODO fix overflow y on drop down
 import { useState, useRef, useEffect } from 'react';
 import { motion } from "framer-motion";
@@ -52,8 +53,7 @@ const saveButtonVariants = {
 
 };
 
-
-export default function ClubTeamMemberCard({
+export default function TeamMember({
     id,
     name,
     role,

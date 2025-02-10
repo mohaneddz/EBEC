@@ -1,16 +1,15 @@
 import Image from "next/image";
 import { Button } from "@/components/Button";
-import { useContext } from "react"; // Import useContext
-import { ScrollContext } from "@/app/(content)/events/page"; // Import the context *from the correct path*
+import { useContext } from "react"; 
+import { ScrollContext } from "@/app/(content)/events/page"; 
 
 const image1 = "/Assets/Hero/2.jpg";
 
 export default function EventsHeroSection() {
-    // 5. Consume the context (get the scroll function)
     const scrollToUpcomingEvents = useContext(ScrollContext);
 
     return (
-        <div className="relative w-screen">
+        <div className="relative w-screen overflow-x-hidden h-[calc(100vh-5rem)]">
             <Image
                 src={image1}
                 alt="Events"
@@ -20,7 +19,6 @@ export default function EventsHeroSection() {
                 className="object-cover w-full h-full brightness-75 overflow-x-hidden"
             />
 
-            {/* Centered content */}
             <div className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6">
                 <h1 className="text-4xl md:text-5xl lg:text-9xl font-[900] text-transparent bg-clip-text bg-gradient-to-b from-slate-100 to-slate-200 text-center font-poppins tracking-wide">
                     Explore Our Events!
@@ -36,11 +34,10 @@ export default function EventsHeroSection() {
                 />
 
             </div>
-            {/* Vignette overlay */}
+
+            {/* Vignette, gradient, blur */}
             <div className="absolute inset-0 z-10 bg-gradient-to-br from-black/30 via-transparent to-black/30" />
-            {/* Light gradient overlay */}
             <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 to-transparent" />
-            {/* Lens blur effect */}
             <div className="absolute inset-0 z-10 backdrop-blur-[2px]" />
 
             <h1 className="z-40 bottom-0 absolute flex justify-center items-center w-screen bg-gradient-to-b from-secondary-light to-secondary-dark h-24 text-5xl font-black text-black">

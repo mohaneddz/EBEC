@@ -85,7 +85,7 @@ export function ExpandableCardDemo({ cards, className }) {
                     className="font-semibold text-secondary-light  text-base">
                     {active.title}
                   </motion.h3>
-                  <p className="text-neutral-200  text-base">
+                  <p className="text-neutral-200 text-base">
                     {active.description}
                   </p>
                 </div>

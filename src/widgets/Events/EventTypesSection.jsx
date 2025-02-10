@@ -44,7 +44,7 @@ export default function EventTypesSection() {
 
                 <div className="flex flex-col justify-center items-center col-start-3 col-end-4 row-span-2">
                     <div className="flex flex-col justify-center items-start">
-                        <h1 className="w-min text-nowrap text-5xl font-black uppercase text-primary-light">Our Events</h1>
+                        <h1 className="w-min text-nowrap text-5xl font-black uppercase text-primary-light">Our Activities</h1>
                         <p className="text-lg text-primary-light py-8 ">We offer a wide range of activities, from learning to practice to competetions. <br />There is always Something for everyone! </p>
                         <Button text={"Join US"} color1={'#FFC208'} color2={'#FDA916'} />
                     </div>

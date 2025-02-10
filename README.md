@@ -1,11 +1,10 @@
-# Welcome To EBEC's Official Website Repository
+# 🌟 Welcome To EBEC's Official Website Repository
 Private repo, available for IT responsibles only
 
 This repository contains the codebase for the official website of EBEC (ENSIA Business & Entrepreneurship Club). The website serves as a central hub for information about the club, its events, team members, and resources. It is built using modern web technologies such as ReactJs, NextJs, SupaBase, and Tailwind CSS to provide a responsive and engaging experience for visitors.
 
-## Screenshots [Preview]
+## 📸 Screenshots [Preview]
 - Better be experienced by yourself, but until it's all done, here's a small preview of this website's content:
-
 
 <!-- include the screenshots in the screenshots/folder -->
 <img src="screenshots/hero.png" alt="Screenshot 1" width="100%"/>
@@ -60,7 +59,7 @@ This repository contains the codebase for the official website of EBEC (ENSIA Bu
 
 **User settings**: Customize your profile and preferences.
 
-## Getting Started
+## 🚀 Getting Started
 
 First, run the development server:
 
@@ -71,13 +70,13 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 
-## Collaboration
+## 👥 Collaboration
 
 - I did it all by myself, I don't need assistance.
 <!-- wanna kill myself -->
 
 
-## The Tech-Stack:
+## 🛠️ The Tech-Stack:
 
 - ReactJs
 - NextJs
@@ -85,14 +84,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Tailwind CSS
 - HTML,CSS,JS
 
-## The Structure :
+## 📁 The Structure:
 
 - All code is inside the `src` folder
 - The Folders inside `src/app` represent `URLs` ( using NextJS App-Router )  
 - Sections are stored inside `widgets` & Components are inside `components`
 - Usage of Aceternity UI included `lib` and `hooks` folders
 
-## License  
+## 📜 License  
 
 This project is licensed under the **Strictly View-Only License**.  
 
@@ -104,7 +103,7 @@ For full details, see the [LICENSE](./LICENSE) file.
 
 ---
 
-> ## **Warning :**
+> ## ⚠️ **Warning:**
 >
 > Communicate with team in order to receive the `.env` file needed for development
 

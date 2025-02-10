@@ -92,6 +92,16 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Sections are stored inside `widgets` & Components are inside `components`
 - Usage of Aceternity UI included `lib` and `hooks` folders
 
+## License  
+
+This project is licensed under the **Strictly View-Only License**.  
+
+You are **only permitted to view** the code and documentation.  
+**No use, modification, distribution, or derivative works** are allowed.  
+
+For full details, see the [LICENSE](./LICENSE) file.  
+
+
 ---
 
 > ## **Warning :**

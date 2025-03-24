@@ -1,7 +1,7 @@
 export default function DashboardPage() {
-    return (
-      <div className="">
-        <h1>Dashboard Overview</h1>
-      </div>
-    );
-  }
+  return (
+    <div className="flex flex-col items-center justify-center h-screen gap-16">
+
+    </div>
+  );
+}

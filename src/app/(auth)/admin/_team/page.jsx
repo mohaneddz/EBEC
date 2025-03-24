@@ -55,6 +55,7 @@ const departmentData = [
 ];
 
 export default function TeamPage() {
+
   return (
 
     <div>

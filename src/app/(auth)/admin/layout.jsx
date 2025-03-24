@@ -19,7 +19,7 @@ export function usePageContext() {
 
 export default function AdminPage({ children }) {
     const [open, setOpen] = useState(false);
-    const [page, setPage] = useState("events");
+    const [page, setPage] = useState("Members");
 
     const links = [
         { label: "Dashboard", page: "dashboard", icon: <IconBrandTabler className="text-neutral-700 h-5 w-5" /> },

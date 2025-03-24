@@ -6,7 +6,6 @@ export function cn(...inputs) {
 }
 
 
-
 // Syntax for future Imports : ------------
 
     // const [Events, setEvents] = useState(null);

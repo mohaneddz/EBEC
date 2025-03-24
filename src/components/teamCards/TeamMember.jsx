@@ -5,6 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { IconPencil, IconUserX, IconCheck } from "@tabler/icons-react";
+import supabase from '@/config/supabaseClient';
 
 const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -119,13 +120,62 @@ export default function TeamMember({
             }
             setTimeout(() => setRoleChanged(false), 2000);
         }
+        // supabase call to update the department and role
+        const UpdateMember = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('members')
+                    .update({
+                        department: pendingDepartment,
+                        role: pendingRole
+                    })
+                    .eq('id', id);
+
+                if (error) {
+                    console.error(error);
+                    setUpdateError("Failed to Update member. Please try again.");
+                } else {
+                    console.log(data);
+                    if (onUpdateMember) {
+                        onUpdateMember(id);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                setUpdateError("An unexpected error occurred.");
+            } finally {
+                setIsRemoving(false);
+            }
+        };
+
     };
 
-
     const handleRemoveMember = () => {
-        if (onRemoveMember) {
-            onRemoveMember(id);
-        }
+        const removeMember = async () => {
+            try {
+                const { data, error } = await supabase
+                    .from('members')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) {
+                    console.error(error);
+                    setRemoveError("Failed to remove member. Please try again.");
+                } else {
+                    console.log(data);
+                    if (onRemoveMember) {
+                        onRemoveMember(id);
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+                setRemoveError("An unexpected error occurred.");
+            } finally {
+                setIsRemoving(false);
+            }
+        };
+
+        removeMember();
     };
 
     const toggleDepartmentDropdown = () => {
@@ -137,6 +187,8 @@ export default function TeamMember({
         setIsRoleDropdownOpen(!isRoleDropdownOpen);
         setIsDropdownOpen(false); // Close the department dropdown
     };
+
+
 
     const hasChanges = pendingDepartment !== department || pendingRole !== role;
 
@@ -289,7 +341,7 @@ export default function TeamMember({
                     <span>Save Changes</span>
                     <IconCheck size={16} />
                 </motion.button>
-                
+
             </div>
         </motion.div>
     );

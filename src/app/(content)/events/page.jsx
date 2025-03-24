@@ -30,6 +30,9 @@ const Events = () => {
       {/* Hero Section */}
       <EventsHeroSection />
 
+      {/* Sponsors */}
+      <LogoSliderSection />
+
       {/* Upcoming Events - Assign the ref */}
       <UpcomingEventsSection id={"upcoming"} ref={upcomingEventsRef} />
 
@@ -38,9 +41,6 @@ const Events = () => {
 
       {/* General Events */}
       <EventsGallery />
-
-      {/* Sponsors */}
-      <LogoSliderSection />
 
     </ScrollContext.Provider>
   );

@@ -1,7 +1,14 @@
-export default function DashboardPage() {
-  return (
-    <div className="flex flex-col items-center justify-center h-screen gap-16">
+import React from 'react'
+import SortableTable from '@/components/Table'
 
-    </div>
-  );
+        
+
+export default function page() {
+    return (
+        <div className='flex flex-col gap-4'>
+            <div className='flex flex-col gap-4 bg-gradient-to-br from-primary-dark to-primary-light p-8 rounded-t-lg '>
+                <h1 className='text-5xl font-black text-secondary-light text-center'>DASHBOARD</h1>
+            </div>
+        </div>
+    )
 }

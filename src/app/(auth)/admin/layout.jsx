@@ -23,7 +23,6 @@ export default function AdminPage({ children }) {
 
     const links = [
         { label: "Dashboard", page: "dashboard", icon: <IconBrandTabler className="text-neutral-700 h-5 w-5" /> },
-        { label: "Team", page: "team", icon: <IconUserUp className="text-neutral-700 h-5 w-5" /> },
         { label: "Members", page: "members", icon: <IconUsersGroup className="text-neutral-700 h-5 w-5" /> },
         { label: "Emails", page: "emails", icon: <IconMail className="text-neutral-700 h-5 w-5" /> },
         { label: "Events", page: "events", icon: <IconCalendarEvent className="text-neutral-700 h-5 w-5" /> }
@@ -32,7 +31,7 @@ export default function AdminPage({ children }) {
     return (
         <PageContext.Provider value={{ page, setPage }}>
 
-            <div className={cn("flex flex-col md:flex-row bg-gray-100 flex-1 border border-neutral-200 h-screen w-full")}>
+            <div className={cn("flex flex-col md:flex-row bg-gray-100 flex-1 border border-neutral-200 h-screen w-full overflow-x-hidden")}>
 
                 <Sidebar open={open} setOpen={setOpen}>
                     <SidebarBody className="justify-between gap-10">

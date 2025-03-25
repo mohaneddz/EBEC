@@ -9,7 +9,7 @@ export default function EventsHeroSection() {
     const scrollToUpcomingEvents = useContext(ScrollContext);
 
     return (
-        <div className="relative w-screen overflow-x-hidden h-[calc(100vh-5rem)]">
+        <div className="relative w-screen overflow-x-hidden h-[calc(100vh-5rem)] mb-40">
             <Image
                 src={image1}
                 alt="Events"
@@ -30,20 +30,15 @@ export default function EventsHeroSection() {
                     className="text-foreground hover:text-primary-foreground z-40"
                     aria-label="Scroll to Upcoming Events"
                     text="I'm Ready!"
-                    onClick={scrollToUpcomingEvents} // Call the function from context
+                    onClick={scrollToUpcomingEvents}
                 />
 
             </div>
 
-            {/* Vignette, gradient, blur */}
             <div className="absolute inset-0 z-10 bg-gradient-to-br from-black/30 via-transparent to-black/30" />
-            <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/40 to-transparent" />
             <div className="absolute inset-0 z-10 backdrop-blur-[2px]" />
 
-            <h1 className="z-40 bottom-0 absolute flex justify-center items-center w-screen bg-gradient-to-b from-secondary-light to-secondary-dark h-24 text-5xl font-black text-black">
-                EBEC
-            </h1>
-
+            <div className="absolute top h-[100%] inset-0 z-10 bg-gradient-to-t from-bg via-transparent to-transparent" />
         </div>
     )
 }

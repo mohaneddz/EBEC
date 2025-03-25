@@ -130,3 +130,70 @@ export const Input = ({
 };
 
 export default Input;
+
+export function Input2 ({
+    label,
+    type = "text",
+    value,
+    onChange,
+    error,
+    placeholder,
+    required,
+    className,
+    ...props
+}) {
+    const [isFocused, setIsFocused] = useState(false);
+
+    const handleFocus = () => setIsFocused(true);
+    const handleBlur = () => setIsFocused(false);
+
+    const labelClasses = cn(
+        "block text-sm font-medium transition-colors",
+        isFocused || value ? "text-blue-600" : "text-gray-700",
+        error ? "text-red-500" : ""
+    );
+
+    const inputClasses = cn(
+        "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm transition-colors",
+        "focus:outline-none focus:ring-2 focus:border-transparent",
+        isFocused ? "ring-blue-500 border-blue-500" : "border-gray-300",
+        error ? "border-red-500 ring-red-500" : "",
+        className
+    );
+
+
+    return (
+        <div className="mb-4">
+            <label className={labelClasses}>
+                {label}
+                {required && <span className="text-red-500"> *</span>}
+            </label>
+            {type === "textarea" ? (
+                <textarea
+                    className={inputClasses}
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    rows="4"
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    aria-invalid={error ? "true" : "false"}
+                    {...props}
+                />
+            ) : (
+                <input
+                    type={type}
+                    className={inputClasses}
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    aria-invalid={error ? "true" : "false"}
+                    {...props}
+                />
+            )}
+            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
+        </div>
+    );
+};

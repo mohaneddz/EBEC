@@ -6,7 +6,6 @@ import Dashboard from "@/components/Sidebar";
 import { usePageContext } from "./layout";
 
 const DashboardPage = dynamic(() => import("@/app/(auth)/admin/_dashboard/page"));
-const TeamPage = dynamic(() => import("@/app/(auth)/admin/_team/page"));
 const MembersPage = dynamic(() => import("@/app/(auth)/admin/_members/page"));
 const EmailsPage = dynamic(() => import("@/app/(auth)/admin/_emails/page"));
 const EventsPage = dynamic(() => import("@/app/(auth)/admin/_events/page"));
@@ -16,7 +15,6 @@ export default function Page() {
 
   const pages = {
     dashboard: DashboardPage,
-    team: TeamPage,
     members: MembersPage,
     emails: EmailsPage,
     events: EventsPage,
@@ -27,7 +25,7 @@ export default function Page() {
 
     <Dashboard>
       <div className="w-full h-full">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="w-full h-full flex flex-col items-center justify-center text-center text-gray-600">Loading...</div>}>
           <PageComponent />
         </Suspense>
       </div>

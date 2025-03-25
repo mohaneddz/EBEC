@@ -56,7 +56,7 @@ export default function UpcomingEventsSection({ id, ref }) {
             <div
                 ref={titleRef}
                 className="z-10 flex flex-col justify-center items-center gap-32 h-min min-h-screen px-8 lg:px-16 py-20 bg-primary-dark">
-                <motion.h1 className="text-secondary-dark text-7xl font-black" >Stay Up To Date</motion.h1>
+                <motion.h1 className="text-secondary-dark text-2xl vsm:text-4xl sm:text-5xl lg:text-7xl font-black" >Stay Up To Date</motion.h1>
                 <div ref={ref}>
                     {
                         Events && (

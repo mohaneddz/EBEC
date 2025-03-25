@@ -1,7 +1,6 @@
 "use client";
 
-import { motion } from "motion/react";
-import { Input } from "@/components/Input";
+import { motion } from "framer-motion";
 import { Button } from "@/components/Button";
 import Modal from "@/components/Modal";
 
@@ -27,34 +26,55 @@ export const UserPage = ({ id }) => {
 
     const closeModal = () => {
         setIsVisible(false);
+        setSelectedDepartment(null); // Reset selection on close
     };
 
     const handleLogOut = () => {
         window.location.href = '/login';
     };
 
+    const sendRequest = () => {
+        console.log(`Sending request for department: ${selectedDepartment}`);
+        closeModal(); // Close after "sending"
+    }
+
     return (
         <div className='flex flex-col items-center justify-center'>
-            <Modal isVisible={isVisible} close={closeModal}>
-                <h1>Select Which Department You Want</h1>
-                <div className="grid grid-cols-3 flex-wrap justify-center mt-4">
+            <Modal2 isOpen={isVisible} onClose={closeModal} title="Select Department">
+                {/* Use a grid with equal columns and justify-items-center */}
+                <div className="grid grid-cols-3 gap-4 justify-items-center mt-4">
                     {departments.map((department) => (
                         <button
                             key={department}
                             onClick={() => handleSelect(department)}
-                            className={`m-2 px-4 py-2 rounded-full ${selectedDepartment === department
-                                ? 'bg-gradient-to-br from-primary-400 to-primary-500 text-white'
-                                : 'bg-gradient-to-br from-primary-100 to-primary-200 text-slate-500'
+                            className={`
+                                w-24 h-12  
+                                flex items-center justify-center
+                                rounded-full
+                                ${
+                                    selectedDepartment === department
+                                        ? 'bg-gradient-to-br from-primary-400 to-primary-500 text-white'
+                                        : 'bg-gradient-to-br from-primary-100 to-primary-200 text-slate-500'
                                 }`}
                         >
                             {department}
                         </button>
                     ))}
                 </div>
-                <Button text={'Send Request'} color1={'#1e4b8a'} color2={'#1b3764'} className="w-2/5 mt-8" onClick={closeModal} />
-            </Modal>
+                <div className="flex justify-center mt-8">
+                    <Button
+                        text={'Send Request'}
+                        color1={'#1e4b8a'}
+                        color2={'#1b3764'}
+                        className="w-2/5 " // Removed extra mt-8, as we have margin on the container
+                        onClick={sendRequest}
+                    />
+                </div>
+            </Modal2>
 
-            <div className="custom-shape-divider-top-1738426196">
+            {/* ... (rest of your UserPage component - SVG and UserInfo) ... */}
+
+             <div className="custom-shape-divider-top-1738426196">
                 <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
                     <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" className="shape-fill"></path>
                 </svg>

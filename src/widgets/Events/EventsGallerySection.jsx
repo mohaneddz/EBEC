@@ -53,9 +53,9 @@ const EventsGallery = () => {
                     </clipPath>
                 </defs>
             </svg>
-            <div className="Events__Gallery flex flex-col justify-around w-screen bg-primary-dark overflow-x-hidden">
+            <div className="Events__Gallery flex flex-col justify-around w-screen bg-primary-dark overflow-x-hidden px-16 pb-80 ">
 
-                <motion.h1 className="text-secondary-dark text-7xl font-black text-center py-20">   
+                <motion.h1 className="text-secondary-dark text-4xl sm:text-5xl lg:text-7xl font-black text-center py-20">   
                     Events Gallery
                 </motion.h1>
 

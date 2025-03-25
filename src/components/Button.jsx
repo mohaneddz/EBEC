@@ -23,9 +23,11 @@ export const Button = ({ text, color1, color2, onClick, disabled, className }) =
                 max-w-[20rem]
                 relative
                 overflow-hidden
-                inline-block
+                inline-flex 
+                items-center 
+                justify-center 
                 hover:cursor-pointer hover:drop-shadow-lg
-                text-center px-8 py-3 mt-2
+                px-8 py-3 mt-2
                 md:mt-4 text-xs md:text-lg lg:text-xl text-nowrap
                 lg:py-4 rounded-full font-bold
                 hover:brightness-110
@@ -47,7 +49,7 @@ export const Button = ({ text, color1, color2, onClick, disabled, className }) =
                 hover:before:left-[100%]
                 ${className}
                 ${color1 ? "" : "border-2 border-white"}
-                            ${disabled ? 'pointer-events-none opacity-50' : ''}
+                ${disabled ? 'pointer-events-none opacity-50' : ''}
             `}
 
             style={buttonStyle}

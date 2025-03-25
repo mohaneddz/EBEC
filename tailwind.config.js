@@ -89,7 +89,7 @@ export default {
         },
       },
       screens: {
-        vsm: '320px',
+        vsm: '360px',
         vlg: '1440px',
         msm: '480px',
         mlg: '1024px',

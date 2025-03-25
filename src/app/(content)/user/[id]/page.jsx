@@ -40,7 +40,7 @@ export const UserPage = ({ id }) => {
 
     return (
         <div className='flex flex-col items-center justify-center'>
-            <Modal2 isOpen={isVisible} onClose={closeModal} title="Select Department">
+            <Modal isOpen={isVisible} onClose={closeModal} title="Select Department">
                 {/* Use a grid with equal columns and justify-items-center */}
                 <div className="grid grid-cols-3 gap-4 justify-items-center mt-4">
                     {departments.map((department) => (
@@ -70,7 +70,7 @@ export const UserPage = ({ id }) => {
                         onClick={sendRequest}
                     />
                 </div>
-            </Modal2>
+            </Modal>
 
             {/* ... (rest of your UserPage component - SVG and UserInfo) ... */}
 

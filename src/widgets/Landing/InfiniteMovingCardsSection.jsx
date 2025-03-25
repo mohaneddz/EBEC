@@ -12,7 +12,7 @@ export default function InfiniteMovingCardsSection() {
 
       <TextGenerateEffect
         words="Trusted by Many"
-        className="my-16 md:my-40 text-xl sm:text-2xl md:text-3xl lg:text-9xl text-center font-bold"
+        className="mt-40 lt:my-40 text-3xl sm:text-4xl md:text-5xl lg:text-9xl text-center font-bold"
         color={"primary-light"}
       />
 

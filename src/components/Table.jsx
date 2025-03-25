@@ -54,8 +54,16 @@ const SortableTable = ({ data = null, cols = null }) => {
     }, [searchTerm, columnFilters]);
 
     useEffect(() => {
-        setInfo(data);
+        // Add a unique ID to each data item if it doesn't exist
+        if (data) {
+            const dataWithIds = data.map((item, index) => ({
+                ...item,
+                id: item.id || index.toString()  // Use existing ID or create one
+            }));
+            setInfo(dataWithIds);
+        }
     }, [data]);
+
 
     const isMobile = windowWidth < 768;
 
@@ -93,7 +101,7 @@ const SortableTable = ({ data = null, cols = null }) => {
             item[key].toString().toLowerCase().includes(searchTerm.toLowerCase())
         );
         const matchesFilters = Object.entries(columnFilters).every(([key, filterVal]) => {
-            return !filterVal || item[key].toString().toLowerCase().includes(filterVal.toLowerCase());
+            return !filterVal || (item[key] != null && item[key].toString().toLowerCase().includes(filterVal.toLowerCase()));
         });
         return matchesSearch && matchesFilters;
     });
@@ -113,7 +121,8 @@ const SortableTable = ({ data = null, cols = null }) => {
     ]);
 
     const handleDelete = (id) => {
-        setInfo(info.filter(item => item.id !== id));
+
+        setInfo(prevInfo => prevInfo.filter(item => item.id !== id));
         setDeleteModal({ open: false, id: null });
     };
 
@@ -185,7 +194,10 @@ const SortableTable = ({ data = null, cols = null }) => {
                     }
                 });
 
-                setInfo(info.map(item => (item.id === finalEditForm.id ? finalEditForm : item)));
+
+                setInfo(prevInfo =>
+                    prevInfo.map(item => (item.id === finalEditForm.id ? { ...item, ...finalEditForm } : item))
+                );
                 setEditModalState({ open: false, item: null });
                 setEditForm({});
                 setImageUploadError('');
@@ -745,84 +757,84 @@ const SortableTable = ({ data = null, cols = null }) => {
                                                 onClick={() => handleClearImages(column.key)}
                                                 className="ml-2 px-2 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-150 flex items-center"
                                                 title={`Clear ${column.label}`}
-                                            >
-                                                <IconX size={16} />
-                                            </button>
-                                        )}
-                                    </div>
-
-                                    {/* Display uploaded images (previews) */}
-                                    <div className="flex flex-wrap mt-2">
-                                        {editForm[column.key] && editForm[column.key].length > 0 && editForm[column.key].map((fileOrUrl, index) => {
-                                            const src = fileOrUrl instanceof File ? URL.createObjectURL(fileOrUrl) : fileOrUrl;
-                                            return (
-                                                <div
-                                                    key={`${column.key}-${index}`}  // Use a unique key
-                                                    className="relative w-16 h-16 rounded-md mr-2 mb-2"
-                                                    onMouseEnter={() => setHoveredImageIndex(prev => ({ ...prev, [column.key + index]: true }))}
-                                                    onMouseLeave={() => setHoveredImageIndex(prev => ({ ...prev, [column.key + index]: false }))}
                                                 >
-                                                    <img
-                                                        src={src}
-                                                        alt={`Preview ${index}`}
-                                                        className={`w-full h-full object-cover rounded-md ${hoveredImageIndex[column.key + index] ? 'opacity-50' : ''}`}
-                                                    />
-                                                    {hoveredImageIndex[column.key + index] && (
-                                                        <button
-                                                            onClick={() => handleRemoveImage(column.key, index)}
-                                                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75"
-                                                            title={`Remove ${column.label}`}
-                                                        >
-                                                            <IconX size={16} />
-                                                        </button>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
+                                                    <IconX size={16} />
+                                                </button>
+                                            )}
+                                        </div>
+    
+                                        {/* Display uploaded images (previews) */}
+                                        <div className="flex flex-wrap mt-2">
+                                            {editForm[column.key] && editForm[column.key].length > 0 && editForm[column.key].map((fileOrUrl, index) => {
+                                                const src = fileOrUrl instanceof File ? URL.createObjectURL(fileOrUrl) : fileOrUrl;
+                                                return (
+                                                    <div
+                                                        key={`${column.key}-${index}`}  // Use a unique key
+                                                        className="relative w-16 h-16 rounded-md mr-2 mb-2"
+                                                        onMouseEnter={() => setHoveredImageIndex(prev => ({ ...prev, [column.key + index]: true }))}
+                                                        onMouseLeave={() => setHoveredImageIndex(prev => ({ ...prev, [column.key + index]: false }))}
+                                                    >
+                                                        <img
+                                                            src={src}
+                                                            alt={`Preview ${index}`}
+                                                            className={`w-full h-full object-cover rounded-md ${hoveredImageIndex[column.key + index] ? 'opacity-50' : ''}`}
+                                                        />
+                                                        {hoveredImageIndex[column.key + index] && (
+                                                            <button
+                                                                onClick={() => handleRemoveImage(column.key, index)}
+                                                                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75"
+                                                                title={`Remove ${column.label}`}
+                                                            >
+                                                                <IconX size={16} />
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
                                     </div>
+                                );
+                            }
+                            return (
+                                <div key={column.key}>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">{column.label}</label>
+                                    <input
+                                        type="text"
+                                        name={column.key}
+                                        value={editForm[column.key] || ''}
+                                        onChange={handleEditFormChange}
+                                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
+                                    />
                                 </div>
                             );
-                        }
-                        return (
-                            <div key={column.key}>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">{column.label}</label>
-                                <input
-                                    type="text"
-                                    name={column.key}
-                                    value={editForm[column.key] || ''}
-                                    onChange={handleEditFormChange}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 text-sm"
-                                />
-                            </div>
-                        );
-                    })}
-                </form>
-                <div className="flex justify-end space-x-3 pt-4">
-                    <button
-                        type="button"
-                        onClick={() => setEditModalState({ open: false, item: null })}
-                        className='px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-150'
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        type="submit"
-                        onClick={(e) => { e.preventDefault(); handleEdit(); }}
-                        className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors duration-150"
-                    >
-                        <IconCheck size={16} className="mr-1" /> Save Changes
-                    </button>
-                </div>
-            </Modal>
-            <Modal
-                isOpen={cellPopup.open}
-                onClose={() => setCellPopup({ open: false, content: '', title: '' })}
-                title={cellPopup.title}
-            >
-                <div className="flex flex-col items-center">{cellPopup.content}</div>
-            </Modal>
-        </div>
-    );
-};
-
-export default SortableTable;
+                        })}
+                    </form>
+                    <div className="flex justify-end space-x-3 pt-4">
+                        <button
+                            type="button"
+                            onClick={() => setEditModalState({ open: false, item: null })}
+                            className='px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors duration-150'
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            onClick={(e) => { e.preventDefault(); handleEdit(); }}
+                            className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors duration-150"
+                        >
+                            <IconCheck size={16} className="mr-1" /> Save Changes
+                        </button>
+                    </div>
+                </Modal>
+                <Modal
+                    isOpen={cellPopup.open}
+                    onClose={() => setCellPopup({ open: false, content: '', title: '' })}
+                    title={cellPopup.title}
+                >
+                    <div className="flex flex-col items-center">{cellPopup.content}</div>
+                </Modal>
+            </div>
+        );
+    };
+    
+    export default SortableTable;

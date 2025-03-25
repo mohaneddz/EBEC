@@ -378,7 +378,7 @@ export const GlareCard = ({
                                     <h2 className="text-secondary-dark font-black text-3xl drop-shadow-md opacity-0 group-hover:-translate-y-2 transition-transform duration-300 ease-in-out group-hover:opacity-100">
                                         {cardData.title}
                                     </h2>
-                                    <p className="text-gray-300 font-medium mt-2 drop-shadow-md opacity-0 group-hover:-translate-y-2 transition-transform duration-300 ease-in-out group-hover:opacity-100">
+                                    <p className="text-gray-300 text-center font-medium mt-2 drop-shadow-md opacity-0 group-hover:-translate-y-2 transition-transform duration-300 ease-in-out group-hover:opacity-100">
                                         {cardData.description}
                                     </p>
                                 </div>

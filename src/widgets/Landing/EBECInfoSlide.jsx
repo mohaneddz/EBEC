@@ -23,12 +23,13 @@ export const EBECInfoSlide = () => {
     const isCardsInView = useInView(cardsRef, { once: true });
 
     return (
-        <motion.section ref={targetRef} className="relative h-[300vh] bg-primary-dark">
+        <motion.section ref={targetRef} className="relative h-[300vh] max-h-[300vh] bg-primary-dark">
             <div className="sticky top-0 flex flex-col justify-center w-screen h-screen overflow-hidden">
 
-                <div ref={headerRef} className="w-full text-center pb-20 pt-28">
+                <div className="relative block h-40">a</div>
+                <div ref={headerRef} className="w-full text-center pb-6">
                     <motion.h1
-                        className="text-secondary-light text-6xl font-black pt-8"
+                        className="text-secondary-light text-2xl vsm:text-3xl sm:text-5xl lg:text-7xl font-black pt-8"
                         initial={{ opacity: 0, y: -50 }}
                         animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut" }}

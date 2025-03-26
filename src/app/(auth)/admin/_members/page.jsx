@@ -36,15 +36,15 @@ export default function MembersPage() { // Renamed for clarity
     useEffect(() => {
         const loadData = async () => {
             setIsLoading(true);
-            setError(null); // Clear previous errors
-            setCols(null); // Clear columns while loading
-            setData(null); // Clear data while loading
+            setError(null);
+            setCols(null); 
+            setData(null); 
 
             try {
                 const { data: membersData, error: fetchError } = await supabase
                     .from('Members') // Use your actual table name
                     .select('*')
-                    // .order('date', { ascending: false }); // Example ordering
+                    .order('department', { ascending: true }); 
 
                 if (fetchError) {
                     throw fetchError; // Throw error to be caught below
@@ -137,7 +137,7 @@ export default function MembersPage() { // Renamed for clarity
 
     // --- Update Handler ---
     const handleSupabaseUpdate = async (updatedItem) => {
-        setError(null); // Clear previous errors
+        setError(null);
         try {
             const { id, ...updateData } = updatedItem; // Separate id from data to update
              if (!id) {

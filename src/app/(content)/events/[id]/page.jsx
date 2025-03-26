@@ -1,9 +1,49 @@
+"use client";
+
+import React from 'react';
 import { CarouselDemo } from '@/components/Carousel.jsx';
 import { IconArrowBackUp } from "@tabler/icons-react";
+import supabase from '@/config/supabaseClient';
+import { useRef, useState, useEffect } from "react";
+
 const image1 = "/Assets/Hero/12.jpg";
 import Link from 'next/link';
+import { jsx } from 'react/jsx-runtime';
 
-export default function Event() {
+export default function event({ params }) {
+
+  useRef(null);
+  const unwrappedParams = React.use(params);
+  const id = unwrappedParams?.id;
+
+  const [event, setEvent] = useState(null);
+  const [fetchError, setFetchError] = useState(null);
+
+  useEffect(() => {
+    const fetchevent = async () => {
+      const { data, error } = await supabase
+        .from('Events')
+        .select('*')
+        .eq('id', id);
+
+      if (error) {
+        setFetchError('Could not fetch the event!');
+        setEvent(null);
+        console.log('Fetch error:', error);
+      }
+      if (data) {
+        const eventData = data[0];
+        if (eventData?.description) {
+          eventData.description = eventData.description.split(' ');
+        }
+        console.log('event :', eventData);
+        setEvent(eventData);
+        setFetchError(null);
+      }
+    };
+    fetchevent();
+  }, [id]);
+
   return (
     <div className="relative min-h-screen">
 
@@ -31,20 +71,26 @@ export default function Event() {
       {/* gradient background */}
       <div className="p-8 mb-16 bg-gradient-to-br from-primary-dark to-primary-light">
 
-        <Link href="/events" className='z-40 inline-block'>
+        <Link href="/event" className='z-40 inline-block'>
           <IconArrowBackUp className="z-40 my-4 ml-4 text-primary-dark h-12 w-12 p-2 flex-shrink-0 bg-white rounded-full" />
         </Link>
 
-        <h1 className="text-7xl mb-4 font-bold flex items-center text-secondary-dark">
-          Event Name!</h1>
-        <h2 className="text-white text-3xl font-semibold">The best event</h2>
-        <h3 className="text-slate-400 text-xl mb-8 font-medium">8 Nov | ENSIA</h3>
+        <h1 className="text-2xl text-center w-screen vsm:text-3xl sm:text-5xl lg:text-7xl mb-4 font-bold flex justify-center content-center items-center text-secondary-dark">
+          {event?.name}</h1>
+        <h2 className="text-white text-center w-screen text-md vsm:text-lg sm:text-xl lg:text-3xl font-semibold">{event?.brief}</h2>
+        <h3 className="text-slate-400 text-center w-screen  text-xs vsm:text-sm sm:text-base lg:text-lg mb-8 font-medium">{event?.date} | {event?.location}</h3>
       </div>
-      <p className='px-8 mb-8 text-lg leading-relaxed'>
-        <span className="font-bold text-2xl">Lorem</span> ipsum dolor, sit amet consectetur adipisicing elit. Repellat temporibus illo ullam totam aperiam. Tempore corporis quos, possimus doloribus nobis incidunt, accusamus ea repellendus at saepe neque! Temporibus consequatur, quibusdam harum aspernatur quas minima ipsam voluptas consequuntur corrupti deleniti exercitationem incidunt perspiciatis, quae aperiam totam nostrum porro nulla sunt nihil molestiae cumque, a ad enim necessitatibus. Fugit cupiditate voluptatum ut doloremque sed ipsam quam reprehenderit quos corporis, aperiam amet libero laboriosam veniam modi harum necessitatibus qui molestias non hic optio at cum! Laudantium quasi incidunt deserunt? Repellendus id modi non assumenda recusandae hic similique dolor quam, ab explicabo earum mollitia?
+      <p className='px-8 mb-8 text-lg leading-relaxed mx-auto'>
+        {event?.description && event?.description.length > 0 ? (
+          <>
+            <span className="font-bold text-2xl">{event?.description[0]}</span>
+            {event?.description[1] ? ' ' + event?.description.slice(1).join(' ') : ''}
+          </>
+        ) : 'No description available'}
       </p>
-
-      <CarouselDemo />
+      {event?.mainPicture && (
+        <CarouselDemo images={[event.mainPicture, ...(event?.pictures || [])]} />
+      )}
     </div>
   );
 }

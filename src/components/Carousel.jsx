@@ -7,21 +7,28 @@ const image2 = "/Assets/Hero/11.jpg";
 const image3 = "/Assets/Hero/2.jpg";
 
 
-export function CarouselDemo() {
-    const slideData = [
-        {
-            title: "Main Picutre",
-            src: image1,
-        },
-        {
-            title: "Second Picture",
-            src: image2,
-        },
-        {
-            title: "Third Picture",
-            src: image3,
-        },
-    ];
+export function CarouselDemo({ images }) {
+
+    const slideData = images?.map((image, index) => ({
+        title: `Image ${index + 1}`,
+        src: image,
+    }));
+    console.log('images:', images);
+    // const slideData = [
+    //     {
+    //         title: "Main Picutre",
+    //         src: image1,
+    //     },
+    //     {
+    //         title: "Second Picture",
+    //         src: image2,
+    //     },
+    //     {
+    //         title: "Third Picture",
+    //         src: image3,
+    //     },
+    // ];
+
     return (
         (<div className="relative  w-full h-full pb-20">
             <Carousel slides={slideData} />
@@ -125,9 +132,9 @@ const Slide = ({
                 <article
                     className={`relative p-[4vmin] transition-opacity duration-1000 ease-in-out ${current === index ? "opacity-100 visible" : "opacity-0 invisible"
                         }`}>
-                    <h2 className="text-lg md:text-2xl lg:text-4xl font-semibold  relative">
+                    {/* <h2 className="text-lg md:text-2xl lg:text-4xl font-semibold  relative">
                         {title}
-                    </h2>
+                    </h2> */}
                     <div className="flex justify-center">
                     </div>
                 </article>

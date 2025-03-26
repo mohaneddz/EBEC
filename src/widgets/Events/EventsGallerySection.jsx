@@ -12,7 +12,8 @@ const EventsGallery = () => {
 
     useEffect(() => {
         const fetchEvent = async () => {
-            const { data, error } = await supabase.from('Event').select('*');
+            const { data, error } = await supabase.from('Events').select('*');
+            console.log('Events:', data);
 
             if (error) {
                 setFetchError('Could not fetch the Events!');
@@ -21,15 +22,15 @@ const EventsGallery = () => {
             }
             if (data) {
                 const events = data
-                    .map(({ id, title, src, description, content, event_date }) => ({
+                    .map(({ id, name, mainPicture, description, brief, date }) => ({
                         id,
-                        title,
-                        src,
-                        description,
-                        content,
+                        title: name,
+                        src: mainPicture,
+                        description:brief,
+                        content: description,
                         ctaText: "Learn More",
                         ctaLink: `/events/${id}`,
-                        event_date,
+                        event_date: date,
                     }))
                     .sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
                 setEvents(events);
@@ -55,7 +56,7 @@ const EventsGallery = () => {
             </svg>
             <div className="Events__Gallery flex flex-col justify-around w-screen bg-primary-dark overflow-x-hidden lg:px-16 pb-80 ">
 
-                <motion.h1 className="text-secondary-dark text-4xl sm:text-5xl lg:text-7xl font-black text-center py-20">   
+                <motion.h1 className="text-secondary-dark text-4xl sm:text-5xl lg:text-7xl font-black text-center py-20">
                     Events Gallery
                 </motion.h1>
 

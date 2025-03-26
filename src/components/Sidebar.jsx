@@ -10,14 +10,15 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 export const Logo = () => {
     return (
         <button className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-            <div className="h-5 w-6 bg-black dark:bg-secondary-light rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
-            <motion.span
+            <div className="h-5 w-6 bg-secondary-dark dark:bg-secondary-light rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+            <motion.a
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="font-medium text-black whitespace-nowrap"
+                href="/"
             >
                 Admin Board
-            </motion.span>
+            </motion.a>
         </button>
     );
 };
@@ -91,7 +92,7 @@ export const LogoIcon = () => {
             href="#"
             className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
             <div
-                className="h-5 w-6 bg-black dark:bg-secondary-dark rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+                className="h-5 w-6 bg-secondary-dark dark:bg-secondary-dark rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
         </button>)
     );
 };

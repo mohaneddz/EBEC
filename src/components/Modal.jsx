@@ -35,7 +35,7 @@ export default function Modal ({ isOpen, onClose, title, children, buttons }) {
                 <div className="fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm bg-black/20">
                     <motion.div
                         ref={modalRef}
-                        className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full"
+                        className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full max-h-[70vh] overflow-scroll"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}

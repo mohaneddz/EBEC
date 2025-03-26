@@ -186,7 +186,7 @@ export default function EventsPage() {
             <div className='flex flex-col gap-4 min-h-screen bg-gray-100 dark:bg-gray-900'>
                  {/* Header */}
                 <div className='flex flex-col gap-2 bg-gradient-to-br from-primary-dark to-primary-light p-6 sm:p-8 shadow-md'>
-                    <h1 className='text-3xl sm:text-5xl font-black text-white text-center'>EVENTS</h1>
+                    <h1 className='text-3xl sm:text-5xl font-black text-secondary-light text-center'>EVENTS</h1>
                 </div>
 
                 {/* Main Content Area */}

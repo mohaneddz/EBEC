@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from "motion/react";
-const image1 = "/Assets/Hero/6.jpg";
+const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//6.jpg";
 
 const Footer = () => {
   const socialIcons = [

@@ -1,15 +1,15 @@
 "use client";
 
-const image1 = "/Assets/Hero/12.jpg";
-const image2 = "/Assets/Hero/11.jpg";
-const image3 = "/Assets/Hero/2.jpg";
+const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//3.jpg";
+const image2 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//1.jpg";
+const image3 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//6.jpg";
 
 import { motion } from "motion/react";
 import { useRef } from "react";
 import { useInView } from "motion/react";
 
-import { TextGenerateEffect } from "@/components/TextGenerator";
-import { WobbleCard } from "@/components/Wobble-card";
+import { TextGenerateEffect } from "@/components/Global/TextGenerator";
+import { WobbleCard } from "@/components/Main/Wobble-card";
 
 export default function WobbleCardSection() {
     const cardRefs = [useRef(null), useRef(null), useRef(null)];

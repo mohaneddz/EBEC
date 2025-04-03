@@ -14,7 +14,7 @@ import {
     IconX,
     IconTableOff
 } from '@tabler/icons-react';
-import Modal from './Modal'; // Make sure this path is correct
+import Modal from './Global/Modal'; // Make sure this path is correct
 
 const LIMIT = 20;
 const MAX_IMAGE_WIDTH = 300;

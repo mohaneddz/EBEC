@@ -6,6 +6,7 @@ import logo from "../../public/EBEC.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IconUser, IconHome, IconCalendarEvent, IconHelp } from "@tabler/icons-react";
+import supabase from '@/config/supabaseClient'
 
 const Navbar = ({ onHeightChange }) => {
 
@@ -13,6 +14,16 @@ const Navbar = ({ onHeightChange }) => {
   const [activePage, setActivePage] = useState(null);
   const router = useRouter();
   const navbarRef = useRef(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+      const fetchUser = async () => {
+          const { data: { user } } = await supabase.auth.getUser();
+          setUser(user);
+      }
+
+      fetchUser();
+  }, []);
 
   const navItems = [
     { name: "Home", path: "/", icon: IconHome },
@@ -107,7 +118,9 @@ const Navbar = ({ onHeightChange }) => {
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="cursor-pointer p-2"
-              onClick={() => router.push('/login')}
+              // onClick={() => router.push('/login')}
+              // if user is logged in show user icon
+              onClick={() => router.push(user.id ? `/user/${user.id}` : "/login")}
             >
               <IconUser
                 size={24}

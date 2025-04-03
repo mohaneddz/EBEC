@@ -1,44 +1,146 @@
 "use client";
 
-    import React, { useState } from "react";
-import { Input } from "@/components/Input";
-import { Button } from "@/components/Button";
+import React, { useState } from "react";
+import { Input } from "@/components/Global/Input";
+import { Button } from "@/components/Global/Button";
 import { motion } from "motion/react";
+import Toast from "@/components/Global/Toast";
 import supabase from '@/config/supabaseClient';
 
 const Login = () => {
+
     const [isSignup, setSignup] = useState(false);
+    const [toast, setToast] = useState(null); // Toast should be null initially, not false
+    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [loading, setLoading] = useState(false);
+
 
     const handleSignUpClick = () => setSignup(true);
     const handleSignInClick = () => setSignup(false);
 
-    async function signUpNewUser(email, password) {
-        const { data, error } = await supabase.auth.signUp({
-            email,
-            password,
-            options: {
-                // emailRedirectTo: 'https://example.com/welcome',
-            },
-        })
-    }
+    const signUpNewUser = async (email, password) => {
+        try {
+            const { data, error } = await supabase.auth.signUp({
+                email,
+                password,
+                options: {
+                    emailRedirectTo: 'http://localhost:3000/',
+                },
+            });
 
-    async function signInWithEmail(email, password) {
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        })
-    }
+            if (error) {
+                throw error; // Re-throw the Supabase error for handling in the calling function
+            }
 
-    async function resetPassword(email) {
-        await supabase.auth.resetPasswordForEmail(email, {
-            // redirectTo: 'http://example.com/account/update-password',
-        })
+            return data; // Optionally return data if needed
+        } catch (err) {
+            // console.error("Signup error:", err);
+            throw err; // Re-throw error to be handled in the component's calling function
+        }
+    };
 
-    }
+    const signInWithEmail = async (email, password) => {
+        try {
+            const { data, error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
+
+            if (error) {
+                throw error; // Re-throw the Supabase error
+            }
+
+        } catch (err) {
+            // console.error("Signin error:", err);
+            setError(err.message); //Set local error
+            throw err;
+        }
+    };
+
+    const resetPassword = async (email) => {
+        try {
+            const { error } = await supabase.auth.resetPasswordForEmail(email, {
+                redirectTo: 'http://localhost:3000/update-password', // Corrected redirectTo and added protocol
+            });
+
+            if (error) {
+                throw error;
+            }
+
+            setToast({ "message": "Check your email for the password reset link", "type": "success" }); //Show toast message
+        }
+        catch (err) {
+            // console.error("Reset password error", err);
+            setToast({ "message": err.message, "type": "error" });
+        }
+
+        setTimeout(() => {
+            setToast(null);
+        }, 1500);
+    };
+
+
+    const handleSignUp = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        if (!email || !password || !name) {
+            setToast({ message: "Please fill in all fields", type: "error" });
+            setLoading(false);
+            return; // Important: Exit the function if validation fails
+        }
+
+        try {
+            await signUpNewUser(email, password);
+            setToast({ message: "Account created successfully! Check your email to verify.", type: "success" }); // More accurate message
+        } catch (err) {
+            setToast({ message: err.message, type: "error" });
+        } finally {
+            setLoading(false);
+            setTimeout(() => {
+                setToast(null);
+            }, 1500); //Keep toast for longer
+        }
+    };
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+
+        if (!email || !password) {
+            setToast({ message: "Please fill in all fields", type: "error" });
+            setLoading(false);
+            return; // Exit if validation fails
+        }
+
+        try {
+            await signInWithEmail(email, password);
+            setToast({ message: "Login Successful!", type: "success" });
+
+            // You might want to redirect the user to another page after successful login
+             window.location.href = '/';  // Example redirect
+        } catch (err) {
+            // console.error("Login error:", err.message);
+            setToast({ message: "Invalid login credentials.", type: "error" });
+        } finally {
+            setLoading(false);
+            setTimeout(() => {
+                setToast(null);
+            }, 1500);
+        }
+    };
+
+
 
     return (
         <div className="relative w-full h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-primary-dark">
             {/* TOP Holder */}
+            {
+                toast && <Toast message={toast.message} variant={toast.type} />
+            }
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -63,12 +165,16 @@ const Login = () => {
                                 placeholder="Email"
                                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                 visible={isSignup ? "none" : ""}
+                                onChange={(e) => setEmail(e.target.value)}
+                                value={email}
                             />
                             <Input
                                 type="password"
                                 placeholder="Password"
                                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                 visible={isSignup ? "none" : ""}
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                             />
                             <Button
                                 text="Login"
@@ -76,6 +182,7 @@ const Login = () => {
                                 color2="#0E2A4D"
                                 visible={isSignup ? "none" : ""}
                                 className={'lg:px-12 px-8'}
+                                onClick={handleLogin}
                             />
                         </form>
                     </motion.div>
@@ -99,15 +206,11 @@ const Login = () => {
                             <div className="flex gap-4 flex-wrap sm:flex-nowrap">
                                 <Input
                                     type="text"
-                                    placeholder="First Name"
+                                    placeholder="Full Name"
                                     className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                     visible={isSignup ? "" : "none"}
-                                />
-                                <Input
-                                    type="text"
-                                    placeholder="Last Name"
-                                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
-                                    visible={isSignup ? "" : "none"}
+                                    onChange={(e) => setName(e.target.value)}
+                                    value={name}
                                 />
                             </div>
                             <Input
@@ -115,19 +218,24 @@ const Login = () => {
                                 placeholder="Email"
                                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                 visible={isSignup ? "" : "none"}
+                                onChange={(e) => setEmail(e.target.value)}
+                                value={email}
                             />
                             <Input
                                 type="password"
                                 placeholder="Password"
                                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 placeholder:text-gray-400"
                                 visible={isSignup ? "" : "none"}
+                                onChange={(e) => setPassword(e.target.value)}
+                                value={password}
                             />
                             <Button
-                                text="Register"
+                                text={loading ? "Loading..." : "Sign up"}
                                 color1="#1B3764"
                                 color2="#0E2A4D"
                                 className={'lg:px-12 px-8'}
                                 visible={isSignup ? "" : "none"}
+                                onClick={handleSignUp}
                             />
                         </form>
                     </motion.div>
@@ -155,7 +263,7 @@ const Login = () => {
                             <h1 className="text-xl sm:text-5xl font-bold text-white mt-8">Welcome</h1>
                             <p className="text-center mb-8 mt-2 text-white">Join our community today!</p>
                             <Button
-                                text="Login"
+                                text={loading ? "Loading..." : "Login"}
                                 onClick={isSignup ? handleSignInClick : handleSignUpClick}
                                 className={'lg:px-12 px-8'}
                             />
@@ -169,7 +277,7 @@ const Login = () => {
                             <h1 className="text-xl text-nowrap sm:text-4xl md:text-5xl font-bold md text-white mt-8">Welcome Back</h1>
                             <p className="text-center mb-8 mt-2 text-white">Great to have you again!</p>
                             <Button
-                                text="Sign Up"
+                                text={"Sign Up"}
                                 onClick={isSignup ? handleSignInClick : handleSignUpClick}
                                 className={'lg:px-12 px-8'}
                             />

@@ -1,8 +1,8 @@
 "use client";
 
-import Button from '@/components/Button';
-import ShowcaseCard from '@/components/ShowcaseCard';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import Button from '@/components/Global/Button';
+import ShowcaseCard from '@/components/Main/ShowcaseCard';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 
 const image1 = "/Assets/Hero/8.jpg";

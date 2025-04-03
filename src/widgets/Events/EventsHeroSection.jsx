@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { Button } from "@/components/Button";
+import { Button } from "@/components/Global/Button";
 import { useContext } from "react"; 
 import { ScrollContext } from "@/app/(content)/events/page"; 
 
-const image1 = "/Assets/Hero/2.jpg";
+// const image1 = "/Assets/Hero/2.jpg";
+
+const image = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//2.jpg";
 
 export default function EventsHeroSection() {
     const scrollToUpcomingEvents = useContext(ScrollContext);
@@ -11,7 +13,7 @@ export default function EventsHeroSection() {
     return (
         <div className="relative w-screen overflow-x-hidden h-[calc(100vh-5rem)] mb-40">
             <Image
-                src={image1}
+                src={image}
                 alt="Events"
                 width={1200}
                 height={1200}

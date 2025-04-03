@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { InfiniteMovingCards } from "@/components/Infinite-moving-cards";
-import { TextGenerateEffect } from "@/components/TextGenerator";
+import { InfiniteMovingCards } from "@/components/Main/Infinite-moving-cards";
+import { TextGenerateEffect } from "@/components/Global/TextGenerator";
 
 export default function InfiniteMovingCardsSection() {
   return (

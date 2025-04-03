@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { GlareCardDemo } from '@/components/Glare-card'
+import React, { useRef } from "react";
+import { GlareCardDemo } from '@/components/Events/Glare-card'
 import { motion } from "motion/react";
+
 const image1 = '/Assets/Hero/1.jpg';
 
 const Events = [

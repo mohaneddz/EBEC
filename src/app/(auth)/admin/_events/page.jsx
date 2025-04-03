@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head'; // Optional: For setting page title
-import SortableTable from '@/components/Table'; // Adjust path if needed
+import SortableTable from '@/components/Admin/Table'; // Adjust path if needed
 import { supabase } from '@/config/supabaseClient'; // Adjust path if needed
 
 // Define default columns for reference and explicit settings

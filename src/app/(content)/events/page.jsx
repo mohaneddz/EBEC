@@ -5,7 +5,7 @@ import React, { createContext, useRef, useContext } from "react";
 import EventsGallery from "@/widgets/Events/EventsGallerySection";
 import UpcomingEventsSection from "@/widgets/Events/UpcomingEventsSection";
 import EventsHeroSection from "@/widgets/Events/EventsHeroSection";
-import LogoSliderSection from "@/components/LogoSliderSection";
+import LogoSliderSection from "@/components/Events/LogoSliderSection";
 import EventTypesSection from "@/widgets/Events/EventTypesSection";
 
 export const ScrollContext = createContext(null);

@@ -3,13 +3,13 @@
 import { motion, useTransform, useScroll, useInView } from "motion/react";
 import { useRef } from "react";
 
-const image1 = "/Assets/Hero/1.jpg";
-const image2 = "/Assets/Hero/2.jpg";
-const image3 = "/Assets/Hero/3.jpg";
-const image4 = "/Assets/Hero/4.jpg";
-const image5 = "/Assets/Hero/5.jpg";
-const image6 = "/Assets/Hero/6.jpg";
-const image7 = "/Assets/Hero/7.jpg";
+const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//7.jpg";
+const image2 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//10.jpg";
+const image3 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//15.jpg";
+const image4 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//1.jpg";
+const image5 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//5.jpg";
+const image6 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//6.jpg";
+const image7 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//11.jpg";
 
 export const EBECInfoSlide = () => {
     const targetRef = useRef(null);

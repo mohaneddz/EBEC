@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "motion/react";
 import { IconBook, IconUsers, IconCalendarEvent, IconTrophy } from '@tabler/icons-react';
 import Link from 'next/link';
 
@@ -55,9 +55,9 @@ export default function ServicesSection() {
     }, []);
 
     // Always call hooks unconditionally
-    const translateYLeftTransform = useTransform(scrollYProgress, [0, 1], [0, 170]);
-    const translateYRightTransform = useTransform(scrollYProgress, [0, 1], [0, -150]);
-    const translateYAllTransform = useTransform(scrollYProgress, [0, 1], [0, -150]);
+    const translateYLeftTransform = useTransform(scrollYProgress, [0, 1], [0, 120]);
+    const translateYRightTransform = useTransform(scrollYProgress, [0, 1], [0, -130]);
+    const translateYAllTransform = useTransform(scrollYProgress, [0, 1], [0, -0]);
     
     // Then conditionally use the results
     const translateYLeft = isDesktop ? translateYLeftTransform : 0;
@@ -91,7 +91,7 @@ export default function ServicesSection() {
     return (
         <div
             ref={ref}
-            className="flex flex-col w-screen h-screen justify-center bg-white"
+            className="flex flex-col w-screen min-h-min h-screen justify-center bg-white"
             style={{
                 backgroundImage: `url("data:image/svg+xml,${backgroundSvg}")`,
                 backgroundSize: 'cover',
@@ -99,17 +99,17 @@ export default function ServicesSection() {
                 backgroundPosition: 'center'
             }}
         >
-            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 flex flex-col">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-16 flex flex-col min-h-min">
 
                 <motion.div
-                    className="relative grid grid-cols-1 lg:grid-cols-2 gap-20 items-center"
+                    className="relative grid grid-cols-1 lg:grid-cols-2 gap-20 items-center mt-40 md:mt-0"
                     variants={containerVariants}
                     initial="hidden"
                     animate={isInView ? "visible" : "hidden"}
                     style={{ translateY: translateYAll }}
                 >
 
-                    <svg xmlns="http://www.w3.org/2000/svg" width="100.27" height="98.45" viewBox="0 0 100.27 98.45" className='absolute -left-24 -z-10 lg:-left-32 top-0'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100.27" height="98.45" viewBox="0 0 100.27 98.45" className='absolute opacity-95 -right-4 -top-24 md:-left-40 lg:left-4 md:top-0'>
                         <defs>
                             <linearGradient id="linear-gradient" x1="-0.284" y1="-0.633" x2="1.896" y2="2.49" gradientUnits="objectBoundingBox">
                                 <stop offset="0" stopColor="#1b2755"></stop>
@@ -129,11 +129,11 @@ export default function ServicesSection() {
                     </svg>
 
                     {/* Left side - Text Content */}
-                    <motion.div style={{ translateY: translateYLeft }} className="max-w-xl" variants={itemVariants}>
+                    <motion.div style={{ translateY: translateYLeft }} className="max-w-xl " variants={itemVariants}>
                         <h2 className="text-4xl vsm:text-5xl sm:text-5xl lg:text-7xl font-bold text-gray-900 mb-4">
                             Why EBEC?
                         </h2>
-                        <div className="h-1 w-12 bg-yellow-500 mb-4"></div>
+                        <div className="h-1 w-12 bg-secondary-500 mb-4"></div>
                         <p className="text-lg text-gray-600">
                             <b>EBEC</b> offers various services to help students develop their entrepreneurial and business skills.  Through our programs, you'll gain practical experience and valuable connections in the business world.
                         </p>

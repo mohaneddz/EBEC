@@ -1,30 +1,22 @@
 "use client";
 
 import { motion, useInView } from "motion/react";
-import { useRef } from "react";
-import MeetMember from "@/components/MeetMember";
+import { useEffect, useRef , useState} from "react";
+import MeetMember from "@/components/Main/MeetMember";
+import supabase from "@/config/supabaseClient";
 
-const adminsData = [
-    { id: 1, name: "Kermache Adlene", dep: "Executive", role: "President", src: "https://i.pinimg.com/736x/f3/78/4a/f3784adc704a1bc9bcb2e494cd39caee.jpg" },
-    { id: 2, name: "Menadi Mohamed", dep: "Executive", role: "Vice_President", src: "https://st2.depositphotos.com/1317882/7825/i/450/depositphotos_78258620-stock-photo-cheerful-businessman-with-crossed-arms.jpg" },
-    { id: 3, name: "Daif Oumaima", dep: "Executive", role: "General_Secretary", src: "https://img.freepik.com/premium-photo/young-white-handsome-man-shirt-strict-office-suit-stands-isolated-white-background_267786-4470.jpg" },
-]
-
-const teamData = [
-    { id: 16, name: "Manaa Mohaned", dep: "IT", role: "Manager", src: "https://retratosbarcelona.com/wp-content/uploads/2022/09/Retratos_Barcelona_Corporate_Headshot_Iberent_3.jpg" },
-    { id: 7, name: "Arbaoui Khadidja", dep: "Design", role: "Manager", src: "https://i.pinimg.com/736x/77/71/68/7771683223d86b237a3304d6f32828b9.jpg" },
-    { id: 10, name: "Ahsatal Imad", dep: "Multimedia", role: "Manager", src: "https://static.wixstatic.com/media/331f88_2091d4d7434c4bafa4bdc6007e6855c4~mv2_d_3840_5760_s_4_2.jpg/v1/fill/w_260,h_354,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/331f88_2091d4d7434c4bafa4bdc6007e6855c4~mv2_d_3840_5760_s_4_2.jpg" },
-    { id: 4, name: "Boucekkine Oumaima", dep: "Events", role: "Manager", src: "/Assets/Team/Ashref.jpg" },
-    { id: 13, name: "Berbaoui Ashref", dep: "HR", role: "Manager", src: "https://media.istockphoto.com/id/838181996/fr/photo/portrait-dhommes-de-race-blanche.jpg?s=612x612&w=0&k=20&c=iff9ttGObtafZ1DaX2UubVw9pirguLuOQOXNlY_RFnA=" },
-    { id: 19, name: "Chaabnia Enzo", dep: "Relex", role: "Manager", src: "https://i.pinimg.com/236x/89/13/51/891351a1fb95eae565ee1c1e2fd7e81d.jpg" },
-];
+const DEFAULT_PIC = "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
 
 export default function MeetOurTeam() {
+
     const adminsRef = useRef(null);
     const adminsInView = useInView(adminsRef, { once: true });
 
     const teamRef = useRef(null);
     const teamInView = useInView(teamRef, { once: true });
+
+    const [team, setTeam] = useState([]);
+    const [admins, setAdmins] = useState([]);
 
     const titleVariants = {
         hidden: { opacity: 0, y: -20 },
@@ -47,6 +39,26 @@ export default function MeetOurTeam() {
         hidden: { opacity: 0, y: 50 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     };
+
+    const adminRoles = ["President", "Vice President", "General Secretary"];
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const { data, error } = await supabase.from('Forefront').select('*');
+            if (error) console.error('Error fetching data:', error);
+            else console.log('Fetched data:', data);
+
+            const teamMembers = data.filter(member => !adminRoles.includes(member.department));
+            const adminMembers = data.filter(member => adminRoles.includes(member.department));
+
+            setTeam(teamMembers);
+            setAdmins(adminMembers);
+        };
+
+        fetchData();
+    },[]);
+
+
 
 
     return (
@@ -83,12 +95,12 @@ export default function MeetOurTeam() {
                     initial="hidden"
                     animate={adminsInView ? "visible" : "hidden"}
                 >
-                    {adminsData.map(member => (
+                    {admins && admins.map(member => (
                         <motion.div variants={itemVariants} key={member.id}>
                             <MeetMember
                                 name={member.name}
-                                role={`${member.dep} Manager`}
-                                image={member.src || '/Assets/default-profile.png'}
+                                role={`${member.department}`}
+                                image={member.picture ? member.picture : DEFAULT_PIC}
                             />
                         </motion.div>
                     ))}
@@ -113,12 +125,12 @@ export default function MeetOurTeam() {
                     initial="hidden"
                     animate={teamInView ? "visible" : "hidden"}
                 >
-                    {teamData.map(member => (
+                    {team && team.map(member => (
                         <motion.div variants={itemVariants} key={member.id}>
                             <MeetMember
                                 name={member.name}
-                                role={`${member.dep} Manager`}
-                                image={member.src || '/Assets/default-profile.png'}
+                                role={`${member.department} Manager`}
+                                image={member.picture ? member.picture : DEFAULT_PIC}
                             />
                         </motion.div>
                     ))}

@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
-import Dashboard from "@/components/Sidebar";
+import Dashboard from "@/components/Admin/Sidebar";
 import { usePageContext } from "./layout";
 
 const DashboardPage = dynamic(() => import("@/app/(auth)/admin/_dashboard/page"));

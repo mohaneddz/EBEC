@@ -1,7 +1,7 @@
 // src/app/members/page.js (or wherever your Page component is)
 
 import React, { useState, useEffect } from 'react';
-import SortableTable from '@/components/Table'; // Adjust path if needed
+import SortableTable from '@/components/Admin/Table'; // Adjust path if needed
 import { supabase } from '@/config/supabaseClient'; // Adjust path if needed
 import Head from 'next/head'; // Optional: For setting page title
 

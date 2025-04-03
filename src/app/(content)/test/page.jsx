@@ -1,14 +1,28 @@
 "use client";
 
-import React from 'react';
-import Modal from '@/components/Modal';
+import React, { useEffect, useState } from 'react'
+import supabase from '@/config/supabaseClient'
 
-const test = () => {
+export default function page() {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        }
+
+        fetchUser();
+    }, []);
+
   return (
-    <>
-      <Modal />
-    </>
-  );
-};
-
-export default test;
+    <div>
+        {/* show logged in user information from supabase */}
+        {user && (
+            <div>
+                <p>Logged in as: {user.id}</p>
+            </div>
+        )}
+    </div>
+  )
+}

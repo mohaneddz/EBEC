@@ -1,6 +1,6 @@
 "use client";
 
-import { Sidebar, SidebarBody, Logo, LogoIcon, SidebarLink } from "@/components/Sidebar";
+import { Sidebar, SidebarBody, Logo, LogoIcon, SidebarLink } from "@/components/Admin/Sidebar";
 import { createContext, useContext, useState } from "react";
 import { cn } from "@/lib/utils";
 import {

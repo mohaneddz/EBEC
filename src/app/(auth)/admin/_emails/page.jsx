@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head'; // Optional: For setting page title
-import SortableTable from '@/components/Table'; // Adjust path if needed
+import SortableTable from '@/components/Admin/Table'; // Adjust path if needed
 import { supabase } from '@/config/supabaseClient'; // Adjust path if needed
 
 // Define default columns for reference and explicit settings
@@ -22,8 +22,8 @@ const generateLabel = (key) => {
 export default function EmailsPage() {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null); // Consolidated error state
-    const [cols, setCols] = useState(null); // Start cols as null until fetched
+    const [error, setError] = useState(null); 
+    const [cols, setCols] = useState(null);
 
     useEffect(() => {
         const loadData = async () => {

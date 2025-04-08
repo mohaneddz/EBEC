@@ -81,6 +81,7 @@ export default function Modal({ isOpen, onClose, title, children, imageUrl }) {
 };
 
 export function GlareCardDemo({ cards }) {
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState(null);
     const [motivation, setMotivation] = useState('');
@@ -163,7 +164,7 @@ export function GlareCardDemo({ cards }) {
                             <strong className='text-primary-light'>Description:</strong> {selectedCard.description || "TBD"}
                         </p>
                         <div className="flex justify-end mt-6">  {/* Consistent spacing */}
-                            <Button onClick={forward} color1="#FDA916" text={user?.id ? `Register` : `Login`} />
+                            <Button onClick={forward} disabled={!selectedCard.open} color1="#FDA916" text={!selectedCard.open ? 'Soon' : (user?.id ? `Register` : `Login`)} />
                         </div>
                     </>
                 )}

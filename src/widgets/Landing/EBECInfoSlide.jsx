@@ -3,13 +3,13 @@
 import { motion, useTransform, useScroll, useInView } from "motion/react";
 import { useRef } from "react";
 
-const image1 = "/Assets/Hero/1.jpg";
-const image2 = "/Assets/Hero/2.jpg";
-const image3 = "/Assets/Hero/3.jpg";
-const image4 = "/Assets/Hero/4.jpg";
-const image5 = "/Assets/Hero/5.jpg";
-const image6 = "/Assets/Hero/6.jpg";
-const image7 = "/Assets/Hero/7.jpg";
+const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//7.jpg";
+const image2 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//10.jpg";
+const image3 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//15.jpg";
+const image4 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//1.jpg";
+const image5 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//5.jpg";
+const image6 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//6.jpg";
+const image7 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//11.jpg";
 
 export const EBECInfoSlide = () => {
     const targetRef = useRef(null);
@@ -23,12 +23,13 @@ export const EBECInfoSlide = () => {
     const isCardsInView = useInView(cardsRef, { once: true });
 
     return (
-        <motion.section ref={targetRef} className="relative h-[300vh] bg-primary-dark">
+        <motion.section ref={targetRef} className="relative h-[300vh] max-h-[300vh] bg-primary-dark">
             <div className="sticky top-0 flex flex-col justify-center w-screen h-screen overflow-hidden">
 
-                <div ref={headerRef} className="w-full text-center pb-20 pt-28">
+                <div className="relative block h-40">a</div>
+                <div ref={headerRef} className="w-full text-center pb-6">
                     <motion.h1
-                        className="text-secondary-light text-6xl font-black pt-8"
+                        className="text-secondary-light text-2xl vsm:text-3xl sm:text-5xl lg:text-7xl font-black pt-8"
                         initial={{ opacity: 0, y: -50 }}
                         animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -60,7 +61,7 @@ const Card = ({ card }) => {
     return (
         <div
             key={card.id}
-            className="group relative h-[450px] w-[450px] overflow-hidden bg-neutral-200"
+            className="group relative h-[450px] w-[450px] overflow-hidden bg-neutral-200  mb-8 lg:mb-0"
         >
             <div
                 style={{

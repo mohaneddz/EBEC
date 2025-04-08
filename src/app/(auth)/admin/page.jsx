@@ -2,24 +2,24 @@
 
 import React, { Suspense } from "react";
 import dynamic from "next/dynamic";
-import Dashboard from "@/components/Sidebar";
+import Dashboard from "@/components/Admin/Sidebar";
 import { usePageContext } from "./layout";
 
 const DashboardPage = dynamic(() => import("@/app/(auth)/admin/_dashboard/page"));
-const TeamPage = dynamic(() => import("@/app/(auth)/admin/_team/page"));
 const MembersPage = dynamic(() => import("@/app/(auth)/admin/_members/page"));
 const EmailsPage = dynamic(() => import("@/app/(auth)/admin/_emails/page"));
 const EventsPage = dynamic(() => import("@/app/(auth)/admin/_events/page"));
+const FormsPage = dynamic(() => import("@/app/(auth)/admin/_forms/page"));
 
 export default function Page() {
   const { page } = usePageContext();
 
   const pages = {
     dashboard: DashboardPage,
-    team: TeamPage,
     members: MembersPage,
     emails: EmailsPage,
     events: EventsPage,
+    forms: FormsPage,
   };
   const PageComponent = pages[page] || DashboardPage;
 
@@ -27,7 +27,7 @@ export default function Page() {
 
     <Dashboard>
       <div className="w-full h-full">
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="w-full h-full flex flex-col items-center justify-center text-center text-gray-600">Loading...</div>}>
           <PageComponent />
         </Suspense>
       </div>

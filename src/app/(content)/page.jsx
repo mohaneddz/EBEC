@@ -22,7 +22,6 @@ export default function Home() {
       <WobbleCardSection />
       <InfiniteMovingCardsSection />
       <Footer />
-
       {/* <div className="h-[40vh]"></div> */}
     </div >
   )

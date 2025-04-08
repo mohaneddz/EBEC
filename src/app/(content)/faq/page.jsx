@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Accordion } from "@/components/Accordion";
+import { Accordion } from "@/components/Others/Accordion";
 import { motion } from "motion/react";
 
 const accordionData = [

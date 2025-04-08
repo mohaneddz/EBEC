@@ -58,7 +58,7 @@ export default function ServicesSection() {
     const translateYLeftTransform = useTransform(scrollYProgress, [0, 1], [0, 170]);
     const translateYRightTransform = useTransform(scrollYProgress, [0, 1], [0, -170]);
     const translateYAllTransform = useTransform(scrollYProgress, [0, 1], [0, -0]);
-    
+
     // Then conditionally use the results
     const translateYLeft = isDesktop ? translateYLeftTransform : 0;
     const translateYRight = isDesktop ? translateYRightTransform : 0;
@@ -152,6 +152,20 @@ export default function ServicesSection() {
                                         boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
                                         backgroundColor: "#ffc00e",
                                     }}
+                                    whileTap={
+                                        {
+                                            scale: 1.05,
+                                            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                                            backgroundColor: "#ffc00e",
+                                        }
+                                    }
+                                    whileFocus={
+                                        {
+                                            scale: 1.05,
+                                            boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                                            backgroundColor: "#ffc00e",
+                                        }
+                                    }
                                     className="p-8 bg-slate-50 rounded-lg cursor-pointer flex flex-col items-center justify-center border-2 border-transparent group"
                                 >
                                     <Link href={service.link} passHref className="flex flex-col items-center justify-center">

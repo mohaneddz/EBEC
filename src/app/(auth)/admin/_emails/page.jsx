@@ -214,7 +214,6 @@ export default function EmailsPage() {
                     {/* Explicit No Data Message */}
                     {!isLoading && cols && data && data.length === 0 && (
                         <div className="text-center p-10 text-gray-500 dark:text-gray-400">
-                            No emails found.
                         </div>
                     )}
                 </div>

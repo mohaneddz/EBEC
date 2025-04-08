@@ -22,7 +22,7 @@ export default function UpcomingEventsSection({ id, ref }) {
             if (data) {
                 const updatedEvents = data.map((event) => ({
                     id: event.id,
-                    title: event.name,
+                    title: event.name || "Coming Soon!",
                     description: event.brief,
                     src: event.picture,
                     open: event.open,

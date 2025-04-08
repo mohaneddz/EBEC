@@ -6,9 +6,9 @@ import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 import supabase from '@/config/supabaseClient';
 
-const image1 = "/Assets/Hero/8.jpg";
-const image2 = "/Assets/Hero/5.jpg";
-const image3 = "/Assets/Hero/12.jpg";
+const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//12.jpg";
+const image2 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//1.jpg";
+const image3 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//8.jpg";
 
 export default function EventTypesSection() {
 
@@ -29,8 +29,8 @@ export default function EventTypesSection() {
 
             (async () => {
                 const { data: { session }, error } = await supabase.auth.getSession();
-                if (error) console.log(error);
-                else setUser(session?.user);
+                if (!error)
+                    setUser(session?.user);
             })();
 
             setIsMobile(window.innerWidth < 768); // md breakpoint is 768px

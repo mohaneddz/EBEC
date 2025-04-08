@@ -103,7 +103,7 @@ export default function EventsPage() {
                     });
                 setCols(dynamicCols);
             } else {
-                console.log("No event data found, using default columns.");
+                // console.log("No event data found, using default columns.");
                 setCols(defaultColumns); // Fallback
             }
 

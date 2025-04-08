@@ -41,7 +41,7 @@ export const AboutUsSection = () => {
             setAboutUsIndex(prev => (prev + 1) % (Departments?.length || 1));
             // console.log(AboutUsIndex);
         }
-    }, [picAnimation, textAnimation]);
+    }, [Departments, picAnimation, textAnimation]);
 
     // useEffect(() => {
     //     if (intervalRef.current) return;

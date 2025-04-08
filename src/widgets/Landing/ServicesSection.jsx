@@ -135,7 +135,7 @@ export default function ServicesSection() {
                         </h2>
                         <div className="h-1 w-12 bg-secondary-500 mb-4"></div>
                         <p className="text-lg text-gray-600">
-                            <b>EBEC</b> offers various services to help students develop their entrepreneurial and business skills.  Through our programs, you'll gain practical experience and valuable connections in the business world.
+                            <b>EBEC</b> offers various services to help students develop their entrepreneurial and business skills.  Through our programs, you&lsquo;ll gain practical experience and valuable connections in the business world.
                         </p>
                     </motion.div>
 

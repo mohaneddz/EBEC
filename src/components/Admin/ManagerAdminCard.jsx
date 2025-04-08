@@ -1,23 +1,24 @@
 import Modal from "@/components/Global/Modal";
 import { useEffect, useState } from "react";
 import supabase from "@/config/supabaseClient";
+import Image from 'next/image';
 
 // Helper function to read file as Base64 Data URL
 const readFileAsBase64 = (file) => {
   // ... (keep the helper function as before)
-    return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => {
       resolve(reader.result);
     };
     reader.onerror = (error) => {
-      console.error("FileReader error:", error);
+      // console.error("FileReader error:", error);
       reject(new Error("Failed to read file"));
     };
     if (file && file instanceof Blob) {
-        reader.readAsDataURL(file);
+      reader.readAsDataURL(file);
     } else {
-        reject(new Error("Invalid file provided"));
+      reject(new Error("Invalid file provided"));
     }
   });
 };
@@ -56,7 +57,7 @@ export default function ManagerAdminCard({
         .single();
 
       if (error && error.code !== 'PGRST116') {
-        console.error('Error fetching data:', error);
+        // console.error('Error fetching data:', error);
       } else if (data) {
         // console.log('Fetched data (Base64 potentially truncated in log):', data.name, data.picture ? data.picture.substring(0, 50) + '...' : null);
         const fetchedName = data.name || 'Unknown';
@@ -108,7 +109,7 @@ export default function ManagerAdminCard({
   const handleRemovePicture = () => {
     // Revoke previous temporary URL if exists
     if (previewUrl && previewUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(previewUrl);
+      URL.revokeObjectURL(previewUrl);
     }
     setNewPictureFile(null);    // Clear any selected file object
     setPreviewUrl(null);        // Clear the visual preview
@@ -121,7 +122,7 @@ export default function ManagerAdminCard({
     setErrorMsg('');
     // Revoke temporary preview URL if it exists
     if (previewUrl && previewUrl.startsWith('blob:')) {
-        URL.revokeObjectURL(previewUrl);
+      URL.revokeObjectURL(previewUrl);
     }
     // Reset form fields to the current saved state
     setNewName(currentName);
@@ -140,22 +141,22 @@ export default function ManagerAdminCard({
       // Determine the final picture data based on user actions
       if (isPictureMarkedForRemoval) {
         pictureDataToUpdate = null; // Explicit removal requested
-        console.log("Picture marked for removal.");
+        // console.log("Picture marked for removal.");
       } else if (newPictureFile) {
         // New file selected, convert it
-        console.log("Reading new file as Base64...");
+        // console.log("Reading new file as Base64...");
         pictureDataToUpdate = await readFileAsBase64(newPictureFile);
-        console.log('Generated Base64 for new image (truncated):', pictureDataToUpdate ? pictureDataToUpdate.substring(0, 50) + '...' : null);
+        // console.log('Generated Base64 for new image (truncated):', pictureDataToUpdate ? pictureDataToUpdate.substring(0, 50) + '...' : null);
       }
       // If neither removed nor new file, pictureDataToUpdate remains currentPictureData
 
       // Revoke temporary object URL if it was used and we're done with it
       if (previewUrl && previewUrl.startsWith('blob:')) {
-          URL.revokeObjectURL(previewUrl);
+        URL.revokeObjectURL(previewUrl);
       }
 
       // Update the database record
-      console.log("Updating database with name:", newName, "and picture data (final - truncated):", pictureDataToUpdate ? pictureDataToUpdate.substring(0, 50) + '...' : 'NULL');
+      // console.log("Updating database with name:", newName, "and picture data (final - truncated):", pictureDataToUpdate ? pictureDataToUpdate.substring(0, 50) + '...' : 'NULL');
       const { data: updateData, error: updateError } = await supabase
         .from('Forefront')
         .update({ name: newName, picture: pictureDataToUpdate }) // Send Base64 string or null
@@ -164,11 +165,11 @@ export default function ManagerAdminCard({
         .single();
 
       if (updateError) {
-        console.error("Database update error details:", updateError);
+        // console.error("Database update error details:", updateError);
         throw updateError;
       }
 
-      console.log('Database updated successfully.');
+      // console.log('Database updated successfully.');
 
       // Update local state & close modal
       setCurrentName(newName);
@@ -181,7 +182,7 @@ export default function ManagerAdminCard({
 
 
     } catch (error) {
-      console.error('Error during save process:', error);
+      // console.error('Error during save process:', error);
       let userMessage = `Failed to save: ${error.message || 'Unknown error'}`;
       if (error?.details) userMessage += ` Details: ${error.details}`;
       setErrorMsg(userMessage);
@@ -191,8 +192,8 @@ export default function ManagerAdminCard({
     }
   };
 
-   // --- Cleanup Object URL on Unmount or Preview Change ---
-   useEffect(() => {
+  // --- Cleanup Object URL on Unmount or Preview Change ---
+  useEffect(() => {
     const currentPreview = previewUrl;
     return () => {
       if (currentPreview && currentPreview.startsWith('blob:')) {
@@ -235,8 +236,8 @@ export default function ManagerAdminCard({
               type="file"
               accept="image/*"
               onChange={handleFileChange}
-               // **Add a key to force re-render on cancel if needed, or rely on onChange logic**
-               // key={newPictureFile || Date.now()} // Optional: helps reset input if user selects same file after cancelling
+              // **Add a key to force re-render on cancel if needed, or rely on onChange logic**
+              // key={newPictureFile || Date.now()} // Optional: helps reset input if user selects same file after cancelling
               className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:font-semibold file:bg-primary-dark file:text-white hover:file:bg-primary-light hover:file:text-gray-200 cursor-pointer border border-gray-300 rounded-md p-1"
               disabled={isLoading}
             />
@@ -244,7 +245,9 @@ export default function ManagerAdminCard({
             {/* Image Preview */}
             {previewUrl && (
               <div className="mt-2 border border-gray-200 rounded p-2 flex justify-center items-center relative">
-                <img
+                <Image
+                  height={500}
+                  width={500}
                   src={previewUrl}
                   alt="Preview"
                   className="max-h-40 w-auto object-contain rounded"
@@ -252,16 +255,16 @@ export default function ManagerAdminCard({
               </div>
             )}
 
-             {/* Remove Picture Button - Conditionally Rendered */}
-             {canRemovePicture && (
-               <button
-                 onClick={handleRemovePicture}
-                 disabled={isLoading}
-                 className="mt-2 text-sm text-red-600 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed self-start" // Align button nicely
-               >
-                 Remove Picture
-               </button>
-             )}
+            {/* Remove Picture Button - Conditionally Rendered */}
+            {canRemovePicture && (
+              <button
+                onClick={handleRemovePicture}
+                disabled={isLoading}
+                className="mt-2 text-sm text-red-600 hover:text-red-800 disabled:opacity-50 disabled:cursor-not-allowed self-start" // Align button nicely
+              >
+                Remove Picture
+              </button>
+            )}
           </div>
 
 
@@ -295,15 +298,17 @@ export default function ManagerAdminCard({
 
         <div className="flex flex-col items-center flex-grow justify-center w-full">
           {currentPictureData ? (
-            <img
+            <Image
+              height={500}
+              width={500}
               src={currentPictureData}
               alt={`${currentName}'s profile`}
               className="mb-4 w-24 h-24 object-cover rounded-full border border-gray-200 shadow-sm"
             />
           ) : (
-             <div className="mb-4 w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-4xl border border-gray-300 shadow-sm">
-               ?
-             </div>
+            <div className="mb-4 w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-4xl border border-gray-300 shadow-sm">
+              ?
+            </div>
           )}
 
           <div className="flex flex-col gap-1 mb-4 items-center justify-center text-center">
@@ -314,13 +319,13 @@ export default function ManagerAdminCard({
 
         <button
           onClick={() => {
-              // Reset form state when opening modal
-              setNewName(currentName);
-              setPreviewUrl(currentPictureData);
-              setNewPictureFile(null);
-              setIsPictureMarkedForRemoval(false); // Ensure removal flag is reset
-              setErrorMsg('');
-              setOpen(true);
+            // Reset form state when opening modal
+            setNewName(currentName);
+            setPreviewUrl(currentPictureData);
+            setNewPictureFile(null);
+            setIsPictureMarkedForRemoval(false); // Ensure removal flag is reset
+            setErrorMsg('');
+            setOpen(true);
           }}
           className="py-3 px-2 mt-auto bg-gradient-to-br from-primary-light to-primary-dark text-white font-bold rounded-md w-full
                      hover:scale-105 active:scale-95 transition-all duration-200 ease-in-out"

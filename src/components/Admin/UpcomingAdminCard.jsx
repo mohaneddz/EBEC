@@ -5,6 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Modal from '@/components/Global/Modal'; // Adjust path
 import { supabase } from '@/config/supabaseClient'; // Adjust path
 import { IconSquareLetterXFilled, IconPlus, IconLoader } from '@tabler/icons-react';
+import Image from 'next/image';
 
 // --- Configuration ---
 
@@ -132,7 +133,7 @@ const ConstraintSelector = ({
                                     {option.label}
                                 </li>
                             ))
-                        ) : (<li className="w-full px-3 py-2 text-sm italic text-gray-500 truncate text-ellipsis" role="option" aria-disabled="true">
+                        ) : (<li className="w-full px-3 py-2 text-sm italic text-gray-500 truncate text-ellipsis" role="option" aria-selected={false} aria-disabled="true">
                             {applicableOptions.length > 0 ? 'All applicable constraints selected' : 'No constraints applicable'}
                         </li>)}
                     </ul>
@@ -158,6 +159,41 @@ export default function UpcomingAdminCard({ number }) {
     const [eventInfoEdits, setEventInfoEdits] = useState({});
     const [selectedImageFile, setSelectedImageFile] = useState(null); // <-- New state for the file object
     const [imagePreviewUrl, setImagePreviewUrl] = useState(null);
+    const [open, setOpen] = useState(false); // State for the open/close status of the event
+
+    const closeTheRegistrations = async () => {
+
+        setOpen(false);
+
+        const { data, error } = await supabase
+            .from('Upcomings')
+            .update({ open: false })
+            .eq('id', number);
+
+        if (error) {
+            // console.error("Error closing registrations:", error);
+        }
+        if (data) {
+            setData(data);
+        }
+    }
+
+    const openTheRegistrations = async () => {
+
+        setOpen(true);
+
+        const { data, error } = await supabase
+            .from('Upcomings')
+            .update({ open: true })
+            .eq('id', number);
+
+        if (error) {
+            // console.error("Error closing registrations:", error);
+        }
+        if (data) {
+            setData(data);
+        }
+    }
 
     // --- Effect to Fetch Event Data ---
     useEffect(() => {
@@ -165,7 +201,7 @@ export default function UpcomingAdminCard({ number }) {
         const fetchForm = async () => {
             if (!number) {
                 setIsLoadingEvent(false);
-                console.warn("UpcomingAdminCard: 'event' prop is missing.");
+                // console.warn("UpcomingAdminCard: 'event' prop is missing.");
                 setEvent(null); setEventInfoEdits({}); setForm([]);
                 setInfoError("Event ID is missing."); // Set error state
                 return;
@@ -193,13 +229,13 @@ export default function UpcomingAdminCard({ number }) {
 
                 }
                 else {
-                    console.log(`No form found with id: ${number}`);
+                    // console.log(`No form found with id: ${number}`);
                     setEventInfoEdits({}); // Reset edits if no form found
                     setImagePreviewUrl(null); // Reset local preview on load
                     setSelectedImageFile(null); // Reset file selection on load
                 }
             } catch (err) {
-                console.error("Error fetching form:", err); // Log the full error
+                // console.error("Error fetching form:", err); // Log the full error
                 // setInfoError(`Failed to load form data: ${err.message}`);
                 setEventInfoEdits({}); // Reset edits if error occurs
                 setImagePreviewUrl(null); // Reset local preview on load
@@ -213,7 +249,7 @@ export default function UpcomingAdminCard({ number }) {
         const fetchEvent = async () => {
             if (!number) {
                 setIsLoadingEvent(false);
-                console.warn("UpcomingAdminCard: 'number' prop is missing.");
+                // console.warn("UpcomingAdminCard: 'number' prop is missing.");
                 setEvent(null); setEventInfoEdits({}); setForm([]);
                 setInfoError("Event ID is missing."); // Set error state
                 return;
@@ -239,12 +275,12 @@ export default function UpcomingAdminCard({ number }) {
                     setImagePreviewUrl(null); // Reset local preview on load
                     setSelectedImageFile(null); // Reset file selection on load
                 } else {
-                    console.log(`No event found with id: ${number}`);
+                    // console.log(`No event found with id: ${number}`);
                     setEvent(null); setEventInfoEdits({}); setForm([]);
                     setInfoError(`Event ID ${number} not found.`); // Set specific error
                 }
             } catch (err) {
-                console.error("Error fetching event:", err); // Log the full error
+                // console.error("Error fetching event:", err); // Log the full error
                 setInfoError(`Failed to load event data: ${err.message}`);
                 setEvent(null); setEventInfoEdits({}); setForm([]);
             } finally {
@@ -399,7 +435,7 @@ export default function UpcomingAdminCard({ number }) {
             // Ensure constraint change is only processed if applicable to current type
             const applicableKeys = getApplicableConstraintKeys(currentField.type);
             if (!applicableKeys.includes(constraintKey)) {
-                console.warn(`Attempted to change inapplicable constraint '${constraintKey}' for type '${currentField.type}'`);
+                // console.warn(`Attempted to change inapplicable constraint '${constraintKey}' for type '${currentField.type}'`);
                 return prevForm; // Ignore change
             }
 
@@ -594,7 +630,7 @@ export default function UpcomingAdminCard({ number }) {
             };
         });
 
-        console.log("Saving Form Payload:", JSON.stringify(formToSave, null, 2));
+        // console.log("Saving Form Payload:", JSON.stringify(formToSave, null, 2));
 
         try {
             const { data: updatedData, error } = await supabase
@@ -607,7 +643,7 @@ export default function UpcomingAdminCard({ number }) {
             if (error) throw error;
 
             // Update local event state with the *actual* data saved (including any backend processing)
-            console.log("uploaded Data :", updatedData); // Debug log
+            // console.log("uploaded Data :", updatedData); // Debug log
             // setEvent(updatedData);
             // Refresh form state based on the newly saved data to ensure consistency
             // This re-runs the loading logic essentially
@@ -641,22 +677,22 @@ export default function UpcomingAdminCard({ number }) {
                         constraintError: '',
                     };
                 });
-                console.log("Refreshed Form Definition:", refreshedForm); // Debug log
+                // console.log("Refreshed Form Definition:", refreshedForm); // Debug log
                 setForm(refreshedForm);
             } else {
                 setForm([]);
-                console.log("Form definition is empty or not an array after save.");
+                // console.log("Form definition is empty or not an array after save.");
             }
 
             setVisibleForm(false); // Close modal on success
         } catch (err) {
-            console.error("Error saving form definition:", err);
+            // console.error("Error saving form definition:", err);
             setFormError(`Save failed: ${err.message}`);
         } finally {
             setIsSavingForm(false);
-            console.log("Form : ", form);
-            console.log(typeof form);
-            console.log("form isArray?", Array.isArray(form));
+            // console.log("Form : ", form);
+            // console.log(typeof form);
+            // console.log("form isArray?", Array.isArray(form));
         }
     };
 
@@ -689,7 +725,7 @@ export default function UpcomingAdminCard({ number }) {
         if (key) {
             setEventInfoEdits(prev => ({ ...prev, [key]: type === 'checkbox' ? checked : value }));
         } else {
-            console.warn("Could not derive key from input ID:", id);
+            // console.warn("Could not derive key from input ID:", id);
         }
     };
 
@@ -720,16 +756,16 @@ export default function UpcomingAdminCard({ number }) {
 
         // --- Convert Selected File to Base64 if it exists ---
         if (selectedImageFile) {
-            console.log("New image file selected, converting to Base64..."); // Debug log
+            // console.log("New image file selected, converting to Base64..."); // Debug log
             try {
                 base64ImageStringToSave = await convertFileToBase64(selectedImageFile); // Await conversion
                 if (!base64ImageStringToSave) {
                     // Should not happen if selectedImageFile exists, but good check
                     throw new Error("File conversion resulted in null.");
                 }
-                console.log("Base64 conversion successful (string length):", base64ImageStringToSave.length); // Log length for sanity check
+                // console.log("Base64 conversion successful (string length):", base64ImageStringToSave.length); // Log length for sanity check
             } catch (error) {
-                console.error("Base64 Conversion Failed:", error);
+                // console.error("Base64 Conversion Failed:", error);
                 setInfoError(`Image processing failed: ${error.message}`);
                 setIsSavingInfo(false); // Stop saving process
                 return;
@@ -747,7 +783,7 @@ export default function UpcomingAdminCard({ number }) {
         // Only add the 'picture' field to the update payload IF a new file was selected and converted
         if (base64ImageStringToSave !== null) {
             finalUpdates.picture = base64ImageStringToSave;
-            console.log("Adding new Base64 picture to payload.");
+            // console.log("Adding new Base64 picture to payload.");
         }
         // NOTE: If you want to allow *removing* the picture, you'd need extra logic.
         // For now, this only *adds/replaces* the picture if a new file is selected.
@@ -761,11 +797,11 @@ export default function UpcomingAdminCard({ number }) {
             return;
         }
 
-        console.log("Attempting DB Update with Payload:", {
-            ...finalUpdates,
-            // Log a truncated version of picture if it exists, otherwise 'No Change' or 'Removed'
-            picture: finalUpdates.picture ? `Base64 String (length: ${finalUpdates.picture.length})` : '(No Change)'
-        });
+        // console.log("Attempting DB Update with Payload:", {
+        // ...finalUpdates,
+        // Log a truncated version of picture if it exists, otherwise 'No Change' or 'Removed'
+        // picture: finalUpdates.picture ? `Base64 String (length: ${finalUpdates.picture.length})` : '(No Change)'
+        // });
 
         try {
             const { data: updatedEvent, error } = await supabase
@@ -777,7 +813,7 @@ export default function UpcomingAdminCard({ number }) {
 
             if (error) {
                 // Provide more context if possible (e.g., size limit exceeded?)
-                console.error("Supabase Update Error Raw:", error);
+                // console.error("Supabase Update Error Raw:", error);
                 let userFriendlyError = `Save failed: ${error.message}`;
                 if (error.message.includes("payload size")) { // Check for common size error
                     userFriendlyError = "Save failed: The image might be too large to store directly. Please choose a smaller file.";
@@ -787,14 +823,14 @@ export default function UpcomingAdminCard({ number }) {
                 throw new Error(userFriendlyError);
             }
 
-            console.log("DB Update Successful:", updatedEvent); // Debug log
+            // console.log("DB Update Successful:", updatedEvent); // Debug log
             setEvent(updatedEvent); // Update main event state with the data returned from DB
             setEventInfoEdits(prev => ({ ...prev, ...updatedEvent })); // Also update the edit state to match saved data
             setSelectedImageFile(null); // Clear the selected file state after successful save
             // imagePreviewUrl will clear automatically via useEffect based on selectedImageFile
             setVisibleInfo(false);
         } catch (err) {
-            console.error("Error saving event info (DB update):", err);
+            // console.error("Error saving event info (DB update):", err);
             // Display the potentially more user-friendly error message from the catch block above
             setInfoError(err.message || "An unknown error occurred during save.");
         } finally {
@@ -835,10 +871,10 @@ export default function UpcomingAdminCard({ number }) {
                             <label htmlFor="event-location" className="block w-full mb-1 text-sm font-medium text-left text-gray-700 truncate text-ellipsis">Location</label>
                             <input id="event-location" type="text" className="w-full p-2 border border-gray-300 rounded" placeholder="Location" value={eventInfoEdits.location || ''} onChange={handleInfoInputChange} />
                         </div>
-                            <div className='w-full'>
-                                <label htmlFor="event-link" className="block w-full mb-1 text-sm font-medium text-left text-gray-700 truncate text-ellipsis">Google Sheet URL <span className="text-red-500">*</span></label>
-                                <input id="event-link" type="text" className="w-full p-2 border border-gray-300 rounded" placeholder="Event Link" value={eventInfoEdits.link || ''} onChange={handleInfoInputChange} required />
-                            </div>
+                        <div className='w-full'>
+                            <label htmlFor="event-link" className="block w-full mb-1 text-sm font-medium text-left text-gray-700 truncate text-ellipsis">Google Sheet URL <span className="text-red-500">*</span></label>
+                            <input id="event-link" type="text" className="w-full p-2 border border-gray-300 rounded" placeholder="Event Link" value={eventInfoEdits.link || ''} onChange={handleInfoInputChange} required />
+                        </div>
 
                         <div className='w-full'>
                             <div className='w-full'>
@@ -856,7 +892,7 @@ export default function UpcomingAdminCard({ number }) {
                                 {(imagePreviewUrl || eventInfoEdits.picture) && ( // Check if local preview or existing Base64 exists
                                     <div className='mt-3'>
                                         <p className="w-full mb-1 text-xs text-gray-500 truncate text-ellipsis">Preview:</p>
-                                        <img
+                                        <Image
                                             // Prioritize local file preview, fallback to Base64 data URL from state
                                             src={imagePreviewUrl || eventInfoEdits.picture} // Both createObjectURL and data URLs work in src
                                             alt="Preview"
@@ -865,7 +901,10 @@ export default function UpcomingAdminCard({ number }) {
 
                                             className="object-contain w-auto h-24 border border-gray-200 rounded"
                                             // Add basic error handling for potentially invalid base64/url
-                                            onError={(e) => { e.target.style.display = 'none'; console.error("Failed to load image preview."); }}
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                //  console.error("Failed to load image preview."); 
+                                            }}
                                         />
                                     </div>
                                 )}
@@ -907,7 +946,7 @@ export default function UpcomingAdminCard({ number }) {
                     {/* Scrollable Form Fields Area */}
                     <div key={`form-fields-${number}`} className="flex-grow w-full px-4 py-2 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 hover:scrollbar-thumb-gray-400">
 
-                        {form && form.length === 0 && <p className="w-full my-6 italic text-center text-gray-500 truncate text-ellipsis">Click "Add New Field" to start building.</p>}
+                        {form && form.length === 0 && <p className="w-full my-6 italic text-center text-gray-500 truncate text-ellipsis">Click &ldquo;Add New Field&ldquo; to start building.</p>}
 
                         {form && form.map((field, index) => {
                             const applicableConstraintKeys = getApplicableConstraintKeys(field.type);
@@ -1005,6 +1044,7 @@ export default function UpcomingAdminCard({ number }) {
                         <div className="flex flex-col gap-2">
                             <button onClick={saveFormDefinition} disabled={isSavingForm} className="flex items-center justify-center w-full gap-2 px-4 py-2 text-white rounded bg-gradient-to-br from-secondary-light to-secondary-dark hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed">{isSavingForm ? <><IconLoader size={18} className="animate-spin" /> Saving...</> : 'Save Form'}</button>
                             <button type="button" onClick={closeModal} disabled={isSavingForm} className="w-full px-4 py-2 text-gray-700 truncate bg-gray-200 rounded text-ellipsis hover:bg-gray-300 disabled:opacity-50">Cancel</button>
+                            <button type="button" onClick={open ? closeTheRegistrations : openTheRegistrations} className={`w-full px-4 py-2 text-white truncate ${open ? `bg-black` : `bg-emerald-500`} rounded text-ellipsis hover:bg-gray-300 disabled:opacity-50 `}>{open ? `Close Registrations` : `Open Registrations `}</button>
                         </div>
                     </div>
                 </div>
@@ -1021,7 +1061,7 @@ export default function UpcomingAdminCard({ number }) {
                     {event.image_url && (
                         <div className="mb-3">
                             {event.image_url ? (
-                                <img
+                                <Image
                                     src={event.image_url}
                                     alt={event.name || 'Event image'}
                                     className="object-cover w-full h-24 border border-gray-200 rounded"
@@ -1031,7 +1071,7 @@ export default function UpcomingAdminCard({ number }) {
                                     height="96"  // Crucial: Matches h-24 (assuming 1rem=16px)
                                     // Add async decoding hint
                                     decoding="async"
-                                    onError={(e) => { e.target.style.display = 'none'; /* Hide broken img */ }}
+                                    onError={(e) => { e.target.style.display = 'none'; /* Hide broken Image */ }}
                                 />
                             ) : (
                                 <div className="flex items-center justify-center w-full h-24 bg-gray-100 border border-gray-200 rounded">

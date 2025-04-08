@@ -15,7 +15,7 @@ import {
     IconTableOff
 } from '@tabler/icons-react';
 import Modal from '../Global/Modal'; // Make sure this path is correct
-
+import Image from 'next/image';
 const LIMIT = 20;
 const MAX_IMAGE_WIDTH = 300;
 const MAX_IMAGE_HEIGHT = 200;
@@ -206,7 +206,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                 });
             })
             .catch(error => {
-                console.error("Error reading image files:", error);
+                // console.error("Error reading image files:", error);
                 setImageUploadError('Failed to process one or more images.');
             });
 
@@ -274,7 +274,9 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
     const handleImageClick = (images, title = 'Images') => { // Added title parameter
         if (images && images.length > 0) {
             const imageContent = images.map((image, index) => (
-                <img
+                <Image
+                    height={500}
+                    width={500}
                     key={index}
                     src={image} // Assuming image is a Base64 string or URL
                     alt={`${title} ${index + 1}`}
@@ -462,7 +464,9 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                         <div className="flex flex-wrap items-center pl-2">
                                                             {images.length > 0 ? (
                                                                 images.slice(0, 4).map((image, index) => (
-                                                                    <img
+                                                                    <Image
+                                                                        height={500}
+                                                                        width={500}
                                                                         key={index}
                                                                         src={image}
                                                                         alt={`${column.label} ${index + 1}`}
@@ -585,7 +589,9 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                         onMouseEnter={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: true }))}
                                                         onMouseLeave={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: false }))}
                                                     >
-                                                        <img
+                                                        <Image
+                                                            height={500}
+                                                            width={500}
                                                             src={src}
                                                             alt={`Preview ${index + 1}`}
                                                             className="w-full h-full object-cover transition-opacity duration-200"
@@ -826,7 +832,9 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                             <>
                                                                 {/* Show first few images as thumbnails */}
                                                                 {images.slice(0, 3).map((image, index) => (
-                                                                    <img
+                                                                    <Image
+                                                                        height={500}
+                                                                        width={500}
                                                                         key={index}
                                                                         src={image}
                                                                         alt={`${column.label} ${index + 1}`}
@@ -961,7 +969,9 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                     onMouseEnter={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: true }))}
                                                     onMouseLeave={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: false }))}
                                                 >
-                                                    <img
+                                                    <Image
+                                                        height={500}
+                                                        width={500}
                                                         src={src}
                                                         alt={`Preview ${index + 1}`}
                                                         className="w-full h-full object-cover transition-opacity duration-200"

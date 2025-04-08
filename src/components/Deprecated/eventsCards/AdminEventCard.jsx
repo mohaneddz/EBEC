@@ -45,7 +45,7 @@ const AdminEventCard = ({ initialData, onDelete }) => {
 
     const handleSaveClick = () => {
         setIsEditing(false);
-        console.log("Saving data:", data); // Placeholder for backend save - remember to send this to your API
+        // console.log("Saving data:", data); // Placeholder for backend save - remember to send this to your API
         //Here's where you save the data to the initialDataRef
         initialDataRef.current = data;
     };
@@ -100,7 +100,7 @@ const AdminEventCard = ({ initialData, onDelete }) => {
                 images: [...prevData.images, ...newImages],
             }));
         } catch (error) {
-            console.error("Image upload error:", error);
+            // console.error("Image upload error:", error);
         }
     };
 

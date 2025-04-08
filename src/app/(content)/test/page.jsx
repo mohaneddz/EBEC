@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react'
 import supabase from '@/config/supabaseClient'
 
-export default function page() {
+export default function Page() {
     const [user, setUser] = useState(null);
 
     useEffect(() => {

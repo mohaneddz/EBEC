@@ -57,7 +57,7 @@ const Footer = () => {
               <span className="text-xl font-semibold text-white">EBEC - ENSIA</span>
             </div>
             <p className="text-gray-300 mb-8 leading-relaxed">
-              EBEC (ENSIA's Business and Entrepreneurship Club) is a student-led organization dedicated to empowering future business leaders and AI innovators. We provide workshops, mentorship, and networking opportunities to help students bridge the gap between technology and entrepreneurship.
+              EBEC (ENSIA&apos;s Business and Entrepreneurship Club) is a student-led organization dedicated to empowering future business leaders and AI innovators. We provide workshops, mentorship, and networking opportunities to help students bridge the gap between technology and entrepreneurship.
             </p>
             <div className="flex gap-4">
               {socialIcons.map((social) => (

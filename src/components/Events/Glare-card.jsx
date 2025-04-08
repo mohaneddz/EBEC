@@ -6,7 +6,7 @@ import { IconX } from '@tabler/icons-react';
 import Button from '@/components/Global/Button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import Toast from '@/Components/Global/Toast';
+import Toast from '@/components/Global/Toast';
 import supabase from '@/config/supabaseClient';
 
 export default function Modal({ isOpen, onClose, title, children, imageUrl }) {

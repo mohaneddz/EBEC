@@ -3,16 +3,16 @@ import UpcomingAdminCard from '@/components/Admin/UpcomingAdminCard'
 import ManagerAdminCard from '@/components/Admin/ManagerAdminCard'
 import supabase from '@/config/supabaseClient'
 
-const DEFAULT_PIC = "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
+const DEFAULT_PIC = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//DEFAULT.jpg"
 
-export default function page() {
+export default function Page() {
 
     const [data, setData] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             const { data, error } = await supabase.from('Forefront').select('*');
-            if (error) console.error('Error fetching data:', error);
+            // if (error) console.error('Error fetching data:', error);
             // else console.log('Fetched data:', data);
             setData(data);
         };

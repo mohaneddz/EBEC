@@ -132,16 +132,16 @@ export default function TeamMember({
                     .eq('id', id);
 
                 if (error) {
-                    console.error(error);
+                    // console.error(error);
                     setUpdateError("Failed to Update member. Please try again.");
                 } else {
-                    console.log(data);
+                    // console.log(data);
                     if (onUpdateMember) {
                         onUpdateMember(id);
                     }
                 }
             } catch (err) {
-                console.error(err);
+                // console.error(err);
                 setUpdateError("An unexpected error occurred.");
             } finally {
                 setIsRemoving(false);
@@ -159,16 +159,16 @@ export default function TeamMember({
                     .eq('id', id);
 
                 if (error) {
-                    console.error(error);
+                    // console.error(error);
                     setRemoveError("Failed to remove member. Please try again.");
                 } else {
-                    console.log(data);
+                    // console.log(data);
                     if (onRemoveMember) {
                         onRemoveMember(id);
                     }
                 }
             } catch (err) {
-                console.error(err);
+                // console.error(err);
                 setRemoveError("An unexpected error occurred.");
             } finally {
                 setIsRemoving(false);

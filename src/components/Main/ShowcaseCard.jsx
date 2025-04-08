@@ -7,7 +7,7 @@ export default function ShowcaseCard({ image, title, description, className }) {
            
             <div className="relative object-cover border-b-8 border-secondary-dark "> 
                 <Image height={200} width={200} src={image} alt="Showcase Card" className="w-full" /> 
-                <div className="absolute top-0 w-full h-full bg-gradient-to-t from-primary-dark via-primary-dark/30 from-[0%] via-[30%] to-transparent transition duration-150 group-hover:via-[40%]"></div>
+                <div className="absolute top-0 w-full h-full bg-gradient-to-t from-primary-dark via-primary-dark/30 from-[0%] via-[30%] to-transparent transition-all duration-150 group-hover:via-[40%]"></div>
             
             </div>
             

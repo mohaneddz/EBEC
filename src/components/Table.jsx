@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import {
     IconChevronUp,
     IconChevronDown,
@@ -15,6 +15,7 @@ import {
     IconTableOff
 } from '@tabler/icons-react';
 import Modal from './Global/Modal'; // Make sure this path is correct
+import Image from 'next/image';
 
 const LIMIT = 20;
 const MAX_IMAGE_WIDTH = 300;
@@ -80,7 +81,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                 // Attempt to find an existing ID, otherwise generate one (less ideal for updates/deletes)
                 const id = item.id || item._id || `gen_${index}`; // Prefer existing id or _id
                 if (!item.id && !item._id) {
-                    console.warn(`Data item at index ${index} missing 'id' or '_id'. Using generated ID: ${id}. Consider providing stable IDs.`);
+                    // console.warn(`Data item at index ${index} missing 'id' or '_id'. Using generated ID: ${id}. Consider providing stable IDs.`);
                 }
                 const newItem = { ...item, id: id }; // Ensure 'id' key exists
                 defaultTableColumns.forEach(col => { // Use the resolved columns
@@ -218,7 +219,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                 });
             })
             .catch(error => {
-                console.error("Error reading image files:", error);
+                // console.error("Error reading image files:", error);
                 setImageUploadError('Failed to process one or more images.');
             });
 
@@ -266,7 +267,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
         if (editModalState.item && editModalState.item.id) {
             dataToSend.id = editModalState.item.id;
         } else {
-            console.error("Cannot update item: Original item ID not found.");
+            // console.error("Cannot update item: Original item ID not found.");
             // Optionally show an error to the user
             return; // Prevent update if ID is missing
         }
@@ -299,8 +300,10 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
     const handleImageClick = (images, title = 'Images') => { // Added title parameter
         if (images && images.length > 0) {
             const imageContent = images.map((image, index) => (
-                <img
+                <Image
                     key={index}
+                    height={500}
+                    width={500}
                     src={image} // Assuming image is a Base64 string or URL
                     alt={`${title} ${index + 1}`}
                     className="block h-auto max-w-full mb-2" // Ensure images stack vertically
@@ -498,8 +501,10 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                         <div className="flex flex-wrap items-center pl-2">
                                                             {images.length > 0 ? (
                                                                 images.slice(0, 4).map((image, index) => (
-                                                                    <img
+                                                                    <Image
                                                                         key={index}
+                                                                        height={500}
+                                                                        width={500}
                                                                         src={image}
                                                                         alt={`${column.label} ${index + 1}`}
                                                                         className="object-cover w-8 h-8 mb-1 mr-1 border border-gray-300 rounded-full dark:border-gray-600"
@@ -622,8 +627,10 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                         onMouseEnter={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: true }))}
                                                         onMouseLeave={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: false }))}
                                                     >
-                                                        <img
+                                                        <Image
                                                             src={src}
+                                                            height={500}
+                                                            width={500}
                                                             alt={`Preview ${index + 1}`}
                                                             className="object-cover w-full h-full transition-opacity duration-200"
                                                             loading="lazy"
@@ -653,7 +660,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                     {/* Basic text input, consider other types (date, number, select) based on column info if needed */}
                                     {/* Consider using textarea for 'expandable' fields */}
                                     {column.expandable ? (
-                                          <textarea
+                                        <textarea
                                             id={`edit-${column.key}`}
                                             name={column.key}
                                             value={editForm[column.key] || ''}
@@ -778,7 +785,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                     exit={{ height: 0, opacity: 0 }}
                                     transition={{ duration: 0.2 }}
                                     className="bg-gray-100 dark:bg-gray-700"
-                                >
+                                >{/* <--- ADD THIS JSX COMMENT TO REMOVE WHITESPACE NODE */}
                                     <th className="sticky left-0 z-10 px-4 py-2 bg-gray-100 dark:bg-gray-700"></th> {/* Spacer for actions */}
                                     {defaultTableColumns.map((column) => {
                                         // --- HIDE ID COLUMN FILTER ---
@@ -816,7 +823,7 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                             <tr>
                                 {/* --- ADJUSTED COLSPAN FOR NO RESULTS --- */}
                                 <td colSpan={visibleColumnCount} className="px-4 py-10 text-center">
-                                {/* --- END ADJUSTED COLSPAN --- */}
+                                    {/* --- END ADJUSTED COLSPAN --- */}
                                     <IconFilterOff size={48} className="mx-auto mb-3 text-gray-400 dark:text-gray-500" />
                                     <p className="text-gray-600 dark:text-gray-300">No results found matching your search or filter criteria.</p>
                                 </td>
@@ -882,8 +889,10 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                             <>
                                                                 {/* Show first few images as thumbnails */}
                                                                 {images.slice(0, 3).map((image, index) => (
-                                                                    <img
+                                                                    <Image
                                                                         key={index}
+                                                                        height={500}
+                                                                        width={500}
                                                                         src={image}
                                                                         alt={`${column.label} ${index + 1}`}
                                                                         className="object-cover w-8 h-8 border border-gray-200 rounded-full cursor-pointer dark:border-gray-600"
@@ -1021,8 +1030,10 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                                                     onMouseEnter={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: true }))}
                                                     onMouseLeave={() => setHoveredImageIndex(prev => ({ ...prev, [imageKey]: false }))}
                                                 >
-                                                    <img
+                                                    <Image
                                                         src={src}
+                                                        height={500}
+                                                        width={500}
                                                         alt={`Preview ${index + 1}`}
                                                         className="object-cover w-full h-full transition-opacity duration-200"
                                                         loading="lazy"
@@ -1046,32 +1057,32 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                         }
 
                         // Render standard input fields
-                         return (
-                                <div key={column.key} className="pt-2">
-                                    <label htmlFor={`edit-${column.key}`} className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">{column.label}</label>
-                                    {/* Use textarea for expandable fields, otherwise input */}
-                                    {column.expandable ? (
-                                        <textarea
-                                            id={`edit-${column.key}`}
-                                            name={column.key}
-                                            value={editForm[column.key] || ''}
-                                            onChange={handleEditFormChange}
-                                            rows={3} // Or adjust as needed
-                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                        />
-                                    ) : (
-                                        <input
-                                            // Consider input type based on data (e.g., 'date', 'number', 'email')
-                                            type={column.key.toLowerCase().includes('email') ? 'email' : column.key.toLowerCase().includes('date') ? 'date' : 'text'}
-                                            id={`edit-${column.key}`}
-                                            name={column.key}
-                                            value={editForm[column.key] || ''}
-                                            onChange={handleEditFormChange}
-                                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
-                                        />
-                                    )}
-                                </div>
-                            );
+                        return (
+                            <div key={column.key} className="pt-2">
+                                <label htmlFor={`edit-${column.key}`} className="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">{column.label}</label>
+                                {/* Use textarea for expandable fields, otherwise input */}
+                                {column.expandable ? (
+                                    <textarea
+                                        id={`edit-${column.key}`}
+                                        name={column.key}
+                                        value={editForm[column.key] || ''}
+                                        onChange={handleEditFormChange}
+                                        rows={3} // Or adjust as needed
+                                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                                    />
+                                ) : (
+                                    <input
+                                        // Consider input type based on data (e.g., 'date', 'number', 'email')
+                                        type={column.key.toLowerCase().includes('email') ? 'email' : column.key.toLowerCase().includes('date') ? 'date' : 'text'}
+                                        id={`edit-${column.key}`}
+                                        name={column.key}
+                                        value={editForm[column.key] || ''}
+                                        onChange={handleEditFormChange}
+                                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md shadow-sm dark:border-gray-600 focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white"
+                                    />
+                                )}
+                            </div>
+                        );
                     })}
                     {/* Modal Buttons */}
                     <div className="flex justify-end pt-5 space-x-3 border-t border-gray-200 dark:border-gray-700">

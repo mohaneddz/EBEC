@@ -13,14 +13,22 @@ ALLOWED_EXTENSIONS = ('.png', '.jpg', '.jpeg', '.bmp', '.gif', '.tiff', '.webp')
 
 def calculate_dark_blue_shade(pixel_value):
     """
-    Calculates a dark blue shade based on a grayscale pixel value (0-255).
-    Maps the brightness to the blue channel, keeping red and green at 0.
+    Maps a grayscale value to a bluish-gray tone resembling #94a3b8 and #8f91a8.
     """
-    # Ensure pixel_value is within the valid range
+    # Clamp the pixel_value
     pixel_value = max(0, min(255, pixel_value))
-    # Linearly map the brightness (0-255) to the blue range (0-MAX_BLUE_VALUE)
-    blue = int((pixel_value / 255) * MAX_BLUE_VALUE)
-    return (0, 0, blue) # Return (R, G, B) tuple
+
+    # We'll scale each channel to create a desaturated blue-gray tone
+    # Base tones: #94a3b8 = (148, 163, 184), #8f91a8 = (143, 145, 168)
+
+    # Interpolate between dark and light tone based on brightness
+    ratio = pixel_value / 255
+    r = int((1 - ratio) * 20 + ratio * 148)
+    g = int((1 - ratio) * 25 + ratio * 163)
+    b = int((1 - ratio) * 40 + ratio * 184)
+
+    return (r, g, b)
+
 
 def process_image(input_path, output_path):
     """

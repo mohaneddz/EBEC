@@ -90,7 +90,7 @@ export default function EmailsPage() {
             }
 
         } catch (err) {
-            console.error("Error loading email data:", err);
+            // console.error("Error loading email data:", err);
             setError(err.message || "An unexpected error occurred while loading emails.");
             setData([]);
             setCols(defaultColumns); // Use defaults on error
@@ -126,7 +126,7 @@ export default function EmailsPage() {
             );
 
         } catch (err) {
-            console.error("Error updating email:", err);
+            // console.error("Error updating email:", err);
             setError(`Failed to update email (ID: ${updatedItem.id}). ${err.message}`);
             // Consider force reload on update error
             // await loadData();
@@ -151,7 +151,7 @@ export default function EmailsPage() {
             // Success
 
         } catch (err) {
-            console.error("Error deleting email:", err);
+            // console.error("Error deleting email:", err);
             setError(`Failed to delete email (ID: ${idToDelete}). ${err.message}`);
             // Rollback
             setData(originalData);

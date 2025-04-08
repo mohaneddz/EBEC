@@ -10,6 +10,7 @@ import {
     RadioButton,
     Button
 } from '@/components/Global/FormElements'; // Adjust path
+import Toast from '@/components/Global/Toast';
 
 export default function Page({ params }) {
     const [formDefinition, setFormDefinition] = useState([]);
@@ -75,11 +76,11 @@ export default function Page({ params }) {
 
                 formDefinitionArray.forEach((field, index) => {
                     if (!field.label || typeof field.label !== 'string' || !field.label.trim()) { /* ... name validation ... */
-                        console.error(`Form field at index ${index} missing valid 'name':`, field);
+                        // console.error(`Form field at index ${index} missing valid 'name':`, field);
                         setFetchError(`Config error: Field missing 'name'. Contact admin.`); hasMissingName = true; return;
                     }
                     if (initialFormData.hasOwnProperty(field.label)) { /* ... duplicate name check ... */
-                        console.error(`Duplicate field name "${field.label}" at index ${index}.`);
+                        // console.error(`Duplicate field name "${field.label}" at index ${index}.`);
                         setFetchError(`Config error: Duplicate name "${field.label}". Contact admin.`); hasMissingName = true; return;
                     }
 
@@ -105,7 +106,7 @@ export default function Page({ params }) {
                 setFormDefinition(formDefinitionArray); setFormData(initialFormData); setErrors(initialErrors);
                 setFormTitle(formRowData.name || `Form ${id}`); setFormDescription(formRowData.brief || '');
             } catch (err) { /* ... error handling ... */
-                console.error("Error fetching/processing form:", err); setFetchError(err.message || "Failed form load.");
+                // console.error("Error fetching/processing form:", err); setFetchError(err.message || "Failed form load.");
                 setFormDefinition([]); setFormData({}); setErrors({}); setIsFormOpen(false);
             } finally {
                 setIsLoading(false);
@@ -114,10 +115,6 @@ export default function Page({ params }) {
         fetchForm();
     }, [id]);
 
-
-    // --- Input Handlers ---
-
-    // Modified Generic handler
     const handleInputChange = (e) => {
         const { name, value, type, checked, files } = e.target; // 'name' must match field.label
 
@@ -128,7 +125,7 @@ export default function Page({ params }) {
         } else if (type === 'file') {
             // Store the File object itself (or null if cleared)
             newValue = files && files.length > 0 ? files[0] : null;
-            console.log(`File selected for ${name}:`, newValue); // Debug log
+            // console.log(`File selected for ${name}:`, newValue); // Debug log
         }
         else {
             newValue = value; // Standard value for text, select, radio, etc.
@@ -210,7 +207,9 @@ export default function Page({ params }) {
                     if (!new RegExp(constraints.pattern).test(value)) {
                         errorMsg = field.patternErrorMessage || `${field.label || 'This field'} format is invalid.`;
                     }
-                } catch (e) { console.error(`Invalid regex: ${constraints.pattern}`, e); }
+                } catch (e) { 
+                    // console.error(`Invalid regex: ${constraints.pattern}`, e); 
+                }
             }
 
             // Assign error
@@ -222,90 +221,125 @@ export default function Page({ params }) {
     };
 
     // --- Form Submission (TODO needs actual logic) ---
+    
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (!isFormOpen) {
-            alert("Registrations are currently closed.");
+        if (!isFormOpen) { // Assuming isFormOpen state exists
+            <Toast variant='warning' message="Form is currently closed :("></Toast>
             return;
         }
-        setIsSubmitting(true);
-        setFetchError(null); // Clear previous submission errors
-
-        if (validateForm()) {
-            console.log("Form Data is Valid:", formData);
-
+        setIsSubmitting(true); // Assuming setIsSubmitting state exists
+        setFetchError(null);   // Assuming setFetchError state exists
+    
+        // Clear previous errors if using error state object
+        // setErrors({}); // Assuming setErrors state hook exists for validation errors
+    
+        if (validateForm()) { // Assuming validateForm function exists and sets errors state
+            // console.log("Form Data is Valid:", formData);
+    
             try {
-                // 1. Prepare the Fields object for JSONB storage
-                const fieldsObject = {};
-                formDefinition.forEach(field => {
-                    const key = field.label; // Use the defined label as the key
-                    if (formData.hasOwnProperty(key)) { // Ensure the key exists in formData
-                         const value = formData[key];
-                         // Store value directly (JSONB handles arrays, strings, numbers, booleans, null)
-                         // Convert undefined to null for cleaner JSON storage
-                        fieldsObject[key] = value === undefined ? null : value;
-                    } else {
-                        // Handle case where field was defined but missing in data (shouldn't happen with proper init)
-                        console.warn(`Field "${key}" defined but not found in formData.`);
-                        fieldsObject[key] = null;
-                    }
-                });
-
-                 // 2. Get user name (MAKE SURE 'Name' matches your actual form field label)
-                 const submitterName = formData['Name'] || 'Unknown User'; // Adjust 'Name' if needed
-                 if (!formData['Name']) {
-                    console.warn("Submitter 'Name' field not found in form data. Using 'Unknown User'.");
-                 }
-
-                 // 3. Construct the payload for the 'Forms' table
-                 const submissionPayload = {
-                    eventName: formTitle,       // The title fetched from Upcomings table
-                    userName: submitterName,    // The user's name from the form
-                    Fields: fieldsObject,       // The JSONB object containing all fields
-                    // Add 'upcoming_id: id,' here if you add that column to your Forms table
-                 };
-
-                console.log("Submitting Payload:", submissionPayload);
-
-                // 4. Insert into the 'Forms' table
-                const { data, error } = await supabase
-                    .from('Forms') // Target the new table
-                    .insert([submissionPayload])
-                    .select(); // Optionally select the inserted data back
-
-                if (error) {
-                    console.error("Supabase insertion error:", error);
-                    throw new Error(`Failed to submit form: ${error.message}`); // Throw specific error
+                // --- Get Current User ---
+                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                // console.log('Name : ', user.user_metadata?.display_name)
+    
+                if (userError) {
+                    // console.error("Error fetching user:", userError);
+                    throw new Error("Could not retrieve user information. Please ensure you are logged in.");
                 }
-
-                console.log("Submission successful:", data);
-                alert('Form submitted successfully!');
-                // Optionally reset form:
-                // setFormData({}); // Reset based on initial values if needed
-                // Or navigate away, show success message, etc.
-
+                if (!user) {
+                    throw new Error("No logged-in user found. Please log in and try again.");
+                }
+    
+                // Get display name, fallback to email, then to a generic placeholder
+                const submitterUserName = user.user_metadata?.display_name || user.email || 'Registered User (No Name)';
+                const submitterUseEmail = user.email;
+                // console.log("Submitter User Name:", submitterUserName);
+    
+                // --- Prepare the Fields object for JSONB storage ---
+                const fieldsObject = {};
+                formDefinition.forEach((field) => { // Assuming formDefinition exists
+                    const fieldLabel = field.label; // The key used in formData state
+                    const fieldValue = formData[fieldLabel]; // Get value from state
+    
+                    // Use the field label as the key within the JSON object,
+                    // or use a generic "Field N: Value" structure if preferred.
+                    // Using label here for better readability in the database JSON.
+                    fieldsObject[fieldLabel] = fieldValue === undefined ? null : fieldValue;
+    
+                    // --- Alternative: Generic Field Keying (like original) ---
+                    // const key = `Field ${index + 1}`;
+                    // if (formData.hasOwnProperty(fieldLabel)) {
+                    //     const value = formData[fieldLabel];
+                    //     fieldsObject[key] = value === undefined ? null : value;
+                    // } else {
+                    //     console.warn(`Field "${fieldLabel}" defined but not found in formData.`);
+                    //     fieldsObject[key] = null; // Or handle differently
+                    // }
+                    // --- End Alternative ---
+                });
+    
+                // --- Create Timestamp ---
+                const submissionTimestamp = new Date().toISOString();
+    
+                // --- Construct the payload for the 'Forms' table ---
+                const submissionPayload = {
+                    eventName: formTitle, // Assuming formTitle variable exists
+                    userName: submitterUserName, // Use the fetched user name
+                    userEmail: submitterUseEmail, // Use the fetched user email
+                    fields: [fieldsObject],      // Wrap the fields object in an array for JSONB[]
+                    timestamp: submissionTimestamp, // Add the timestamp
+                    // Optional: Add user_id if you have a column for it
+                    // user_id: user.id,
+                    // Optional: Add upcoming_id if needed
+                    // upcoming_id: id, // Assuming 'id' variable (from props/state) holds the upcoming event ID
+                };
+    
+                // console.log("Submitting Payload:", submissionPayload);
+    
+                // --- Insert into the 'Forms' table ---
+                const { data: insertedData, error: insertError } = await supabase
+                    .from('Forms')
+                    .insert([submissionPayload])
+                    .select(); // Select to get the inserted row back (optional)
+    
+                if (insertError) {
+                    // console.error("Supabase insertion error:", insertError);
+                    // Provide more specific feedback if possible (e.g., check constraints)
+                    throw new Error(`Failed to submit form: ${insertError.message}`);
+                }
+    
+                // console.log("Submission successful:", insertedData);
+                // alert('Form submitted successfully!'); // User feedback
+                <Toast variant='success' message={'Form submitted successfully!'}></Toast>
+    
+                // Optionally reset form or navigate away
+                // resetForm(); // Implement a function to reset formData and errors
+                // router.push('/success-page'); // If using Next.js router
+    
             } catch (submissionError) {
-                console.error("Submission Process Error:", submissionError);
-                // Display a user-friendly error message
+                // console.error("Submission Process Error:", submissionError);
+                // Display a user-friendly error message using state
                 setFetchError(submissionError.message || "An error occurred during submission. Please try again.");
-                alert(`Submission Failed: ${submissionError.message}`); // Also alert
+                // Keep the alert as fallback or primary notification
+                // alert(`Submission Failed: ${submissionError.message}`);
+                <Toast variant='error' message={'Submission Failed, Please contact the admins'}></Toast>
             }
-
+    
         } else {
-            console.log("Validation Failed:", errors);
-             // Focus on the first field with an error (optional usability improvement)
+            // console.log("Validation Failed:", errors); // Assuming errors state object exists
+            setFetchError("Please fix the errors highlighted below."); // Set a general validation error message
+            // Focus logic (keep as is)
             const firstErrorField = Object.keys(errors).find(key => errors[key]);
             if (firstErrorField) {
-                 const fieldElement = document.getElementById(firstErrorField); // Assumes input ID matches label
-                 fieldElement?.focus();
-                 fieldElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Ensure your form inputs have an 'id' that matches the keys in your 'errors' object
+                const fieldElement = document.getElementById(firstErrorField);
+                fieldElement?.focus();
+                fieldElement?.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         }
-        setIsSubmitting(false);
+        setIsSubmitting(false); // Ensure this runs even if validation fails or an error occurs
     };
 
-
-    // --- Render Helper (MODIFIED) ---
     const renderField = (field) => {
         const fieldName = field.label;
         const fieldLabel = field.label;
@@ -336,9 +370,9 @@ export default function Page({ params }) {
             case 'radio':
                 return (
                     <fieldset className="mb-1">
-                        <legend className="block text-sm font-medium mb-2 text-slate-200">{fieldLabel}{commonProps.required && <span className="text-yellow-400">*</span>}</legend>
+                        <legend className="block mb-2 text-sm font-medium text-slate-200">{fieldLabel}{commonProps.required && <span className="text-yellow-400">*</span>}</legend>
                         {error && <p className={`-mt-1 mb-1.5 text-xs text-red-400`}>{error}</p>}
-                        <div className="flex flex-wrap gap-x-6 gap-y-1 pt-1 justify-center md:justify-start">
+                        <div className="flex flex-wrap justify-center pt-1 gap-x-6 gap-y-1 md:justify-start">
                             {(field.options || []).map(option => (
                                 <RadioButton key={option.value} id={`${fieldName}-${option.value}`} name={fieldName} label={option.label} value={option.value} checked={value === option.value} onChange={handleInputChange} disabled={isSubmitting} />
                             ))}
@@ -352,9 +386,9 @@ export default function Page({ params }) {
                     // --- Render Checkbox Group ---
                     return (
                         <fieldset className="mb-1">
-                            <legend className="block text-sm font-medium mb-2 text-slate-200">{fieldLabel}{commonProps.required && <span className="text-yellow-400">*</span>}</legend>
+                            <legend className="block mb-2 text-sm font-medium text-slate-200">{fieldLabel}{commonProps.required && <span className="text-yellow-400">*</span>}</legend>
                             {error && <p className={`-mt-1 mb-1.5 text-xs text-red-400`}>{error}</p>}
-                            <div className="flex flex-wrap gap-x-6 gap-y-1 pt-1 justify-center md:justify-start">
+                            <div className="flex flex-wrap justify-center pt-1 gap-x-6 gap-y-1 md:justify-start">
                                 {field.options.map(option => (
                                     <Checkbox
                                         key={option.value}
@@ -374,7 +408,7 @@ export default function Page({ params }) {
                 } else {
                     // --- Render Single Checkbox ---
                     return (
-                        <div className="mb-1 flex justify-center md:justify-start"> {/* Align single checkbox */}
+                        <div className="flex justify-center mb-1 md:justify-start"> {/* Align single checkbox */}
                             <Checkbox
                                 {...commonProps}
                                 // 'value' for a single checkbox is typically not needed, 'checked' is the state
@@ -405,26 +439,27 @@ export default function Page({ params }) {
                 );
             // Fallback for unsupported types
             default:
-                return <p className="text-yellow-400 text-sm my-2 p-2 bg-yellow-900/30 rounded border border-yellow-600">Note: Unsupported field type "{fieldType}" for "{fieldLabel}".</p>;
+                return <p className="p-2 my-2 text-sm text-yellow-400 border border-yellow-600 rounded bg-yellow-900/30">Note: Unsupported field type &ldquo;{fieldType}&ldquo; for &ldquo;{fieldLabel}&ldquo;.</p>;
         }
     };
 
     // --- Main Render (No changes needed in the structure) ---
+    if (isLoading) { return ( /* Loading indicator */ <div className="flex items-center justify-center min-h-screen p-4 bg-fixed bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900"><IconLoader size={40} className="animate-spin text-slate-400" /></div>); }
 
-    if (isLoading) { return ( /* Loading indicator */ <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 bg-fixed flex items-center justify-center p-4"><IconLoader size={40} className="animate-spin text-slate-400" /></div>); }
+    if (isLoading) { return ( /* Loading indicator */ <div className="flex items-center justify-center min-h-screen p-4 bg-fixed bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900"><IconLoader size={40} className="animate-spin text-slate-400" /></div>); }
 
-    if (!isFormOpen || fetchError) { return ( /* Error/Closed display */ <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 bg-fixed flex items-center justify-center p-4"><div className="bg-slate-800/80 backdrop-blur-sm p-6 sm:p-10 rounded-xl shadow-2xl w-screen md:max-w-xl md:w-full border border-slate-700 text-center"><h1 className="text-2xl font-semibold text-white mb-2">{formTitle}</h1>{formDescription && <p className="text-slate-300 text-sm mb-6">{formDescription}</p>}<div className="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded relative" role="alert"><strong className="font-bold block sm:inline">Notice:</strong><span className="block sm:inline ml-1"> {fetchError || "Registrations are currently closed."}</span></div></div></div>); }
+    if (!isFormOpen || fetchError) { return ( /* Error/Closed display */ <div className="flex items-center justify-center min-h-screen p-4 bg-fixed bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900"><div className="w-screen p-6 text-center border shadow-2xl bg-slate-800/80 backdrop-blur-sm sm:p-10 rounded-xl md:max-w-xl md:w-full border-slate-700"><h1 className="mb-2 text-2xl font-semibold text-white">{formTitle}</h1>{formDescription && <p className="mb-6 text-sm text-slate-300">{formDescription}</p>}<div className="relative px-4 py-3 text-slate-600 font-bold bg-slate-400 border rounded border-slate-800" role="alert"><strong className="block font-bold sm:inline"></strong><span className="block ml-1 sm:inline"> {fetchError || "Registrations are currently closed."}</span></div></div></div>); }
 
     return (
         // Main form structure
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 bg-fixed flex items-center justify-center md:p-4 font-sans">
+        <div className="flex items-center justify-center min-h-screen font-sans bg-fixed bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 md:p-4">
             <div className="bg-slate-800/80 backdrop-blur-sm p-6 sm:p-10 rounded-xl shadow-2xl w-screen h-screen md:h-auto md:max-h-[90vh] overflow-y-auto md:max-w-2xl md:w-full border border-slate-700">
                 {/* Header */}
-                <header className="text-center mb-8 border-b border-slate-700 pb-6"> <h1 className="text-3xl font-semibold text-white mb-2">{formTitle}</h1> {formDescription && (<p className="text-slate-300 text-sm">{formDescription}</p>)} {formDefinition.some(f => f.constraints?.required) && (<p className="text-slate-400 text-xs mt-2">Fields marked <span className="text-yellow-400 font-medium">*</span> are required.</p>)} </header>
+                <header className="pb-6 mb-8 text-center border-b border-slate-700"> <h1 className="mb-2 text-3xl font-semibold text-white">{formTitle}</h1> {formDescription && (<p className="text-sm text-slate-300">{formDescription}</p>)} {formDefinition.some(f => f.constraints?.required) && (<p className="mt-2 text-xs text-slate-400">Fields marked <span className="font-medium text-yellow-400">*</span> are required.</p>)} </header>
                 {/* Form */}
                 <form onSubmit={handleSubmit} className="space-y-5"> {formDefinition.map((field) => (<div key={field.label || field.label + field.type}>{renderField(field)}</div>))} <div className="pt-4 text-center"> <Button type="submit" text={isSubmitting ? "Submitting..." : "Submit Information"} disabled={isSubmitting || !isFormOpen} /> {/* Submission error display... */} </div> </form>
                 {/* Footer */}
-                <footer className="text-center mt-10 pt-6 border-t border-slate-700"> <p className="text-xs text-slate-500">ENSIA's Business & Entrepreneurship <br /> Glad to have you here </p> </footer>
+                <footer className="pt-6 mt-10 text-center border-t border-slate-700"> <p className="text-xs text-slate-500">ENSIA&#39s Business & Entrepreneurship <br /> Glad to have you here </p> </footer>
             </div>
         </div>
     );

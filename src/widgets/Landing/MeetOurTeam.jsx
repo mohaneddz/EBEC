@@ -1,11 +1,11 @@
 "use client";
 
-import { motion, useInView } from "framer-motion"; // Note: Changed from motion/react based on common usage, adjust if 'motion/react' is specifically required by your setup
-import { useEffect, useRef, useState } from "react";
+import { motion,  useInView } from "motion/react"; // Note: Changed from motion/react based on common usage, adjust if 'motion/react' is specifically required by your setup
+import { useEffect,useMemo, useRef, useState } from "react";
 import MeetMember from "@/components/Main/MeetMember";
 import supabase from "@/config/supabaseClient";
 
-const DEFAULT_PIC = "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
+const DEFAULT_PIC = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//DEFAULT.jpg"
 
 export default function MeetOurTeam() {
 
@@ -44,7 +44,9 @@ export default function MeetOurTeam() {
         visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
     };
 
-    const adminRoles = ["President", "Vice President", "General Secretary"];
+    const adminRoles = useMemo(() => (
+        ["President", "Vice President", "General Secretary"]
+    ), []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,12 +59,12 @@ export default function MeetOurTeam() {
                 const { data, error } = await supabase.from('Forefront').select('*');
 
                 if (error) {
-                    console.error('Error fetching data:', error);
+                    // console.error('Error fetching data:', error);
                     setFetchError('Could not fetch team data.');
                     setTeam([]); // Set to empty array on error to avoid null issues in map
                     setAdmins([]);
                 } else if (data) {
-                    console.log('Fetched data:', data);
+                    // console.log('Fetched data:', data);
 
                     const teamMembers = data.filter(member => !adminRoles.includes(member.department));
                     const adminMembers = data.filter(member => adminRoles.includes(member.department));
@@ -72,21 +74,21 @@ export default function MeetOurTeam() {
                     // Logs inside here won't show the updated state immediately
                 } else {
                     // Handle case where data is null/undefined but no error occurred
-                     setTeam([]);
-                     setAdmins([]);
+                    setTeam([]);
+                    setAdmins([]);
                 }
             } catch (err) {
-                 console.error('Unexpected error during fetch:', err);
-                 setFetchError('An unexpected error occurred.');
-                 setTeam([]);
-                 setAdmins([]);
+                //  console.error('Unexpected error during fetch:', err);
+                setFetchError('An unexpected error occurred.');
+                setTeam([]);
+                setAdmins([]);
             } finally {
                 setIsLoading(false); // Set loading to false when fetch completes (success or error)
             }
         };
 
         fetchData();
-    }, []); // Empty dependency array means this runs once on mount
+    }, [adminRoles]); // Empty dependency array means this runs once on mount
 
     // Optional: You can log the state outside useEffect to see updates on re-renders
     // useEffect(() => {
@@ -111,7 +113,7 @@ export default function MeetOurTeam() {
             <div className="relative container mx-auto flex flex-col items-center justify-center align-center py-16 px-4 sm:px-6 lg:px-8"> {/* Added padding */}
 
                 {/* ... Main Title H1 remains the same ... */}
-                 <motion.h1
+                <motion.h1
                     className="mx-auto relative inline-block text-4xl vsm:text-5xl sm:text-7xl lg:text-8xl font-black text-center mb-12 bg-gradient-to-r from-secondary-dark to-secondary-light bg-clip-text text-transparent w-fit"
                     variants={titleVariants}
                     initial="hidden"
@@ -142,7 +144,7 @@ export default function MeetOurTeam() {
                     animate={adminsInView ? "visible" : "hidden"}
                 >
                     {isLoading ? (
-                         renderPlaceholders(3) // Show 3 placeholders while loading
+                        renderPlaceholders(3) // Show 3 placeholders while loading
                     ) : fetchError ? (
                         <p className="col-span-full text-red-600 text-center">{fetchError}</p> // Show error
                     ) : admins && admins.length > 0 ? (
@@ -156,7 +158,7 @@ export default function MeetOurTeam() {
                             </motion.div>
                         ))
                     ) : (
-                         <p className="col-span-full text-gray-600 text-center">No board directors found.</p> // Message if no admins
+                        <p className="col-span-full text-gray-600 text-center">No board directors found.</p> // Message if no admins
                     )}
                 </motion.div>
 
@@ -173,7 +175,7 @@ export default function MeetOurTeam() {
 
                 <motion.div
                     ref={teamRef}
-                     className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl place-items-center" // Adjusted grid and added width/centering
+                    className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3 w-full max-w-6xl place-items-center" // Adjusted grid and added width/centering
                     variants={containerVariants}
                     initial="hidden"
                     animate={teamInView ? "visible" : "hidden"}
@@ -181,7 +183,7 @@ export default function MeetOurTeam() {
                     {isLoading ? (
                         renderPlaceholders(6) // Show 6 placeholders while loading
                     ) : fetchError ? (
-                         <p className="col-span-full text-red-600 text-center">{fetchError}</p> // Show error (might be redundant if shown above)
+                        <p className="col-span-full text-red-600 text-center">{fetchError}</p> // Show error (might be redundant if shown above)
                     ) : team && team.length > 0 ? (
                         team.map(member => (
                             <motion.div variants={itemVariants} key={member.id} className="w-full max-w-xs sm:max-w-sm"> {/* Ensure items have width */}
@@ -193,7 +195,7 @@ export default function MeetOurTeam() {
                             </motion.div>
                         ))
                     ) : (
-                         <p className="col-span-full text-gray-600 text-center">No team leaders found.</p> // Message if no team members
+                        <p className="col-span-full text-gray-600 text-center">No team leaders found.</p> // Message if no team members
                     )}
                 </motion.div>
             </div>

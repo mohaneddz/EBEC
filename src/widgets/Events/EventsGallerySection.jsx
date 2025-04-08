@@ -18,7 +18,7 @@ const EventsGallery = () => {
             if (error) {
                 setFetchError('Could not fetch the Events!');
                 setEvents(null);
-                console.log('Fetch error:', error);
+                // console.log('Fetch error:', error);
             }
             if (data) {
                 const events = data

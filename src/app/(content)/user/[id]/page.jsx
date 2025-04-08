@@ -8,7 +8,7 @@ import supabase from '@/config/supabaseClient'
 import UserInfo from "@/components/Main/UserInfo";
 import { IconShieldFilled } from "@tabler/icons-react";
 
-const DEFAULT_PIC = "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
+const DEFAULT_PIC = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//DEFAULT.jpg"
 
 export const UserPage = ({ id }) => {
 
@@ -58,21 +58,21 @@ export const UserPage = ({ id }) => {
                 window.location.href = '/login';
             })
             .catch((error) => {
-                console.error('Error logging out:', error);
+                // console.error('Error logging out:', error);
             });
     };
 
     const sendRequest = async () => {
-        console.log(`Sending request for department: ${selectedDepartment}`);
+        // console.log(`Sending request for department: ${selectedDepartment}`);
         // add to supabase table for 'emails'
         const { data, error } = await supabase.from('Emails').insert([
             // the date must be in format YYYY-MM-DDTHH:MM:SSZ
             { name: user.user_metadata?.display_name, email: user.email, type: 'Change Department', message: `Change from ${user.user_metadata?.department} to ${selectedDepartment}.\nMotivation: ${motivation}`, date: new Date().toISOString() }
         ]);
         if (error) {
-            console.error('Error sending request:', error);
+            // console.error('Error sending request:', error);
         } else {
-            console.log('Request sent successfully:', data);
+            // console.log('Request sent successfully:', data);
         }
 
         closeModal();

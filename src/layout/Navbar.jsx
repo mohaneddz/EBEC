@@ -120,7 +120,7 @@ const Navbar = ({ onHeightChange }) => {
               className="cursor-pointer p-2"
               // onClick={() => router.push('/login')}
               // if user is logged in show user icon
-              onClick={() => router.push(user.id ? `/user/${user.id}` : "/login")}
+              onClick={() => router.push(user?.id ? `/user/${user.id}` : "/login")}
             >
               <IconUser
                 size={24}
@@ -172,10 +172,8 @@ const Navbar = ({ onHeightChange }) => {
               </div>
             ))}
             <div
-              onClick={() => {
-                router.push("/user");
-                setIsOpen(false);
-              }}
+              onClick={() => router.push(user?.id ? `/user/${user.id}` : "/login")}
+
               className="flex items-center gap-2 px-3 py-2 text-gray-600 hover:text-[var(--deep-blue)] cursor-pointer"
             >
               <IconUser size={20} />

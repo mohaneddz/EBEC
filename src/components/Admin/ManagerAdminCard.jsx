@@ -237,7 +237,7 @@ export default function ManagerAdminCard({
               onChange={handleFileChange}
                // **Add a key to force re-render on cancel if needed, or rely on onChange logic**
                // key={newPictureFile || Date.now()} // Optional: helps reset input if user selects same file after cancelling
-              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-primary-light file:text-primary-dark hover:file:bg-primary-light/80 cursor-pointer border border-gray-300 rounded-md p-1"
+              className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:font-semibold file:bg-primary-dark file:text-white hover:file:bg-primary-light hover:file:text-gray-200 cursor-pointer border border-gray-300 rounded-md p-1"
               disabled={isLoading}
             />
 

@@ -68,20 +68,20 @@ export const InfiniteMovingCards = ({
   }, [addAnimation]); // Re-run addAnimation if its definition changes (due to props)
 
   // --- Effect to reset animation if items change ---
-   // Optional: If you want the animation to reset/rebuild when 'items' prop changes
-   useEffect(() => {
-     // Reset state and clear previous items if needed (optional, depends on desired behavior)
-     setStart(false);
-     if (scrollerRef.current) {
-       // A simple way to reset is to remove duplicated nodes, but might be complex.
-       // A more robust way might involve clearing innerHTML and re-running addAnimation.
-       // For simplicity, let's just re-trigger addAnimation. It handles duplication check implicitly.
-       // NOTE: This might cause a visual flicker if items change frequently.
-       // Consider a more advanced diffing strategy if needed.
-       const timeoutId = setTimeout(() => addAnimation(), 0); // Run on next tick
-       return () => clearTimeout(timeoutId);
-     }
-   }, [items, addAnimation]); // Re-run if items or addAnimation change
+  // Optional: If you want the animation to reset/rebuild when 'items' prop changes
+  useEffect(() => {
+    // Reset state and clear previous items if needed (optional, depends on desired behavior)
+    setStart(false);
+    if (scrollerRef.current) {
+      // A simple way to reset is to remove duplicated nodes, but might be complex.
+      // A more robust way might involve clearing innerHTML and re-running addAnimation.
+      // For simplicity, let's just re-trigger addAnimation. It handles duplication check implicitly.
+      // NOTE: This might cause a visual flicker if items change frequently.
+      // Consider a more advanced diffing strategy if needed.
+      const timeoutId = setTimeout(() => addAnimation(), 0); // Run on next tick
+      return () => clearTimeout(timeoutId);
+    }
+  }, [items, addAnimation]); // Re-run if items or addAnimation change
 
 
   return (
@@ -97,7 +97,7 @@ export const InfiniteMovingCards = ({
       <ul
         ref={scrollerRef}
         className={cn(
-        // Flex layout: nowrap ensures single line, w-max fits content
+          // Flex layout: nowrap ensures single line, w-max fits content
           "flex min-w-full shrink-0 py-4 w-max flex-nowrap",
           // Responsive gap between items
           "gap-4 sm:gap-6 md:gap-8",

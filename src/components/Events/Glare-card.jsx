@@ -3,100 +3,41 @@
 import { useRef, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { IconX } from '@tabler/icons-react';
-import Button from '@/Components/Global/Button';
+import Button from '@/components/Global/Button';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
-import Toast from '@/Components/Global/Toast'; 
+import Toast from '@/Components/Global/Toast';
+import supabase from '@/config/supabaseClient';
 
-// Custom Input Component
-const Input = ({
-    label,
-    type = "text",
-    value,
-    onChange,
-    error,
-    placeholder,
-    required,
-    className,
-    ...props
-}) => {
-    const [isFocused, setIsFocused] = useState(false);
-
-    const handleFocus = () => setIsFocused(true);
-    const handleBlur = () => setIsFocused(false);
-
-    const labelClasses = cn(
-        "block text-sm font-medium transition-colors",
-        isFocused || value ? "text-blue-600" : "text-gray-700",
-        error ? "text-red-500" : ""
-    );
-
-    const inputClasses = cn(
-        "mt-1 block w-full px-3 py-2 border rounded-md shadow-sm transition-colors",
-        "focus:outline-none focus:ring-2 focus:border-transparent",
-        isFocused ? "ring-blue-500 border-blue-500" : "border-gray-300",
-        error ? "border-red-500 ring-red-500" : "",
-        className
-    );
-
-
-    return (
-        <div className="mb-4">
-            <label className={labelClasses}>
-                {label}
-                {required && <span className="text-red-500"> *</span>}
-            </label>
-            {type === "textarea" ? (
-                <textarea
-                    className={inputClasses}
-                    value={value}
-                    onChange={onChange}
-                    placeholder={placeholder}
-                    rows="4"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    aria-invalid={error ? "true" : "false"}
-                    {...props}
-                />
-            ) : (
-                <input
-                    type={type}
-                    className={inputClasses}
-                    value={value}
-                    onChange={onChange}
-                    placeholder={placeholder}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    aria-invalid={error ? "true" : "false"}
-                    {...props}
-                />
-            )}
-            {error && <p className="mt-1 text-sm text-red-500">{error}</p>}
-        </div>
-    );
-};
-
-export default function Modal({ isOpen, onClose, title, children, buttons, imageUrl }) {
+export default function Modal({ isOpen, onClose, title, children, imageUrl }) {
     const modalRef = useRef(null);
-
+    
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (modalRef.current && !modalRef.current.contains(event.target)) {
                 onClose();
             }
         };
-
+    
+        const preventScroll = (e) => {
+            e.preventDefault();
+        }
+    
         if (isOpen) {
             document.addEventListener('mousedown', handleClickOutside);
-            document.body.style.overflow = 'hidden';
+            document.addEventListener('wheel', preventScroll, { passive: false }); // Prevent scrolling using the wheel
+            document.addEventListener('touchmove', preventScroll, { passive: false }); // Prevent scrolling on touch devices
+    
         } else {
             document.removeEventListener('mousedown', handleClickOutside);
-            document.body.style.overflow = 'unset';
+            document.removeEventListener('wheel', preventScroll);
+            document.removeEventListener('touchmove', preventScroll);
         }
-
+    
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
-            document.body.style.overflow = 'unset';
+            document.removeEventListener('wheel', preventScroll);
+            document.removeEventListener('touchmove', preventScroll);
         };
     }, [isOpen, onClose]);
 
@@ -125,7 +66,7 @@ export default function Modal({ isOpen, onClose, title, children, buttons, image
                         )}
                         <div className="p-6 flex-grow">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold text-gray-900">{title}</h3> {/* Larger, bolder title */}
+                                <h3 className="text-xl font-bold text-gray-900 text-center truncate">{title}</h3> {/* Larger, bolder title */}
                                 <button onClick={onClose} className="text-gray-500 hover:text-gray-700 focus:outline-none">
                                     <IconX size={24} />  {/* Larger icon */}
                                 </button>
@@ -145,6 +86,16 @@ export function GlareCardDemo({ cards }) {
     const [motivation, setMotivation] = useState('');
     const [motivationError, setMotivationError] = useState('');
     const [toasts, setToasts] = useState([]);
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            setUser(user);
+        }
+
+        fetchUser();
+    }, []);
 
     const openModal = (card) => {
         setSelectedCard(card);
@@ -163,20 +114,12 @@ export function GlareCardDemo({ cards }) {
         setToasts((prevToasts) => [...prevToasts, { id, message, variant }]);
     };
 
-    const handleSubmit = () => {
-        let isValid = true;
-        if (!motivation.trim()) {
-            setMotivationError('Motivation is required');
-            isValid = false;
+    const forward = () => {
+        // if user is logged in, move to /forms/[id] page
+        if (user?.id) {
+            window.location.href = `/form/${selectedCard.id}`;
         } else {
-            setMotivationError('');
-        }
-
-        if (isValid) {
-            console.log('Form submitted:', { motivation });
-            // alert("Form Submitted"); // Replace alert with toast
-            addToast('Form submitted successfully!', 'success'); // Show success toast
-            closeModal();
+            addToast("Please login to register.", "error");
         }
     };
 
@@ -185,7 +128,7 @@ export function GlareCardDemo({ cards }) {
             <div className="justify-around justify-items-center inline-grid grid-cols-1 md:grid-cols-3 gap-16 mx-auto">
                 {cards.map((card) => (
                     <GlareCard
-                        enabled={card.src}
+                        enabled={card.title !== ""}
                         key={card.id}
                         className="relative flex flex-col items-center justify-center"
                         cardData={card}
@@ -199,6 +142,7 @@ export function GlareCardDemo({ cards }) {
                 onClose={closeModal}
                 title={selectedCard?.title || "Card Details"}
                 imageUrl={selectedCard?.src}
+                Button={selectedCard?.open}  
             >
                 {selectedCard && (
                     <>
@@ -214,17 +158,12 @@ export function GlareCardDemo({ cards }) {
                                 <strong className='text-primary-light '>Location:</strong> {selectedCard.location || "TBD"}
                             </p>
                         </div>
-                        <Input
-                            label="Motivation"
-                            placeholder="Why are you interested in this event?"
-                            type="textarea"
-                            value={motivation}
-                            onChange={(e) => setMotivation(e.target.value)}
-                            error={motivationError}
-                            required
-                        />
+                        {/* desciption about the event*/}
+                        <p className="text-gray-700 text-base mb-4">
+                            <strong className='text-primary-light'>Description:</strong> {selectedCard.description || "TBD"}
+                        </p>
                         <div className="flex justify-end mt-6">  {/* Consistent spacing */}
-                            <Button onClick={handleSubmit} color1="#FDA916" text="Submit" />
+                            <Button onClick={forward} color1="#FDA916" text={user?.id ? `Register` : `Login`} />
                         </div>
                     </>
                 )}
@@ -374,7 +313,7 @@ export const GlareCard = ({
                                     className="w-full h-full object-cover transition duration-500 ease-in-out"
                                     sizes="(max-width: 768px) 100vw, 33vw"
                                 />
-                                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-opacity duration-500">
+                                <div className="absolute inset-0 flex text-center flex-col items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-opacity duration-500">
                                     <h2 className="text-secondary-dark font-black text-3xl drop-shadow-md opacity-0 group-hover:-translate-y-2 transition-transform duration-300 ease-in-out group-hover:opacity-100">
                                         {cardData.title}
                                     </h2>
@@ -395,10 +334,10 @@ export const GlareCard = ({
                                     viewBox="0 0 320 512">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M80 160c0-35.3 28.7-64 64-64l32 0c35.3 0 64 28.7 64 64l0 3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74l0 1.4c0 17.7 14.3 32 32 32s32-14.3 32-32l0-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7l0-3.6c0-70.7-57.3-128-128-128l-32 0C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z" />
                                 </svg>
-                                <h2 className="text-slate-300 font-bold pt-8 text-xl">
+                                <h2 className="text-slate-300 font-bold pt-8 text-xl text-center ">
                                     {cardData.title}
                                 </h2>
-                                <p className="text-slate-500 font-bold pt-8">
+                                <p className="text-slate-500 font-bold pt-8 text-center text-wrap">
                                     {cardData.description}
                                 </p>
                             </div>

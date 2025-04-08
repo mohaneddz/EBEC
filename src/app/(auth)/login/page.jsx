@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Input } from "@/components/Global/Input";
 import { Button } from "@/components/Global/Button";
 import { motion } from "motion/react";
@@ -21,24 +21,44 @@ const Login = () => {
     const handleSignUpClick = () => setSignup(true);
     const handleSignInClick = () => setSignup(false);
 
-    const signUpNewUser = async (email, password) => {
+    useEffect(() => {
+        const checkAuthStatus = async () => {
+            const { data: { user }, error } = await supabase.auth.getUser();
+            // if (error) console.log(error);
+            if (user) {
+                window.location.href = '/'; // Redirect to home page
+            }
+        };
+        
+        checkAuthStatus();
+    }, []);
+
+
+    const signUpNewUser = async (email, password, name) => {
         try {
             const { data, error } = await supabase.auth.signUp({
                 email,
                 password,
                 options: {
                     emailRedirectTo: 'http://localhost:3000/',
+                    data: {
+                        display_name: name,
+                        department: "Unassigned", // Default value, update later
+                        role: "Member", // Default role
+                        image: null, // No image by default
+                        status: "Active", // Default status
+                        join_date: new Date().toISOString(), // Set join date to now
+                    },
                 },
             });
 
             if (error) {
-                throw error; // Re-throw the Supabase error for handling in the calling function
+                throw error; // Re-throw the Supabase error
             }
 
-            return data; // Optionally return data if needed
+            return data;
         } catch (err) {
-            // console.error("Signup error:", err);
-            throw err; // Re-throw error to be handled in the component's calling function
+            throw err;
         }
     };
 
@@ -60,28 +80,27 @@ const Login = () => {
         }
     };
 
-    const resetPassword = async (email) => {
-        try {
-            const { error } = await supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: 'http://localhost:3000/update-password', // Corrected redirectTo and added protocol
-            });
+    // const resetPassword = async (email) => {
+    //     try {
+    //         const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    //             redirectTo: 'http://localhost:3000/update-password', // Corrected redirectTo and added protocol
+    //         });
 
-            if (error) {
-                throw error;
-            }
+    //         if (error) {
+    //             throw error;
+    //         }
 
-            setToast({ "message": "Check your email for the password reset link", "type": "success" }); //Show toast message
-        }
-        catch (err) {
-            // console.error("Reset password error", err);
-            setToast({ "message": err.message, "type": "error" });
-        }
+    //         setToast({ "message": "Check your email for the password reset link", "type": "success" }); //Show toast message
+    //     }
+    //     catch (err) {
+    //         // console.error("Reset password error", err);
+    //         setToast({ "message": err.message, "type": "error" });
+    //     }
 
-        setTimeout(() => {
-            setToast(null);
-        }, 1500);
-    };
-
+    //     setTimeout(() => {
+    //         setToast(null);
+    //     }, 1500);
+    // };
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -94,7 +113,7 @@ const Login = () => {
         }
 
         try {
-            await signUpNewUser(email, password);
+            await signUpNewUser(email, password, name);
             setToast({ message: "Account created successfully! Check your email to verify.", type: "success" }); // More accurate message
         } catch (err) {
             setToast({ message: err.message, type: "error" });
@@ -121,7 +140,7 @@ const Login = () => {
             setToast({ message: "Login Successful!", type: "success" });
 
             // You might want to redirect the user to another page after successful login
-             window.location.href = '/';  // Example redirect
+            window.location.href = '/';  // Example redirect
         } catch (err) {
             // console.error("Login error:", err.message);
             setToast({ message: "Invalid login credentials.", type: "error" });
@@ -132,8 +151,6 @@ const Login = () => {
             }, 1500);
         }
     };
-
-
 
     return (
         <div className="relative w-full h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-primary-dark">

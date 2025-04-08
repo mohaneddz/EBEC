@@ -138,7 +138,7 @@ export default function EventPage({ params }) {
 
       {/* Header Section (Gradient) - Stays as is */}
       <div className="p-8 pb-12 bg-gradient-to-br from-primary-dark to-primary-light flex-shrink-0"> {/* flex-shrink-0 prevents header shrinking */}
-        <Link href="/event" className='z-40 inline-block'>
+        <Link href="/events" className='z-40 inline-block'>
           <IconArrowBackUp className="z-40 my-4 ml-4 text-primary-dark h-12 w-12 p-2 flex-shrink-0 bg-white rounded-full hover:bg-gray-100 transition-colors" />
         </Link>
 

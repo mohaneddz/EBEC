@@ -5,12 +5,9 @@ import { supabase } from '@/config/supabaseClient'; // Adjust path if needed
 
 // Define default columns for reference and explicit settings
 const defaultColumns = [
-    { key: 'name', label: 'Name', filterable: true },
-    { key: 'email', label: 'E-Mail', filterable: true },
-    { key: 'message', label: 'Message', expandable: true, filterable: false }, // Don't filter long messages
-    { key: 'date', label: 'Date Received', filterable: true, type: 'date' },
-    { key: 'type', label: 'Type', filterable: true }, // e.g., 'Contact', 'Support'
-    // Add any other relevant default columns
+    { key: 'eventName', label: 'Event Name', filterable: true },
+    { key: 'userName', label: 'User Name', filterable: true },
+    { key: 'timestamp', label: 'Timestamp', filterable: true, type: 'date' },
 ];
 
 // Helper to generate labels from keys
@@ -19,10 +16,10 @@ const generateLabel = (key) => {
     return spaced.charAt(0).toUpperCase() + spaced.slice(1).trim();
 };
 
-export default function EmailsPage() {
+export default function FormsPage() {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null); 
+    const [error, setError] = useState(null);
     const [cols, setCols] = useState(null);
 
     const loadData = async () => {
@@ -32,17 +29,18 @@ export default function EmailsPage() {
         setData(null);
 
         try {
-            // Example: Order by date descending (assuming 'date' or 'created_at' exists)
-            const { data: emailsData, error: fetchError } = await supabase
-                .from('Emails') // Your table name
+            const { data: FormsData, error: fetchError } = await supabase
+                .from('Forms') // Your table name
                 .select('*')
-                .order('date', { ascending: false }); // Adjust column name if needed
+                .order('timestamp', { ascending: false }); // Adjust column name if needed
             if (fetchError) throw fetchError;
-            setData(emailsData || []);
+
+            setData(FormsData || []);
+            // console.log("FormsData:", FormsData);
 
             // --- Dynamic Column Definition ---
-            if (emailsData && emailsData.length > 0) {
-                const sampleItem = emailsData[0];
+            if (FormsData && FormsData.length > 0) {
+                const sampleItem = FormsData[0];
                 const detectedKeys = Object.keys(sampleItem);
 
                 const dynamicCols = detectedKeys
@@ -65,7 +63,7 @@ export default function EmailsPage() {
                         const lowerKey = key.toLowerCase();
 
                         // Infer expandable
-                        if (lowerKey.includes('message') || lowerKey.includes('body') || lowerKey.includes('content') || lowerKey.includes('notes')) {
+                        if (lowerKey.includes('field')) {
                             expandable = true;
                             filterable = false; // Don't filter long text
                         }
@@ -81,27 +79,114 @@ export default function EmailsPage() {
                             filterable: filterable,
                             expandable,
                             type
-                            // Emails usually don't have images, so no image detection needed here
+                            // Forms usually don't have images, so no image detection needed here
                         };
                     });
-                setCols(dynamicCols);
+                spreadFields();
             } else {
                 setCols(defaultColumns); // Fallback
             }
 
         } catch (err) {
-            console.error("Error loading email data:", err);
-            setError(err.message || "An unexpected error occurred while loading emails.");
+            console.error("Error loading Form data:", err);
+            setError(err.message || "An unexpected error occurred while loading Forms.");
             setData([]);
             setCols(defaultColumns); // Use defaults on error
         } finally {
             setIsLoading(false);
+            // console.log('Data:', data);
         }
     };
 
     useEffect(() => {
         loadData();
-    }, []); // Run only on mount
+    }, []);
+
+    const spreadFields = () => {
+        if (!data || data.length === 0) return;
+
+        // Create properly sized array for results
+        let formattedData = [];
+
+        // Process each row
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i];
+            if (!row.fields || row.fields.length === 0) continue;
+
+            try {
+                // Parse the stringified JSON from the array
+                const fieldsObj = JSON.parse(row.fields[0]);
+
+                // Create a new object with the original row data
+                const newRow = { ...row };
+
+                // Add each field with generic field names (field 1, field 2, etc.)
+                let fieldCounter = 1;
+                for (const [key, value] of Object.entries(fieldsObj)) {
+                    // Use "field X" naming convention
+                    const fieldName = `field ${fieldCounter}`;
+
+                    // Store both the original field name and value
+                    newRow[fieldName] = value;
+
+                    fieldCounter++;
+                }
+
+                // Store the total number of fields
+                newRow.totalFields = fieldCounter - 1;
+
+                formattedData.push(newRow);
+            } catch (err) {
+                console.error("Error parsing fields for row:", row.id, err);
+                // Add the row without parsed fields
+                formattedData.push(row);
+            }
+        }
+
+        console.log("Formatted Data:", formattedData);
+
+        // create an array of 'field x' for max fields
+        const fieldNames = Object.keys(formattedData[0] || {}).filter(key => key.startsWith('field '));
+        const maxFields = Math.max(...fieldNames.map(name => parseInt(name.split(' ')[1], 10)));
+        const fieldColumns = Array.from({ length: maxFields }, (_, i) => `field ${i + 1}`);
+
+        // combine with existing columns
+
+        let allKeys = Array.from(new Set([
+            ...Object.keys(formattedData[0] || {}), // Original keys
+            ...fieldColumns // New field columns
+        ]));
+
+        setCols(allKeys.filter(key => key !== 'fields'));
+        setData(formattedData.filter(row => row.fields && row.fields.length > 0)); 
+
+        return formattedData;
+    };
+
+    // Helper function to update columns based on the processed data
+    const updateColumnsForFields = (formattedData) => {
+        if (!formattedData || formattedData.length === 0) return;
+
+        // Find maximum number of fields across all rows
+        const maxFields = Math.max(...formattedData.map(row => row.totalFields || 0));
+
+        // Get existing columns without field columns
+        const existingCols = cols?.filter(col => !col.key.startsWith('field ')) || [];
+
+        // Create new field columns
+        const fieldColumns = [];
+        for (let i = 1; i <= maxFields; i++) {
+            fieldColumns.push({
+                key: `field ${i}`,
+                label: `Field ${i}`,
+                filterable: true,
+                expandable: true
+            });
+        }
+
+        // Combine existing columns with field columns
+        setCols([...existingCols, ...fieldColumns]);
+    };
 
     // --- Update Handler ---
     const handleSupabaseUpdate = async (updatedItem) => {
@@ -114,20 +199,20 @@ export default function EmailsPage() {
             // updateData.updated_at = new Date().toISOString();
 
             const { error: updateError } = await supabase
-                .from('Emails')
+                .from('Forms')
                 .update(updateData)
                 .eq('id', id);
 
             if (updateError) throw updateError;
 
-            // Optimistic update
+            // Optimistic updates
             setData(prevData =>
                 prevData.map(item => (item.id === id ? { ...item, ...updatedItem } : item))
             );
 
         } catch (err) {
-            console.error("Error updating email:", err);
-            setError(`Failed to update email (ID: ${updatedItem.id}). ${err.message}`);
+            console.error("Error updating Form:", err);
+            setError(`Failed to update Form (ID: ${updatedItem.id}). ${err.message}`);
             // Consider force reload on update error
             // await loadData();
         }
@@ -143,7 +228,7 @@ export default function EmailsPage() {
 
         try {
             const { error: deleteError } = await supabase
-                .from('Emails')
+                .from('Forms')
                 .delete()
                 .eq('id', idToDelete);
 
@@ -151,8 +236,8 @@ export default function EmailsPage() {
             // Success
 
         } catch (err) {
-            console.error("Error deleting email:", err);
-            setError(`Failed to delete email (ID: ${idToDelete}). ${err.message}`);
+            console.error("Error deleting Form:", err);
+            setError(`Failed to delete Form (ID: ${idToDelete}). ${err.message}`);
             // Rollback
             setData(originalData);
         }
@@ -168,28 +253,28 @@ export default function EmailsPage() {
     return (
         <>
             <Head>
-                <title>Received Emails</title>
+                <title>Received Forms</title>
             </Head>
             {/* Use same layout structure */}
-            <div className='flex flex-col gap-4 min-h-screen bg-gray-100 dark:bg-gray-900'>
+            <div className='flex flex-col min-h-screen gap-4 bg-gray-100 dark:bg-gray-900'>
                 {/* Header */}
-                <div className='flex flex-col gap-2 bg-gradient-to-br from-primary-dark to-primary-light p-6 sm:p-8 shadow-md'>
-                    <h1 className='text-3xl sm:text-5xl font-black text-secondary-light text-center'>E-MAILS</h1>
+                <div className='flex flex-col gap-2 p-6 shadow-md bg-gradient-to-br from-primary-dark to-primary-light sm:p-8'>
+                    <h1 className='text-3xl font-black text-center sm:text-5xl text-secondary-light'>FORMS</h1>
                 </div>
 
                 {/* Main Content Area */}
-                <div className="container mx-auto px-4 py-4 flex-grow">
+                <div className="container flex-grow px-4 py-4 mx-auto">
                     {/* Error Message */}
                     {error && (
-                        <div className="mb-4 text-red-700 dark:text-red-400 p-3 bg-red-100 dark:bg-red-900/30 rounded-md border border-red-300 dark:border-red-600 text-sm">
+                        <div className="p-3 mb-4 text-sm text-red-700 bg-red-100 border border-red-300 rounded-md dark:text-red-400 dark:bg-red-900/30 dark:border-red-600">
                             <strong>Error:</strong> {error}
                         </div>
                     )}
 
                     {/* Loading State */}
                     {isLoading ? (
-                        <div className="text-center p-10 text-gray-500 dark:text-gray-400">
-                            <div role="status" className="flex justify-center items-center">
+                        <div className="p-10 text-center text-gray-500 dark:text-gray-400">
+                            <div role="status" className="flex items-center justify-center">
                                 <svg aria-hidden="true" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-primary-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     {/* Spinner SVG Paths */}
                                     <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
@@ -197,7 +282,7 @@ export default function EmailsPage() {
                                 </svg>
                                 <span className="sr-only">Loading...</span>
                             </div>
-                            Loading emails...
+                            Loading Forms...
                         </div>
                     ) : (
                         // Render Table only when cols and data are ready
@@ -213,9 +298,7 @@ export default function EmailsPage() {
                     )}
                     {/* Explicit No Data Message */}
                     {!isLoading && cols && data && data.length === 0 && (
-                        <div className="text-center p-10 text-gray-500 dark:text-gray-400">
-                            No emails found.
-                        </div>
+                        <></>
                     )}
                 </div>
             </div>

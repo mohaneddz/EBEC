@@ -13,7 +13,7 @@ const EventsGallery = () => {
     useEffect(() => {
         const fetchEvent = async () => {
             const { data, error } = await supabase.from('Events').select('*');
-            console.log('Events:', data);
+            // console.log('Events:', data);
 
             if (error) {
                 setFetchError('Could not fetch the Events!');
@@ -43,7 +43,6 @@ const EventsGallery = () => {
 
     return (
         <>
-            {/* Rest of your component remains the same */}
             <svg className="-z-10 translate-y-2" width="100%" height="192" viewBox="0 0 960 192" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <g clipPath="url(#clip0_505_1163)">
                     <path d="M0 45.0004L32 45.5004C64 46.0004 128 47.0004 192 43.5004C256 40.0004 320 32.0004 384 31.7004C448 31.3004 512 38.7004 576 35.0004C640 31.3004 704 16.7004 768 11.5004C832 6.30037 896 10.7004 928 12.8004L960 15.0004V193H928C896 193 832 193 768 193C704 193 640 193 576 193C512 193 448 193 384 193C320 193 256 193 192 193C128 193 64 193 32 193H0V45.0004Z" fill="#1C2D75" />
@@ -56,7 +55,7 @@ const EventsGallery = () => {
                     </clipPath>
                 </defs>
             </svg>
-            <div className="Events__Gallery flex flex-col justify-around w-screen bg-primary-dark overflow-x-hidden lg:px-16 pb-80 ">
+            <div className="Events__Gallery flex flex-col justify-center min-h-screen w-screen bg-primary-dark overflow-x-hidden lg:px-16 pb-16">
                 <motion.h1 className="text-secondary-dark text-4xl sm:text-5xl lg:text-7xl font-black text-center py-20">
                     Events Gallery
                 </motion.h1>
@@ -65,10 +64,9 @@ const EventsGallery = () => {
                 {Events && Events.length > 0 ? (
                     <ExpandableCardDemo cards={Events} />
                 ) : !fetchError ? (
-                    <p className="text-center text-white">Loading events...</p>
+                    <p ref={ref} className="text-2xl font-bold text-slate-700 text-center">Loading Upcoming Evnets...</p>
                 ) : null}
             </div>
-
             <svg className="scale-x-[-1] scale-y-[-1] -translate-y-2 -z-10 mb-80" width="100%" height="192" viewBox="0 0 960 192" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <g clipPath="url(#clip0_505_1163)">
                     <path d="M0 45.0004L32 45.5004C64 46.0004 128 47.0004 192 43.5004C256 40.0004 320 32.0004 384 31.7004C448 31.3004 512 38.7004 576 35.0004C640 31.3004 704 16.7004 768 11.5004C832 6.30037 896 10.7004 928 12.8004L960 15.0004V193H928C896 193 832 193 768 193C704 193 640 193 576 193C512 193 448 193 384 193C320 193 256 193 192 193C128 193 64 193 32 193H0V45.0004Z" fill="#1C2D75" />

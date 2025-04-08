@@ -17,7 +17,7 @@ export const Logo = () => {
                 className="font-medium text-black whitespace-nowrap"
                 href="/"
             >
-                Admin Board
+                <strong className="font-bold">EBEC | </strong> Admin Panel
             </motion.a>
         </button>
     );

@@ -8,14 +8,27 @@ import supabase from '@/config/supabaseClient'
 import UserInfo from "@/components/Main/UserInfo";
 import { IconShieldFilled } from "@tabler/icons-react";
 
-import Image from 'next/image'
-const image1 = "/Assets/FakePFP/9.jpg";
+const DEFAULT_PIC = "https://static.vecteezy.com/system/resources/previews/036/594/092/non_2x/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
 
 export const UserPage = ({ id }) => {
+
     const [isVisible, setIsVisible] = useState(false);
     const [selectedDepartment, setSelectedDepartment] = useState(null);
-    const departments = ['AI', 'Marketing', 'ER', 'HR', 'Finance', 'Operations'];
+    const departments = ['IT', 'HR', 'Multimedia', 'Design', 'Relex', 'Events'];
     const [user, setUser] = useState(null);
+    const [motivation, setMotivation] = useState('');
+
+    const handleMotivationChange = (e) => {
+        setMotivation(e.target.value);
+    }
+
+    const handleSendRequest = () => {
+        if (selectedDepartment) {
+            sendRequest();
+        } else {
+            alert("Please select a department before sending a request.");
+        }
+    }
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -40,51 +53,100 @@ export const UserPage = ({ id }) => {
     };
 
     const handleLogOut = () => {
-        window.location.href = '/login';
+        supabase.auth.signOut()
+            .then(() => {
+                window.location.href = '/login';
+            })
+            .catch((error) => {
+                console.error('Error logging out:', error);
+            });
     };
 
-    const sendRequest = () => {
+    const sendRequest = async () => {
         console.log(`Sending request for department: ${selectedDepartment}`);
-        closeModal(); // Close after "sending"
+        // add to supabase table for 'emails'
+        const { data, error } = await supabase.from('Emails').insert([
+            // the date must be in format YYYY-MM-DDTHH:MM:SSZ
+            { name: user.user_metadata?.display_name, email: user.email, type: 'Change Department', message: `Change from ${user.user_metadata?.department} to ${selectedDepartment}.\nMotivation: ${motivation}`, date: new Date().toISOString() }
+        ]);
+        if (error) {
+            console.error('Error sending request:', error);
+        } else {
+            console.log('Request sent successfully:', data);
+        }
+
+        closeModal();
     }
+
+    const allowed = ['Pres  ident', 'Vice President', 'General Secretary']
 
     return (
         <div className='flex flex-col items-center justify-center'>
 
-            <Modal isOpen={isVisible} onClose={closeModal} title="Select Department">
-                {/* Use a grid with equal columns and justify-items-center */}
+            <Modal isOpen={isVisible} onClose={closeModal} title="Select Department & Add Motivation">
+                {/* Department Selection Grid */}
                 <div className="grid grid-cols-3 gap-4 justify-items-center mt-4">
                     {departments.map((department) => (
                         <button
                             key={department}
                             onClick={() => handleSelect(department)}
+                            // Consider slightly smaller buttons if text overflows, or adjust grid gap
                             className={`
-                                w-24 h-12  
-                                flex items-center justify-center
-                                rounded-full
-                                ${selectedDepartment === department
-                                    ? 'bg-gradient-to-br from-primary-400 to-primary-500 text-white'
-                                    : 'bg-gradient-to-br from-primary-100 to-primary-200 text-slate-500'
+                            w-24 h-12
+                            text-sm // Added smaller text just in case names are long
+                            flex items-center justify-center
+                            px-2 
+                            rounded-md
+                            text-center 
+                            transition-colors duration-150 ease-in-out
+                            ${selectedDepartment === department
+                                    ? 'bg-gradient-to-br from-secondary-light to-secondary-dark text-white shadow-md' // Enhanced selected style
+                                    : 'bg-gradient-to-br from-primary-light to-primary-dark text-slate-400 hover:from-secondary-400 hover:to-secondary-600' // Adjusted unselected style
                                 }`}
                         >
                             {department}
                         </button>
                     ))}
                 </div>
-                <div className="flex justify-center mt-8">
+
+                {/* Motivation Section */}
+                <div className="mt-6"> {/* Increased margin-top for spacing */}
+                    <label htmlFor="motivation" className="block mb-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Motivation (Optional)
+                    </label>
+                    <textarea
+                        id="motivation"
+                        rows="4" // Adjust rows as needed
+                        className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Briefly explain why you are requesting this department..."
+                        value={motivation}
+                        onChange={handleMotivationChange}
+                    />
+                </div>
+
+                {/* Action Button */}
+                <div className="flex justify-center mt-6"> {/* Adjusted margin-top */}
                     <Button
                         text={'Send Request'}
-                        color1={'#1e4b8a'}
-                        color2={'#1b3764'}
-                        className="w-2/5 " // Removed extra mt-8, as we have margin on the container
-                        onClick={sendRequest}
+                        color1={'#FFC208'} color2={'#FDA916'}
+                        className="w-2/5" // Keeping the width, adjust if needed
+                        onClick={handleSendRequest} // Use the wrapper function
+                        // Disable button if no department is selected (optional)
+                        disabled={!selectedDepartment}
                     />
                 </div>
             </Modal>
-            { user && 
-            // user.role === 'admin' && 
+
+            {user &&
+
+                (allowed.includes(user.user_metadata?.role) ||
+                    ((user.user_metadata?.role === 'Manager') &&
+                        (user.user_metadata?.department === 'IT' || user.user_metadata?.department === 'HR'))
+                ) &&
+
+                // user.role === 'admin' && 
                 <a href="/admin"
-                    className={"fixed hover:scale-105 acitve:scale-95 bottom-0 right-0 m-8  rounded-full bg-gradient-to-br from-primary-light to-primary-dark text-white p-4 shadow-lg hover:shadow-xl transition duration-300 ease-in-out"}>
+                    className={"z-50 fixed hover:scale-105 acitve:scale-95 bottom-0 right-0 m-8  rounded-full bg-gradient-to-br from-primary-light to-primary-dark text-white p-4 shadow-lg hover:shadow-xl transition duration-300 ease-in-out"}>
                     <IconShieldFilled className="text-white " />
                 </a>
             }
@@ -137,10 +199,18 @@ export const UserPage = ({ id }) => {
                 </g>
             </svg>
 
-            {user &&
+            {user && (
+                <UserInfo
+                    name={user.user_metadata?.display_name || "No Name"}
+                    email={user.email}
+                    role={user.user_metadata?.role || "Member"}
+                    department={user.user_metadata?.department || "Unassigned"}
+                    openModal={openModal}
+                    handleLogOut={handleLogOut}
+                    image={DEFAULT_PIC}
+                />
+            )}
 
-                <UserInfo name={user.name} email={user.email} role={user.role} department={'IT'} openModal={openModal} handleLogOut={handleLogOut} image={image1} />
-            }
 
         </div>
     );

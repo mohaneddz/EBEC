@@ -8,11 +8,11 @@ export default function InfiniteMovingCardsSection() {
   return (
 
     <div id="InfiniteMovingCardsSection"
-      className="w-full bg-gradient-to-br from-slate-50 to-slate-200 ">
+      className="w-full bg-gradient-to-br min-h-screen flex flex-col justify-center items-center content-center from-slate-50 to-slate-200 ">
 
       <TextGenerateEffect
-        words="Trusted by Many"
-        className="mt-40 lt:my-40 text-3xl sm:text-4xl md:text-5xl lg:text-9xl text-center font-bold"
+        words="What's your opinion on EBEC?"
+        className="mt-40 mb-16 lt:my-40 text-3xl sm:text-4xl md:text-5xl lg:text-9xl text-center font-bold"
         color={"primary-light"}
       />
 

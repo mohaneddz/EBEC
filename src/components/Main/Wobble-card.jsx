@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion } from "motion/react";
-import { cn } from "../../lib/utils";
+import { cn } from "@/lib/utils";
 
 export const WobbleCard = ({
   children,
@@ -49,6 +49,10 @@ export const WobbleCard = ({
           boxShadow:
             "0 10px 32px rgba(34, 42, 53, 0.12), 0 1px 1px rgba(0, 0, 0, 0.05), 0 0 0 1px rgba(34, 42, 53, 0.05), 0 4px 6px rgba(34, 42, 53, 0.08), 0 24px 108px rgba(47, 48, 55, 0.10)",
         }}
+        onClick={() => {
+          window.location.href = "/events";
+        }
+        }
       >
         {/* Background Image Overlay */}
         <div
@@ -57,11 +61,10 @@ export const WobbleCard = ({
 
         {/* Text Overlay */}
         <motion.div
-          className={`absolute inset-0 flex flex-col justify-center p-6 transition-opacity duration-300 ${
-            isHovering
+          className={`absolute inset-0 flex flex-col justify-center p-6 transition-opacity duration-300 ${isHovering
               ? "opacity-100 bg-gradient-to-br from-[#ffb74d]/70 to-[#ff9800]"
               : "opacity-0"
-          }`}
+            }`}
         >
           {children}
         </motion.div>

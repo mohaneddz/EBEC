@@ -29,95 +29,95 @@ export default function EventsPage() {
     const [error, setError] = useState(null); // Consolidated error state
     const [cols, setCols] = useState(null); // Start cols as null until fetched
 
-    useEffect(() => {
-        const loadData = async () => {
-            setIsLoading(true);
-            setError(null);
-            setCols(null);
-            setData(null);
+    const loadData = async () => {
+        setIsLoading(true);
+        setError(null);
+        setCols(null);
+        setData(null);
 
-            try {
-                // Example: Order by date descending
-                const { data: eventData, error: fetchError } = await supabase
-                    .from('Events') // Your table name
-                    .select('*')
-                    .order('date', { ascending: false }); // Adjust ordering if needed
+        try {
+            // Example: Order by date descending
+            const { data: eventData, error: fetchError } = await supabase
+                .from('Events') // Your table name
+                .select('*')
+                .order('date', { ascending: false }); // Adjust ordering if needed
 
-                if (fetchError) {
-                    throw fetchError;
-                }
-
-                setData(eventData || []); // Ensure array
-
-                // --- Dynamic Column Definition ---
-                if (eventData && eventData.length > 0) {
-                    const sampleItem = eventData[0];
-                    const detectedKeys = Object.keys(sampleItem);
-
-                    const dynamicCols = detectedKeys
-                         // Exclude common meta columns if they exist
-                        .filter(key => key !== 'id' && key !== 'created_at' && key !== 'updated_at')
-                        .map(key => {
-                            // 1. Check explicit definition
-                            const defaultCol = defaultColumns.find(col => col.key === key);
-                            if (defaultCol) {
-                                return {
-                                    ...defaultCol,
-                                    label: defaultCol.label || generateLabel(key),
-                                };
-                            }
-
-                            // 2. Infer properties
-                            let type = undefined;
-                            let maxImages = undefined;
-                            let expandable = false;
-                            let filterable = true;
-                            const lowerKey = key.toLowerCase();
-
-                             // Infer image type
-                            if (lowerKey.includes('image') || lowerKey.includes('picture') || lowerKey.includes('logo') || lowerKey.includes('avatar') || lowerKey.includes('thumb')) {
-                                type = 'image';
-                                filterable = false;
-                                maxImages = (lowerKey.includes('pictures') || lowerKey.includes('images') || lowerKey.includes('gallery')) ? 4 : 1; // Use defined max or default
-                            }
-
-                            // Infer expandable
-                            if (lowerKey.includes('description') || lowerKey.includes('notes') || lowerKey.includes('details') || lowerKey.includes('text') || lowerKey.includes('content') || lowerKey.includes('comment') || lowerKey.includes('brief')) {
-                                expandable = true;
-                                // Maybe don't filter very long text by default
-                                if (lowerKey.includes('description') || lowerKey.includes('content')) filterable = false;
-                            }
-
-                             // Basic date hint
-                             if (lowerKey === 'date' || lowerKey.includes('time')) {
-                                 type = 'date';
-                             }
-
-                            return {
-                                key: key,
-                                label: generateLabel(key),
-                                filterable: filterable,
-                                type,
-                                maxImages,
-                                expandable
-                            };
-                        });
-                    setCols(dynamicCols);
-                } else {
-                    console.log("No event data found, using default columns.");
-                    setCols(defaultColumns); // Fallback
-                }
-
-            } catch (err) {
-                console.error("Error loading event data:", err);
-                setError(err.message || "An unexpected error occurred while loading events.");
-                setData([]);
-                setCols(defaultColumns); // Use defaults on error
-            } finally {
-                setIsLoading(false);
+            if (fetchError) {
+                throw fetchError;
             }
-        };
 
+            setData(eventData || []); // Ensure array
+
+            // --- Dynamic Column Definition ---
+            if (eventData && eventData.length > 0) {
+                const sampleItem = eventData[0];
+                const detectedKeys = Object.keys(sampleItem);
+
+                const dynamicCols = detectedKeys
+                     // Exclude common meta columns if they exist
+                    .filter(key => key !== 'id' && key !== 'created_at' && key !== 'updated_at')
+                    .map(key => {
+                        // 1. Check explicit definition
+                        const defaultCol = defaultColumns.find(col => col.key === key);
+                        if (defaultCol) {
+                            return {
+                                ...defaultCol,
+                                label: defaultCol.label || generateLabel(key),
+                            };
+                        }
+
+                        // 2. Infer properties
+                        let type = undefined;
+                        let maxImages = undefined;
+                        let expandable = false;
+                        let filterable = true;
+                        const lowerKey = key.toLowerCase();
+
+                         // Infer image type
+                        if (lowerKey.includes('image') || lowerKey.includes('picture') || lowerKey.includes('logo') || lowerKey.includes('avatar') || lowerKey.includes('thumb')) {
+                            type = 'image';
+                            filterable = false;
+                            maxImages = (lowerKey.includes('pictures') || lowerKey.includes('images') || lowerKey.includes('gallery')) ? 4 : 1; // Use defined max or default
+                        }
+
+                        // Infer expandable
+                        if (lowerKey.includes('description') || lowerKey.includes('notes') || lowerKey.includes('details') || lowerKey.includes('text') || lowerKey.includes('content') || lowerKey.includes('comment') || lowerKey.includes('brief')) {
+                            expandable = true;
+                            // Maybe don't filter very long text by default
+                            if (lowerKey.includes('description') || lowerKey.includes('content')) filterable = false;
+                        }
+
+                         // Basic date hint
+                         if (lowerKey === 'date' || lowerKey.includes('time')) {
+                             type = 'date';
+                         }
+
+                        return {
+                            key: key,
+                            label: generateLabel(key),
+                            filterable: filterable,
+                            type,
+                            maxImages,
+                            expandable
+                        };
+                    });
+                setCols(dynamicCols);
+            } else {
+                console.log("No event data found, using default columns.");
+                setCols(defaultColumns); // Fallback
+            }
+
+        } catch (err) {
+            console.error("Error loading event data:", err);
+            setError(err.message || "An unexpected error occurred while loading events.");
+            setData([]);
+            setCols(defaultColumns); // Use defaults on error
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
         loadData();
     }, []); // Run only on mount
 
@@ -176,6 +176,12 @@ export default function EventsPage() {
         }
     };
 
+    const refresh = async () => {
+        setIsLoading(true);
+        await loadData();
+        setIsLoading(false);
+    };
+
     // --- Render Logic ---
     return (
         <>
@@ -209,12 +215,12 @@ export default function EventsPage() {
                                 </svg>
                                 <span className="sr-only">Loading...</span>
                             </div>
-                            Loading events...
                         </div>
                     ) : (
                         // Render Table only when cols and data are ready
                          cols && data ? (
                             <SortableTable
+                                refresh={refresh}
                                 data={data}
                                 cols={cols}
                                 onUpdate={handleSupabaseUpdate}
@@ -222,12 +228,6 @@ export default function EventsPage() {
                             />
                          ) : null // Or show a specific "No data" message if data is empty array and cols are set
                     )}
-                     {/* Explicit No Data Message if loading finished and data is empty */}
-                     {!isLoading && cols && data && data.length === 0 && (
-                          <div className="text-center p-10 text-gray-500 dark:text-gray-400">
-                              No events found.
-                          </div>
-                     )}
                 </div>
             </div>
         </>

@@ -25,7 +25,7 @@ export default function WobbleCardSection() {
             className="min-h-screen flex flex-col justify-center w-full bg-gradient-to-br from-primary-light to-primary-dark pb-24 ">
 
             <TextGenerateEffect
-                words="Memorable Moments"
+                words="Memorable Events"
                 className="relative block my-16 md:my-20 text-center mt-20"
                 color={"secondary-dark"}
             />

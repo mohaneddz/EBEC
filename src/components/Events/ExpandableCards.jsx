@@ -149,11 +149,11 @@ export function ExpandableCardDemo({ cards, className }) {
               >
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-semibold text-secondary-dark text-center text-base truncate"  // Removed md:text-left
+                  className="font-semibold text-secondary-dark text-center text-base truncate text-ellipsis w-full"  // Removed md:text-left
                 >
                   {card.title}
                 </motion.h3>
-                <p className="text-neutral-400 text-center text-base  overflow-hidden truncate text-ellipsis"> {/*Used text-ellipsis for overflow handling*/}
+                <p className="text-neutral-400 text-center text-base  overflow-hidden truncate text-ellipsis w-full"> {/*Used text-ellipsis for overflow handling*/}
                   {card.description}
                 </p>
               </motion.div>

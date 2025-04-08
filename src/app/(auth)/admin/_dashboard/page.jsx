@@ -13,7 +13,7 @@ export default function page() {
         const fetchData = async () => {
             const { data, error } = await supabase.from('Forefront').select('*');
             if (error) console.error('Error fetching data:', error);
-            else console.log('Fetched data:', data);
+            // else console.log('Fetched data:', data);
             setData(data);
         };
 
@@ -34,7 +34,7 @@ export default function page() {
 
                 <div className="bg-gray-200 rounded-lg mx-8 h-min px-16">
                     {/* 3 cards that the user can select */}
-                    <div className="grid grid-cols-3 gap-4 h-min p-4">
+                    <div className="grid lg:grid-rows-1 lg:grid-cols-3 justify-stretch content-center items-center gap-4 h-min p-4">
 
                         <UpcomingAdminCard number={1} />
                         <UpcomingAdminCard number={2} />
@@ -48,7 +48,8 @@ export default function page() {
 
                 <div className="bg-gray-200 rounded-lg mx-8 h-min px-16">
 
-                    <div className="grid md:grid-cols-3 gap-4 h-min p-4">
+                    <div className="grid lg:grid-cols-3 gap-4 h-min p-4 w-max">
+                        {/* button to refresh the table */}
                         {
                             data && data.map((item, index) => (
                                 <ManagerAdminCard key={index} name={item.name} department={item.department} src={item.picture ? item.picture : DEFAULT_PIC } />

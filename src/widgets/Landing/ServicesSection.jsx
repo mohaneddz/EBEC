@@ -55,8 +55,8 @@ export default function ServicesSection() {
     }, []);
 
     // Always call hooks unconditionally
-    const translateYLeftTransform = useTransform(scrollYProgress, [0, 1], [0, 120]);
-    const translateYRightTransform = useTransform(scrollYProgress, [0, 1], [0, -130]);
+    const translateYLeftTransform = useTransform(scrollYProgress, [0, 1], [0, 170]);
+    const translateYRightTransform = useTransform(scrollYProgress, [0, 1], [0, -170]);
     const translateYAllTransform = useTransform(scrollYProgress, [0, 1], [0, -0]);
     
     // Then conditionally use the results
@@ -129,7 +129,7 @@ export default function ServicesSection() {
                     </svg>
 
                     {/* Left side - Text Content */}
-                    <motion.div style={{ translateY: translateYLeft }} className="max-w-xl " variants={itemVariants}>
+                    <motion.div style={{ translateY: translateYLeft }} className="max-w-xl mb-12 " variants={itemVariants}>
                         <h2 className="text-4xl vsm:text-5xl sm:text-5xl lg:text-7xl font-bold text-gray-900 mb-4">
                             Why EBEC?
                         </h2>
@@ -140,7 +140,7 @@ export default function ServicesSection() {
                     </motion.div>
 
                     {/* Right side - Services Grid */}
-                    <motion.div style={{ translateY: translateYRight }} className="grid grid-cols-2 gap-4">
+                    <motion.div style={{ translateY: translateYRight }} className="grid grid-cols-2 gap-4 lg:-mb-16">
                         {services.map((service, index) => {
                             const Icon = service.icon;
                             return (

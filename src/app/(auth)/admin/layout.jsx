@@ -1,15 +1,16 @@
 "use client";
 
 import { Sidebar, SidebarBody, Logo, LogoIcon, SidebarLink } from "@/components/Admin/Sidebar";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import {
     IconBrandTabler,
     IconMail,
     IconCalendarEvent,
     IconUsersGroup,
-    IconUserUp,
+    IconAlignBoxCenterTop,
 } from "@tabler/icons-react";
+import fkAround from "@/config/fkAround";
 
 const PageContext = createContext();
 
@@ -18,6 +19,8 @@ export function usePageContext() {
 }
 
 export default function AdminPage({ children }) {
+
+    const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const [page, setPage] = useState("Members");
 
@@ -25,35 +28,45 @@ export default function AdminPage({ children }) {
         { label: "Dashboard", page: "dashboard", icon: <IconBrandTabler className="text-neutral-700 h-5 w-5" /> },
         { label: "Members", page: "members", icon: <IconUsersGroup className="text-neutral-700 h-5 w-5" /> },
         { label: "Emails", page: "emails", icon: <IconMail className="text-neutral-700 h-5 w-5" /> },
-        { label: "Events", page: "events", icon: <IconCalendarEvent className="text-neutral-700 h-5 w-5" /> }
+        { label: "Events", page: "events", icon: <IconCalendarEvent className="text-neutral-700 h-5 w-5" /> },
+        { label: "Forms", page: "forms", icon: <IconAlignBoxCenterTop className="text-neutral-700 h-5 w-5" /> },
     ];
+
+    useEffect(() => {
+        (async () => {
+            await fkAround();
+            setLoading(false);
+        })();
+    }, []);
 
     return (
         <PageContext.Provider value={{ page, setPage }}>
+            <>
+                {loading && <div className="flex items-center justify-center h-screen w-full bg-gray-100"> Loading...</div>}
+                {!loading &&
+                    <div className={cn("flex flex-col md:flex-row bg-gray-100 flex-1 border border-neutral-200 h-screen w-full overflow-x-hidden")}>
 
-            <div className={cn("flex flex-col md:flex-row bg-gray-100 flex-1 border border-neutral-200 h-screen w-full overflow-x-hidden")}>
+                        <Sidebar open={open} setOpen={setOpen}>
+                            <SidebarBody className="justify-between gap-10">
 
-                <Sidebar open={open} setOpen={setOpen}>
-                    <SidebarBody className="justify-between gap-10">
+                                <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                                    {open ? <Logo /> : <LogoIcon />}
+                                    <div className="mt-8 flex flex-col gap-2">
+                                        {links.map((link, idx) => (
+                                            <SidebarLink
+                                                key={idx}
+                                                link={link}
+                                                onClick={() => setPage(link.page)}
+                                            />
+                                        ))}
+                                    </div>
+                                </div>
 
-                        <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
-                            {open ? <Logo /> : <LogoIcon />}
-                            <div className="mt-8 flex flex-col gap-2">
-                                {links.map((link, idx) => (
-                                    <SidebarLink
-                                        key={idx}
-                                        link={link}
-                                        onClick={() => setPage(link.page)}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    
-                    </SidebarBody>
-                </Sidebar>
-                {children}
-            </div>
-
+                            </SidebarBody>
+                        </Sidebar>
+                        {children}
+                    </div>}
+            </>
         </PageContext.Provider>
     );
 }

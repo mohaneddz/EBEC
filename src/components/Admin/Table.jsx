@@ -20,7 +20,7 @@ const LIMIT = 20;
 const MAX_IMAGE_WIDTH = 300;
 const MAX_IMAGE_HEIGHT = 200;
 
-export default function SortableTable({ data = null, cols = null, onDelete, onUpdate }) {
+export default function SortableTable({ data = null, cols = null, onDelete, onUpdate, refresh = null }) {
     const [info, setInfo] = useState([]); // Initialize as an empty array
     const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
@@ -677,14 +677,24 @@ export default function SortableTable({ data = null, cols = null, onDelete, onUp
                     className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 w-full sm:w-auto dark:bg-gray-700 dark:text-white"
                     aria-label="Search table"
                 />
-                <button
-                    onClick={() => setShowFilters(!showFilters)}
-                    className="px-4 py-2 bg-primary-light text-white rounded-md hover:bg-primary-dark transition-colors duration-150 flex items-center w-full sm:w-auto justify-center"
-                    aria-expanded={showFilters}
-                >
-                    {showFilters ? <IconFilterOff size={20} className="mr-2" /> : <IconFilter size={20} className="mr-2" />}
-                    {showFilters ? 'Hide Filters' : 'Show Filters'}
-                </button>
+                <div className="flex items-center gap-2">
+
+                    <button
+                        onClick={() => setShowFilters(!showFilters)}
+                        className="px-4 py-2 bg-primary-light text-white rounded-md hover:bg-primary-dark transition-colors duration-150 flex items-center w-full sm:w-auto justify-center"
+                        aria-expanded={showFilters}
+                    >
+                        {showFilters ? <IconFilterOff size={20} className="mr-2" /> : <IconFilter size={20} className="mr-2" />}
+                        {showFilters ? 'Hide Filters' : 'Show Filters'}
+                    </button>
+                    <button
+                        onClick={refresh}
+                        className="px-4 py-2 bg-secondary-light text-white rounded-md hover:bg-secondary-dark transition-colors duration-150 flex items-center w-full sm:w-auto justify-center"
+                        aria-expanded={showFilters}
+                    >
+                        Refresh
+                    </button>
+                </div>
             </div>
 
             {/* Table */}

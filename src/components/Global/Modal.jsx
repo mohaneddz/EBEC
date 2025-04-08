@@ -35,7 +35,7 @@ export default function Modal ({ isOpen, onClose, title, children, buttons }) {
                 <div className="fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm bg-black/20">
                     <motion.div
                         ref={modalRef}
-                        className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full max-h-[70vh] overflow-scroll"
+                        className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full max-h-[70vh] overflow-y-auto"
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
@@ -52,7 +52,7 @@ export default function Modal ({ isOpen, onClose, title, children, buttons }) {
                             {buttons && buttons.map((button, index) => (
                                 <button
                                     key={index}
-                                    type="button" // Important for forms!
+                                    type="button"
                                     onClick={button.onClick}
                                     className={`px-4 py-2 rounded-md transition-colors duration-150 ${button.className || 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
                                 >

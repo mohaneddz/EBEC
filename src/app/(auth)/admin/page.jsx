@@ -9,6 +9,7 @@ const DashboardPage = dynamic(() => import("@/app/(auth)/admin/_dashboard/page")
 const MembersPage = dynamic(() => import("@/app/(auth)/admin/_members/page"));
 const EmailsPage = dynamic(() => import("@/app/(auth)/admin/_emails/page"));
 const EventsPage = dynamic(() => import("@/app/(auth)/admin/_events/page"));
+const FormsPage = dynamic(() => import("@/app/(auth)/admin/_forms/page"));
 
 export default function Page() {
   const { page } = usePageContext();
@@ -18,6 +19,7 @@ export default function Page() {
     members: MembersPage,
     emails: EmailsPage,
     events: EventsPage,
+    forms: FormsPage,
   };
   const PageComponent = pages[page] || DashboardPage;
 

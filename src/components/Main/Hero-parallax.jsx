@@ -7,6 +7,7 @@ import { motion, useScroll, useTransform, useSpring } from "motion/react";
 import { delay } from "motion";
 
 export const HeroParallax = ({ products }) => {
+  
   const firstRow = products.slice(0, 5);
   const secondRow = products.slice(5, 10);
   const thirdRow = products.slice(10, 15);
@@ -78,7 +79,7 @@ export const HeroParallax = ({ products }) => {
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.15 + 0.75, ease: "easeInOut" }}
+              transition={{ duration: 0.8, delay: i * 0.15 + 0.5, ease: "easeInOut" }}
             />
           ))}
         </motion.div>
@@ -91,7 +92,7 @@ export const HeroParallax = ({ products }) => {
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: i * 0.15 + 1.5, ease: "easeInOut" }}
+              transition={{ duration: 0.8, delay: i * 0.15 + 1, ease: "easeInOut" }}
             />
           ))}
         </motion.div>
@@ -135,7 +136,7 @@ export const Header = () => {
       <motion.h1
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 3, duration: 0.5 }}
+        transition={{ delay: 2, duration: 0.5 }}
         className="md:text-center max-w-[80%] inline-block text-3xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold text-primary-dark pl-8 text-start"
         style={{ textAlign: "start" }}
       >
@@ -144,7 +145,7 @@ export const Header = () => {
       <motion.p
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.5, delay: 3.5 }}
+        transition={{ duration: 0.5, delay: 2.5 }}
         className="text-start w-full text-wrap max-w-2xl text-sm md:text-md lg:text-xl mt-8 text-primary-light pl-8"
       >
         We build beautiful products with the latest technologies and frameworks.
@@ -170,7 +171,7 @@ export const ProductCard = ({ product, translate, transition, animate, initial }
       key={product.title}
       className="group/product h-96 w-full sm:w-[30rem] relative flex-shrink-0"
     >
-      <Link href="/events" className="block group-hover/product:shadow-2xl">
+      <Link href="#" className="block group-hover/product:shadow-2xl">
         <motion.img
           src={product.thumbnail}
           height="600"
@@ -185,7 +186,7 @@ export const ProductCard = ({ product, translate, transition, animate, initial }
       <div className="absolute inset-0 h-full w-full opacity-0 group-hover/product:opacity-80 bg-black pointer-events-none"></div>
       <h2 className="absolute bottom-4 left-4 opacity-0 group-hover/product:opacity-100 text-white">
         <Link
-          href={'/events'}
+          href={'#'}
           className="object-cover object-left-top absolute h-full w-full inset-0 rounded-lg"
           alt={product.title}
         ></Link>

@@ -7,7 +7,7 @@ import Modal from "@/components/Global/Modal";
 import supabase from '@/config/supabaseClient'
 import UserInfo from "@/components/Main/UserInfo";
 import { IconShieldFilled } from "@tabler/icons-react";
-
+import Toast from "@/components/Global/Toast";
 const DEFAULT_PIC = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//DEFAULT.jpg"
 
 export const UserPage = ({ id }) => {
@@ -18,6 +18,12 @@ export const UserPage = ({ id }) => {
     const [user, setUser] = useState(null);
     const [motivation, setMotivation] = useState('');
 
+    const [toastMessage, setToastMessage] = useState('');
+    const [toastVariant, setToastVariant] = useState('info');
+
+    const [visible, setVisible] = useState(false);
+
+
     const handleMotivationChange = (e) => {
         setMotivation(e.target.value);
     }
@@ -25,8 +31,10 @@ export const UserPage = ({ id }) => {
     const handleSendRequest = () => {
         if (selectedDepartment) {
             sendRequest();
+            showToast("Request sent successfully!", "success");
         } else {
-            alert("Please select a department before sending a request.");
+            // alert("Please select a department before sending a request.");
+            showToast("Please select a department before sending a request.", "error");
         }
     }
 
@@ -52,6 +60,20 @@ export const UserPage = ({ id }) => {
         setSelectedDepartment(null); // Reset selection on close
     };
 
+    const handleCloseToast = () => {
+        setVisible(false);
+    };
+
+    const showToast = (message, variant) => {
+        setToastMessage(message);
+        setToastVariant(variant);
+        setVisible(true);
+
+        setTimeout(() => {
+            setVisible(false);
+        }, 3000); // Auto-hide after 3 seconds
+    };
+
     const handleLogOut = () => {
         supabase.auth.signOut()
             .then(() => {
@@ -71,8 +93,10 @@ export const UserPage = ({ id }) => {
         ]);
         if (error) {
             // console.error('Error sending request:', error);
+            <Toast variant="error" message="Error sending request" />;
         } else {
             // console.log('Request sent successfully:', data);
+            <Toast variant="success" message="Request sent successfully!" />;
         }
 
         closeModal();
@@ -82,6 +106,12 @@ export const UserPage = ({ id }) => {
 
     return (
         <div className='flex flex-col items-center justify-center'>
+
+            {
+                visible && (
+                    <Toast variant={toastVariant} message={toastMessage} onClose={handleCloseToast} duration={3000} className="z-50" />
+                )
+            }
 
             <Modal isOpen={isVisible} onClose={closeModal} title="Select Department & Add Motivation">
                 {/* Department Selection Grid */}

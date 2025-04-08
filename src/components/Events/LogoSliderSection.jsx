@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 const image0 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//0.png";
 const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//1.png";
-const image2 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//2.png";
+// const image2 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//2.png";
 const image3 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//3.png";
 const image4 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//4.png";
 const image5 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//5.png";
@@ -20,7 +20,7 @@ const image14 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/publ
 const image15 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//15.png";
 const image16 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/logos//16.png";
 
-const images = [image0, image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15, image16];
+const images = [image0, image1, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15, image16];
 
 
 export default function LogoSliderSection() {

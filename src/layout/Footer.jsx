@@ -2,14 +2,17 @@
 
 import React from 'react';
 import { motion } from "motion/react";
+import { IconBrandDiscordFilled, IconBrandFacebookFilled, IconBrandInstagramFilled, IconBrandLinkedinFilled } from '@tabler/icons-react';
+
 const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//6.jpg";
+
 
 const Footer = () => {
   const socialIcons = [
-    { name: 'Facebook', icon: 'f' },
-    { name: 'Twitter', icon: 't' },
-    { name: 'LinkedIn', icon: 'l' },
-    { name: 'Instagram', icon: 'i' }
+    { name: 'Facebook', icon: IconBrandFacebookFilled, link: 'https://web.facebook.com/people/EBECClub/61555816156722/?_rdc=1&_rdr#' },
+    { name: 'Instagram', icon: IconBrandInstagramFilled, link: 'https://www.instagram.com/ebec__club' },
+    { name: 'LinkedIn', icon: IconBrandLinkedinFilled, link: 'https://dz.linkedin.com/company/ensia-business-entrepreneurship-club-ebec?trk=ppro_cprof' },
+    { name: 'Discord', icon: IconBrandDiscordFilled, link: 'https://discord.gg/N8ChkwHN' },
   ];
 
   const quickLinks = [
@@ -67,8 +70,9 @@ const Footer = () => {
                   whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 rounded-full bg-white flex items-center justify-center"
                   style={{ color: '#0a1028' }}
+                  onClick={() => window.open(social.link, '_blank')}
                 >
-                  {social.icon}
+                  <social.icon size={20} />
                 </motion.button>
               ))}
             </div>
@@ -110,39 +114,39 @@ const Footer = () => {
             </ul>
           </div>
 
-            {/* Contact */}
-            <div>
+          {/* Contact */}
+          <div>
             <div className="relative inline-block mb-8">
               <h3 className="text-xl font-semibold text-white">Contact Us</h3>
               <div style={{
-              position: 'absolute',
-              bottom: '-8px',
-              left: '0',
-              width: '100%', // Changed from 48px to 100%
-              height: '4px',
-              backgroundColor: '#FFD700',
-              boxShadow: '0 0 10px rgba(255, 215, 0, 0.5)', // Added glow effect
-              borderRadius: '2px' // Optional: adds rounded corners
+                position: 'absolute',
+                bottom: '-8px',
+                left: '0',
+                width: '100%', // Changed from 48px to 100%
+                height: '4px',
+                backgroundColor: '#FFD700',
+                boxShadow: '0 0 10px rgba(255, 215, 0, 0.5)', // Added glow effect
+                borderRadius: '2px' // Optional: adds rounded corners
               }} />
             </div>
             <div className="space-y-4">
               <p className="text-gray-300">
-              <span className="text-white font-semibold">Location: </span>
-              Algeria, Algiers Higher School of Artificial Intelligence
+                <span className="text-white font-semibold">Location: </span>
+                Algeria, Algiers Higher School of Artificial Intelligence
               </p>
               <p className="text-gray-300">
-              <span className="text-white font-semibold">Email: </span>
-              ebec@ensia.edu.dz
+                <span className="text-white font-semibold">Email: </span>
+                ebec@ensia.edu.dz
               </p>
               <p className="text-gray-300">
-              <span className="text-white font-semibold">Work Hours: </span>
-              Sunday - Thursday 8:30 - 18:00
+                <span className="text-white font-semibold">Work Hours: </span>
+                Sunday - Thursday 8:30 - 18:00
               </p>
             </div>
-            </div>
           </div>
-          </div>
-          {/* Copyright */}
+        </div>
+      </div>
+      {/* Copyright */}
       <div className="relative z-10 text-center mt-20 text-gray-400">
         <div className="w-full border-t border-gray-600 my-8" />
         © 2025 EBEC - ENSIA. All rights reserved.

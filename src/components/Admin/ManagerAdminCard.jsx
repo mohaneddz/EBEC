@@ -303,10 +303,10 @@ export default function ManagerAdminCard({
               width={500}
               src={currentPictureData}
               alt={`${currentName}'s profile`}
-              className="mb-4 w-24 h-24 object-cover rounded-full border border-gray-200 shadow-sm"
+              className="mb-4 w-24 h-34 object-cover rounded-lg border border-gray-200 shadow-sm"
             />
           ) : (
-            <div className="mb-4 w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center text-gray-400 text-4xl border border-gray-300 shadow-sm">
+            <div className="mb-4 w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-4xl border border-gray-300 shadow-sm">
               ?
             </div>
           )}

@@ -7,6 +7,8 @@ import { motion } from "motion/react";
 
 const EventsGallery = () => {
     const ref = useRef(null); // Fixed the unassigned useRef
+
+    const [loading, setLoading] = useState(true);
     const [Events, setEvents] = useState(null);
     const [fetchError, setFetchError] = useState(null);
 
@@ -39,6 +41,7 @@ const EventsGallery = () => {
             }
         };
         fetchEvent();
+        setLoading(false);
     }, []);
 
     return (
@@ -63,9 +66,10 @@ const EventsGallery = () => {
                 {fetchError && <p className="text-center text-red-500">{fetchError}</p>}
                 {Events && Events.length > 0 ? (
                     <ExpandableCardDemo cards={Events} />
-                ) : !fetchError ? (
-                    <p ref={ref} className="text-2xl font-bold text-slate-700 text-center">Loading Upcoming Evnets...</p>
-                ) : null}
+                ) : loading ? (
+                    <p ref={ref} className="text-2xl font-bold text-slate-700 text-center">Loading Evnets...</p>
+                ) : <p className="text-2xl font-bold text-slate-700 text-center">{fetchError?'There was an error fetching the events' : 'No Events found yet!'}</p>
+                }
             </div>
             <svg className="scale-x-[-1] scale-y-[-1] -translate-y-2 -z-10 mb-80" width="100%" height="192" viewBox="0 0 960 192" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <g clipPath="url(#clip0_505_1163)">

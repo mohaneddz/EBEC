@@ -12,10 +12,9 @@ const generateLabel = (key) => {
     return spaced.charAt(0).toUpperCase() + spaced.slice(1).trim();
 };
 
-const needed = ['Picture', 'Display name', 'Email', 'Department', 'Role', 'Join date', 'Status', 'Id'];
+const needed = ['Display name', 'Email', 'Department', 'Role', 'Join date', 'Status', 'Id'];
 
 const defaultColumns = [
-    { key: 'picture', label: 'Picture', type: 'image', maxImages: 1 }, // Simplified key assuming user_metadata.picture
     { key: 'display name', label: 'Display name', filterable: true, expandable: true }, // Match needed label
     { key: 'email', label: 'Email', filterable: true },
     { key: 'department', label: 'Department', filterable: true },
@@ -68,8 +67,6 @@ export default function MembersPage() {
                     'join date': member.created_at ? new Date(member.created_at).toLocaleDateString() : 'N/A', // Add join date from created_at
                     // Assuming 'status' might be in metadata or needs mapping
                     status: formattedMetadata.status || 'Active', // Example: provide default status
-                    // Ensure required keys like 'picture', 'display name' exist, possibly with defaults
-                    picture: formattedMetadata.picture || null, // Default picture if missing
                     'display name': formattedMetadata['display name'] || member.email, // Default display name if missing
                 };
             });
@@ -91,8 +88,8 @@ export default function MembersPage() {
                         const key = neededLabel === 'Id' ? 'id' : neededLabel.toLowerCase(); // map 'Id' to 'id', others to lowercase space case
 
                         if (!detectedKeys.includes(key)) {
-                           // console.warn(`Needed column "${neededLabel}" (key: "${key}") not found in data sample.`);
-                           return null; // Skip if key doesn't exist in the data
+                            // console.warn(`Needed column "${neededLabel}" (key: "${key}") not found in data sample.`);
+                            return null; // Skip if key doesn't exist in the data
                         }
 
                         // Check explicit definition in defaultColumns using the label
@@ -111,13 +108,8 @@ export default function MembersPage() {
                         let filterable = true;
                         let expandable = false;
 
-                        if (neededLabel === 'Picture') {
-                            type = 'image';
-                            maxImages = 1;
-                            filterable = false;
-                        }
-                         if (neededLabel === 'Display name') expandable = true; // Example: make name expandable
-                         if (neededLabel === 'Id') filterable = false; // Usually don't filter ID
+                        if (neededLabel === 'Display name') expandable = true; // Example: make name expandable
+                        if (neededLabel === 'Id') filterable = false; // Usually don't filter ID
 
                         return {
                             key: key,
@@ -147,7 +139,7 @@ export default function MembersPage() {
             console.error("Error loading data:", err);
             setError(err.message || "An unexpected error occurred while loading data.");
             setData([]); // Set empty data on error
-             // Use filtered default cols on error as well
+            // Use filtered default cols on error as well
             const fallbackCols = needed
                 .map(neededLabel => defaultColumns.find(col => col.label === neededLabel))
                 .filter(col => col !== undefined);
@@ -175,18 +167,18 @@ export default function MembersPage() {
             const transformedMetadata = {};
             for (const key in metadataUpdates) {
                 // Only include keys that likely belong in user_metadata
-                 // Exclude potential top-level fields if necessary
-                 if (key !== 'created_at' && key !== 'updated_at' /* add others? */) {
+                // Exclude potential top-level fields if necessary
+                if (key !== 'created_at' && key !== 'updated_at' /* add others? */) {
                     const snakeKey = key.replace(/ /g, '_'); // e.g., "display name" => "display_name"
                     transformedMetadata[snakeKey] = metadataUpdates[key];
-                 }
+                }
             }
 
-           // console.log("Updating user metadata:", transformedMetadata);
+            // console.log("Updating user metadata:", transformedMetadata);
             // console.log("Updating user core fields:", { email }); // Example if you allow email update
 
             // Prepare update payload
-             const updatePayload = {
+            const updatePayload = {
                 user_metadata: transformedMetadata,
                 // You can potentially update other fields like email here if needed/allowed
                 // email: email, // Uncomment if email update is intended
@@ -230,7 +222,7 @@ export default function MembersPage() {
     }, [data]); // Add `data` as dependency because it's used to create originalData for rollback
 
     // --- Refresh Handler ---
-     // No need to wrap refresh in useCallback unless passed as prop or used in useEffect
+    // No need to wrap refresh in useCallback unless passed as prop or used in useEffect
     const refresh = () => {
         // No need for async/await here, loadData handles its own state
         loadData();
@@ -245,7 +237,7 @@ export default function MembersPage() {
                 <div className='flex flex-col gap-2 bg-gradient-to-br from-primary-dark to-primary-light p-6 sm:p-8 shadow-md'>
                     <h1 className='text-3xl sm:text-5xl font-black text-secondary-light text-center'>MEMBERS</h1>
                     {/* Add Refresh button near the title or table */}
-                     <button
+                    <button
                         onClick={refresh}
                         disabled={isLoading}
                         className="mt-2 mx-auto px-4 py-2 bg-secondary hover:bg-secondary-dark text-white rounded disabled:opacity-50"
@@ -254,7 +246,7 @@ export default function MembersPage() {
                     </button>
                 </div>
 
-                 {error && ( // Display error prominently
+                {error && ( // Display error prominently
                     <div className="container mx-auto px-4 py-2">
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                             <strong className="font-bold">Error:</strong>
@@ -270,17 +262,17 @@ export default function MembersPage() {
                             <div role="status" className="flex justify-center items-center">
                                 {/* Spinner SVG */}
                                 <svg aria-hidden="true" className="w-8 h-8 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-primary-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor"/>
-                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill"/>
+                                    <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                    <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
                                 </svg>
                                 <span className="sr-only">Loading...</span>
                             </div>
                             Loading members...
                         </div>
                     ) : (
-                         // Check if cols are defined and data is an array before rendering table
-                         Array.isArray(data) && cols ? (
-                             data.length > 0 ? (
+                        // Check if cols are defined and data is an array before rendering table
+                        Array.isArray(data) && cols ? (
+                            data.length > 0 ? (
                                 <SortableTable
                                     refresh={refresh} // Pass refresh down
                                     data={data}
@@ -295,12 +287,12 @@ export default function MembersPage() {
                                     No members found.
                                 </div>
                             )
-                         ) : (
-                             // Handle state where cols are not yet defined (should be brief)
-                             <div className="text-center p-10 text-gray-500 dark:text-gray-400">
-                                 Preparing table...
-                             </div>
-                         )
+                        ) : (
+                            // Handle state where cols are not yet defined (should be brief)
+                            <div className="text-center p-10 text-gray-500 dark:text-gray-400">
+                                Preparing table...
+                            </div>
+                        )
                     )}
 
                 </div>

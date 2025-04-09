@@ -14,11 +14,13 @@ const Navbar = ({ onHeightChange }) => {
   const pathname = usePathname(); // Get the current pathname
   const navbarRef = useRef(null);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+      setLoading(false);
     };
 
     fetchUser();
@@ -48,7 +50,7 @@ const Navbar = ({ onHeightChange }) => {
   const isNavItemActive = (itemPath) => {
     // Handle the root path explicitly to avoid matching prefixes like /events
     if (itemPath === '/') {
-        return pathname === '/';
+      return pathname === '/';
     }
     return pathname === itemPath;
   };
@@ -127,11 +129,10 @@ const Navbar = ({ onHeightChange }) => {
                   whileHover={{ scale: 1.05 }}
                 >
                   <span
-                    className={`${
-                      isActive // Use direct path check
-                        ? "text-[var(--sunrise-yellow)]"
-                        : "text-gray-600 hover:text-[var(--deep-blue)]"
-                    } flex items-center gap-2`}
+                    className={`${isActive // Use direct path check
+                      ? "text-[var(--sunrise-yellow)]"
+                      : "text-gray-600 hover:text-[var(--deep-blue)]"
+                      } flex items-center gap-2`}
                   >
                     <item.icon size={20} />
                     {item.name}
@@ -149,20 +150,22 @@ const Navbar = ({ onHeightChange }) => {
 
           {/* User Icon - Desktop */}
           <div className="hidden md:flex ml-auto">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="cursor-pointer p-2"
-              onClick={() => handleNavigation(profilePath)}
-            >
-              <IconUser
-                size={24}
-                className={`${
-                  isUserSectionActive() // Check if user section is active
+            {
+              !loading &&
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                className="cursor-pointer p-2"
+                onClick={() => handleNavigation(profilePath)}
+              >
+                <IconUser
+                  size={24}
+                  className={`${isUserSectionActive() // Check if user section is active
                     ? "text-[var(--sunrise-yellow)]"
                     : "text-gray-600 hover:text-[var(--deep-blue)]"
-                }`}
-              />
-            </motion.div>
+                    }`}
+                />
+              </motion.div>
+            }
           </div>
 
           {/* Burger Menu Button */}
@@ -176,17 +179,17 @@ const Navbar = ({ onHeightChange }) => {
               <span
                 className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-transform duration-300 ease-in-out ${ // Improved transition
                   isOpen ? "rotate-45 translate-y-[10px]" : "" // Adjusted translation
-                }`}
+                  }`}
               />
               <span
                 className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-opacity duration-300 ease-in-out ${ // Improved transition
                   isOpen ? "opacity-0" : ""
-                }`}
+                  }`}
               />
               <span
                 className={`block w-6 h-0.5 bg-[var(--deep-blue)] transition-transform duration-300 ease-in-out ${ // Improved transition
                   isOpen ? "-rotate-45 -translate-y-[10px]" : "" // Adjusted translation
-                }`}
+                  }`}
               />
             </div>
           </button>
@@ -201,38 +204,41 @@ const Navbar = ({ onHeightChange }) => {
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className="md:hidden"
         >
-           <div className="pt-4 pb-3 space-y-1"> {/* Removed conditional rendering wrapper */}
+          <div className="pt-4 pb-3 space-y-1"> {/* Removed conditional rendering wrapper */}
             {navItems.map((item) => {
-               const isActive = isNavItemActive(item.path);
-               // Example for admin prefix matching if needed:
-               // const isActive = item.path === '/admin' ? isAdminSectionActive() : isNavItemActive(item.path);
-               return (
-                  <div
-                    key={item.name}
-                    onClick={() => handleNavigation(item.path)}
-                    className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${ // Added rounded-md for better hover/active state appearance
-                      isActive // Use direct path check
-                        ? "text-[var(--sunrise-yellow)] bg-yellow-50" // Add subtle bg for active mobile item
-                        : "text-gray-600 hover:text-[var(--deep-blue)] hover:bg-gray-100" // Add hover bg
+              const isActive = isNavItemActive(item.path);
+              // Example for admin prefix matching if needed:
+              // const isActive = item.path === '/admin' ? isAdminSectionActive() : isNavItemActive(item.path);
+              return (
+                <div
+                  key={item.name}
+                  onClick={() => handleNavigation(item.path)}
+                  className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${ // Added rounded-md for better hover/active state appearance
+                    isActive // Use direct path check
+                      ? "text-[var(--sunrise-yellow)] bg-yellow-50" // Add subtle bg for active mobile item
+                      : "text-gray-600 hover:text-[var(--deep-blue)] hover:bg-gray-100" // Add hover bg
                     }`}
-                  >
-                    <item.icon size={20} />
-                    {item.name}
-                  </div>
-               );
+                >
+                  <item.icon size={20} />
+                  {item.name}
+                </div>
+              );
             })}
             {/* Mobile Profile Link */}
-            <div
-              onClick={() => handleNavigation(profilePath)}
-              className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${ // Added rounded-md
-                isUserSectionActive() // Check if user section is active
-                  ? "text-[var(--sunrise-yellow)] bg-yellow-50" // Add subtle bg for active mobile item
-                  : "text-gray-600 hover:text-[var(--deep-blue)] hover:bg-gray-100" // Add hover bg
-              }`}
-            >
-              <IconUser size={20} />
-              <span>Profile</span>
-            </div>
+            {
+              !loading &&
+              <div
+                onClick={() => handleNavigation(profilePath)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${ // Added rounded-md
+                  isUserSectionActive() // Check if user section is active
+                    ? "text-[var(--sunrise-yellow)] bg-yellow-50" // Add subtle bg for active mobile item
+                    : "text-gray-600 hover:text-[var(--deep-blue)] hover:bg-gray-100" // Add hover bg
+                  }`}
+              >
+                <IconUser size={20} />
+                <span>Profile</span>
+              </div>
+            }
           </div>
         </motion.div>
       </nav>

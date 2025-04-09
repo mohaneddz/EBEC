@@ -88,7 +88,7 @@ export default function WobbleCardSection() {
                     >
                         <div className="w-full">
                             <h2 className="text-left text-balance text-lg md:text-xl lg:text-3xl font-bold tracking-[-0.015em] text-primary-dark">
-                                NETLIXIX
+                            NATIXIS
                             </h2>
                             <p className="mt-2 md:mt-4 text-left text-sm md:text-base text-primary-dark">
                                 Empowering future professionals with expert tips on crafting

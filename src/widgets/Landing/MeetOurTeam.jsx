@@ -114,13 +114,13 @@ export default function MeetOurTeam() {
 
                 {/* ... Main Title H1 remains the same ... */}
                 <motion.h1
-                    className="mx-auto relative inline-block text-4xl vsm:text-5xl sm:text-7xl lg:text-8xl font-black text-center mb-12 bg-gradient-to-r from-secondary-dark to-secondary-light bg-clip-text text-transparent w-fit"
+                    className="mx-auto relative text-4xl vsm:text-5xl sm:text-7xl lg:text-8xl font-black text-center md:mb-12 bg-gradient-to-r from-secondary-dark to-secondary-light bg-clip-text text-transparent w-fit"
                     variants={titleVariants}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
                 >
-                    <p className="mx-16 text-1xl vsm:text-2xl sm:text-3xl lg:text-4xl font-black text-center mb-12 bg-gradient-to-r from-secondary-dark to-secondary-light bg-clip-text text-transparent w-fit">
+                    <p className="mx-16 text-3xl vsm:text-4xl sm:text-6xl lg:text-8xl font-black text-center bg-gradient-to-r from-secondary-dark to-secondary-light bg-clip-text text-transparent w-fit">
                         Meet our Team
                     </p>
                     <svg className="absolute top-0 -right-4 lg:-right-24 w-24 h-24" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 2000 2000"><defs><linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="ssstar-grad"><stop stopColor="#FFC208" stopOpacity="1" offset="0%"></stop><stop stopColor="#FDA916" stopOpacity="1" offset="100%"></stop></linearGradient></defs><g><g fill="url(#ssstar-grad)" id="star"><path d="M 500 500 C 1000 1000 1000 1000 2000 0 C 1000 1000 1000 1000 1500 1500 C 1000 1000 1000 1000 0 2000 C 1000 1000 1000 1000 500 500" strokeLinecap="round" strokeLinejoin="round"></path></g></g></svg>

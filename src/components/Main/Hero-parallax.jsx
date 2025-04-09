@@ -137,7 +137,7 @@ export const Header = () => {
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 2, duration: 0.5 }}
-        className="md:text-center max-w-[80%] inline-block text-3xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold text-primary-dark pl-8 text-start"
+        className="md:text-center max-w-[80%] inline-block text-4xl sm:text-5xl md:text-5xl lg:text-7xl font-extrabold text-primary-dark pl-8 text-start"
         style={{ textAlign: "start" }}
       >
         {isSmallScreen ? smallTitle : title}
@@ -174,8 +174,8 @@ export const ProductCard = ({ product, translate, transition, animate, initial }
       <Link href="#" className="block group-hover/product:shadow-2xl">
         <motion.img
           src={product.thumbnail}
-          height="600"
-          width="600"
+          height="350"
+          width="350"
           className="object-cover object-left-top absolute h-full w-full inset-0"
           alt={product.title}
           initial={{ opacity: 0 }} // Ensure images also fade in

@@ -54,7 +54,7 @@ export default function Modal({ isOpen, onClose, title, children, imageUrl }) {
                         transition={{ duration: 0.2 }}
                     >
                         {imageUrl && (
-                            <div className="relative h-48 w-full">
+                            <div className="relative w-full h-48">
                                 <Image
                                     src={imageUrl}
                                     alt={title || "Modal Image"}
@@ -64,9 +64,9 @@ export default function Modal({ isOpen, onClose, title, children, imageUrl }) {
                                 />
                             </div>
                         )}
-                        <div className="p-6 flex-grow">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-xl font-bold text-gray-900 text-center truncate">{title}</h3> {/* Larger, bolder title */}
+                        <div className="flex-grow p-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-xl font-bold text-center text-gray-900 truncate">{title}</h3> {/* Larger, bolder title */}
                                 <button onClick={onClose} className="text-gray-500 hover:text-gray-700 focus:outline-none">
                                     <IconX size={24} />  {/* Larger icon */}
                                 </button>
@@ -126,12 +126,12 @@ export function GlareCardDemo({ cards }) {
 
     return (
         <>
-            <div className="justify-around justify-items-center inline-grid grid-cols-1 md:grid-cols-3 gap-16 mx-auto">
+            <div className="grid grid-cols-1 gap-8 px-4 mx-auto md:grid-cols-3 max-w-7xl">
                 {cards.map((card) => (
                     <GlareCard
                         enabled={card.title !== ""}
                         key={card.id}
-                        className="relative flex flex-col items-center justify-center"
+                        className="w-full"
                         cardData={card}
                         onClick={() => openModal(card)}
                     />
@@ -148,7 +148,7 @@ export function GlareCardDemo({ cards }) {
                 {selectedCard && (
                     <>
                         <div className="mb-4">
-                            <p className="text-gray-700 text-base">
+                            <p className="text-base text-gray-700">
                                 {selectedCard.description}
                             </p>
                             <br />
@@ -160,7 +160,7 @@ export function GlareCardDemo({ cards }) {
                             </p>
                         </div>
                         {/* desciption about the event*/}
-                        <p className="text-gray-700 text-base mb-4">
+                        <p className="mb-4 text-base text-gray-700">
                             <strong className='text-primary-light'>Description:</strong> {selectedCard.description || "TBD"}
                         </p>
                         <div className="flex justify-end mt-6">  {/* Consistent spacing */}
@@ -289,7 +289,7 @@ export const GlareCard = ({
         <div
             style={containerStyle}
             className={cn(
-                "relative isolate [contain:layout_style] [perspective:600px] transition-transform duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] will-change-transform w-50 h-72 lg:h-96 [aspect-ratio:17/21]", //Fixed height and width
+                "relative isolate [contain:layout_style] [perspective:600px] transition-transform duration-[var(--duration)] ease-[var(--easing)] delay-[var(--delay)] will-change-transform w-full h-[400px] [aspect-ratio:17/21]", //Fixed height and width
                 className
             )}
             ref={refElement}
@@ -307,24 +307,24 @@ export const GlareCard = ({
                         {cardData.src ? (
                             <div className="relative w-full h-full group">
                                 <Image
-                                    height={300}
+                                    height={400}
                                     width={300}
                                     src={cardData.src}
                                     alt={cardData.title}
-                                    className="w-full h-full object-cover transition duration-500 ease-in-out"
+                                    className="object-cover w-full h-full transition duration-500 ease-in-out"
                                     sizes="(max-width: 768px) 100vw, 33vw"
                                 />
-                                <div className="absolute inset-0 flex text-center flex-col items-center justify-center bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-opacity duration-500">
-                                    <h2 className="text-secondary-dark font-black text-3xl drop-shadow-md opacity-0 group-hover:-translate-y-2 transition-transform duration-300 ease-in-out group-hover:opacity-100">
+                                <div className="absolute inset-0 flex flex-col items-center justify-center text-center transition-opacity duration-500 bg-black bg-opacity-0 group-hover:bg-opacity-60">
+                                    <h2 className="text-3xl font-black transition-transform duration-300 ease-in-out opacity-0 text-secondary-dark drop-shadow-md group-hover:-translate-y-2 group-hover:opacity-100">
                                         {cardData.title}
                                     </h2>
-                                    <p className="text-gray-300 text-center font-medium mt-2 drop-shadow-md opacity-0 group-hover:-translate-y-2 transition-transform duration-300 ease-in-out group-hover:opacity-100">
+                                    <p className="mt-2 font-medium text-center text-gray-300 transition-transform duration-300 ease-in-out opacity-0 drop-shadow-md group-hover:-translate-y-2 group-hover:opacity-100">
                                         {cardData.description}
                                     </p>
                                 </div>
                             </div>
                         ) : (
-                            <div className="flex flex-col items-center justify-center h-full w-full">
+                            <div className="flex flex-col items-center justify-center w-full h-full">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="white"
                                     stroke="currentColor"
@@ -335,10 +335,10 @@ export const GlareCard = ({
                                     viewBox="0 0 320 512">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M80 160c0-35.3 28.7-64 64-64l32 0c35.3 0 64 28.7 64 64l0 3.6c0 21.8-11.1 42.1-29.4 53.8l-42.2 27.1c-25.2 16.2-40.4 44.1-40.4 74l0 1.4c0 17.7 14.3 32 32 32s32-14.3 32-32l0-1.4c0-8.2 4.2-15.8 11-20.2l42.2-27.1c36.6-23.6 58.8-64.1 58.8-107.7l0-3.6c0-70.7-57.3-128-128-128l-32 0C73.3 32 16 89.3 16 160c0 17.7 14.3 32 32 32s32-14.3 32-32zm80 320a40 40 0 1 0 0-80 40 40 0 1 0 0 80z" />
                                 </svg>
-                                <h2 className="text-slate-300 font-bold pt-8 text-xl text-center ">
+                                <h2 className="pt-8 text-xl font-bold text-center text-slate-300 ">
                                     {cardData.title}
                                 </h2>
-                                <p className="text-slate-500 font-bold pt-8 text-center text-wrap">
+                                <p className="pt-8 font-bold text-center text-slate-500 text-wrap">
                                     {cardData.description}
                                 </p>
                             </div>

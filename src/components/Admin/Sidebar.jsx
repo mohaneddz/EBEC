@@ -9,8 +9,8 @@ import { IconMenu2, IconX } from "@tabler/icons-react";
 
 export const Logo = () => {
     return (
-        <button className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
-            <div className="h-5 w-6 bg-secondary-dark dark:bg-secondary-light rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+        <button className="relative z-20 flex items-center py-1 space-x-2 text-sm font-normal text-black">
+            <div className="flex-shrink-0 w-6 h-5 rounded-tl-lg rounded-tr-sm rounded-bl-sm rounded-br-lg bg-secondary-dark dark:bg-secondary-light" />
             <motion.a
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -26,7 +26,7 @@ export const Logo = () => {
 export default function Dashboard({ children }) {
     return (
         <div className="flex flex-1 w-full max-w-[100vw] overflow-x-hidden">
-            <div className=" rounded-tl-2xl border border-neutral-200 bg-white flex flex-col gap-2 flex-1 h-full w-full overflow-y-scroll">
+            <div className="flex flex-col flex-1 w-full h-full gap-2 overflow-y-scroll bg-white border rounded-tl-2xl border-neutral-200">
                 {children}
             </div>
         </div>
@@ -90,9 +90,9 @@ export const LogoIcon = () => {
     return (
         (<button
             href="#"
-            className="font-normal flex space-x-2 items-center text-sm text-black py-1 relative z-20">
+            className="relative z-20 flex items-center py-1 space-x-2 text-sm font-normal text-black">
             <div
-                className="h-5 w-6 bg-secondary-dark dark:bg-secondary-dark rounded-br-lg rounded-tr-sm rounded-tl-lg rounded-bl-sm flex-shrink-0" />
+                className="flex-shrink-0 w-6 h-5 rounded-tl-lg rounded-tr-sm rounded-bl-sm rounded-br-lg bg-secondary-dark dark:bg-secondary-dark" />
         </button>)
     );
 };
@@ -102,7 +102,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
     return (
         <>
             <div className={cn("h-10 px-4 py-4 flex flex-row md:hidden items-center justify-between bg-neutral-100 w-full")} {...props}>
-                <div className="flex justify-end z-20 w-full">
+                <div className="z-20 flex justify-end w-full">
                     <IconMenu2 className="text-neutral-800" onClick={() => setOpen(!open)} />
                 </div>
                 <AnimatePresence>
@@ -114,7 +114,7 @@ export const MobileSidebar = ({ className, children, ...props }) => {
                             transition={{ duration: 0.3, ease: "easeInOut" }}
                             className={cn("fixed h-full w-full inset-0 bg-white p-10 z-[100] flex flex-col justify-between", className)}
                         >
-                            <div className="absolute right-10 top-10 z-50 text-neutral-800" onClick={() => setOpen(!open)}>
+                            <div className="absolute z-50 right-10 top-10 text-neutral-800" onClick={() => setOpen(!open)}>
                                 <IconX />
                             </div>
                             {children}
@@ -134,14 +134,16 @@ export const SidebarLink = ({ link, className, onClick, ...props }) => {
             onClick={onClick}
             {...props}
         >
-            {link.icon}
+            <div className="flex-shrink-0">
+                {link.icon}
+            </div>
             <motion.span
                 animate={{
                     opacity: open ? 1 : 0,
                     width: open ? "auto" : 0,
                 }}
                 transition={{ duration: 0.2 }}
-                className="text-neutral-700 text-sm group-hover/sidebar:translate-x-1 transition duration-150 whitespace-nowrap"
+                className="text-sm transition duration-150 text-neutral-700 group-hover/sidebar:translate-x-1 whitespace-nowrap"
             >
                 {link.label}
             </motion.span>

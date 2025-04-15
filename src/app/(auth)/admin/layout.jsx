@@ -25,11 +25,11 @@ export default function AdminPage({ children }) {
     const [page, setPage] = useState("Members");
 
     const links = [
-        { label: "Dashboard", page: "dashboard", icon: <IconBrandTabler className="text-neutral-700 h-5 w-5" /> },
-        { label: "Members", page: "members", icon: <IconUsersGroup className="text-neutral-700 h-5 w-5" /> },
-        { label: "Emails", page: "emails", icon: <IconMail className="text-neutral-700 h-5 w-5" /> },
-        { label: "Events", page: "events", icon: <IconCalendarEvent className="text-neutral-700 h-5 w-5" /> },
-        { label: "Forms", page: "forms", icon: <IconAlignBoxCenterTop className="text-neutral-700 h-5 w-5" /> },
+        { label: "Dashboard", page: "dashboard", icon: <IconBrandTabler className="w-6 h-6 text-neutral-700" /> },
+        { label: "Members", page: "members", icon: <IconUsersGroup className="w-6 h-6 text-neutral-700" /> },
+        { label: "Emails", page: "emails", icon: <IconMail className="w-6 h-6 text-neutral-700" /> },
+        { label: "Events", page: "events", icon: <IconCalendarEvent className="w-6 h-6 text-neutral-700" /> },
+        { label: "Forms", page: "forms", icon: <IconAlignBoxCenterTop className="w-6 h-6 text-neutral-700" /> },
     ];
 
     useEffect(() => {
@@ -42,16 +42,16 @@ export default function AdminPage({ children }) {
     return (
         <PageContext.Provider value={{ page, setPage }}>
             <>
-                {loading && <div className="flex items-center justify-center h-screen w-full bg-gray-100"> Loading...</div>}
+                {loading && <div className="flex items-center justify-center w-full h-screen bg-gray-100"> Loading...</div>}
                 {!loading &&
                     <div className={cn("flex flex-col md:flex-row bg-gray-100 flex-1 border border-neutral-200 h-screen w-full overflow-x-hidden")}>
 
                         <Sidebar open={open} setOpen={setOpen}>
                             <SidebarBody className="justify-between gap-10">
 
-                                <div className="flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+                                <div className="flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
                                     {open ? <Logo /> : <LogoIcon />}
-                                    <div className="mt-8 flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2 mt-8">
                                         {links.map((link, idx) => (
                                             <SidebarLink
                                                 key={idx}

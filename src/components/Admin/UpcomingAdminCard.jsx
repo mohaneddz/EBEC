@@ -638,7 +638,7 @@ export default function UpcomingAdminCard({ number }) {
                 .update({ form: formToSave })
                 .eq('id', event.id)
                 .select() // Select the updated row
-                .single(); // Expect a single row back
+                .single();
 
             if (error) throw error;
 
@@ -726,6 +726,75 @@ export default function UpcomingAdminCard({ number }) {
             setEventInfoEdits(prev => ({ ...prev, [key]: type === 'checkbox' ? checked : value }));
         } else {
             // console.warn("Could not derive key from input ID:", id);
+        }
+    };
+
+    // Add new function to clear event info
+    const clearEventInfo = async () => {
+        if (!event || !event.id) {
+            setInfoError("Cannot clear: Event ID missing.");
+            return;
+        }
+        setIsSavingInfo(true);
+        setInfoError('');
+
+        try {
+            // Keep only the ID and set all other fields to null/empty
+            const clearedData = {
+                name: '',
+                brief: '',
+                date: null,
+                location: '',
+                link: '',
+                picture: null
+            };
+
+            const { data: updatedEvent, error } = await supabase
+                .from('Upcomings')
+                .update(clearedData)
+                .eq('id', event.id)
+                .select()
+                .single();
+
+            if (error) throw error;
+
+            setEvent(updatedEvent);
+            setEventInfoEdits(prev => ({ ...prev, ...updatedEvent }));
+            setSelectedImageFile(null);
+            setVisibleInfo(false);
+        } catch (err) {
+            setInfoError(err.message || "An unknown error occurred while clearing info.");
+        } finally {
+            setIsSavingInfo(false);
+        }
+    };
+
+    // Add new function to remove image
+    const removeImage = async () => {
+        if (!event || !event.id) {
+            setInfoError("Cannot remove image: Event ID missing.");
+            return;
+        }
+        setIsSavingInfo(true);
+        setInfoError('');
+
+        try {
+            const { data: updatedEvent, error } = await supabase
+                .from('Upcomings')
+                .update({ picture: null })
+                .eq('id', event.id)
+                .select()
+                .single();
+
+            if (error) throw error;
+
+            setEvent(updatedEvent);
+            setEventInfoEdits(prev => ({ ...prev, picture: null }));
+            setSelectedImageFile(null);
+        } catch (err) {
+            setInfoError(err.message || "An unknown error occurred while removing image.");
+        } finally {
+            setIsSavingInfo(false);
         }
     };
 
@@ -892,20 +961,28 @@ export default function UpcomingAdminCard({ number }) {
                                 {(imagePreviewUrl || eventInfoEdits.picture) && ( // Check if local preview or existing Base64 exists
                                     <div className='mt-3'>
                                         <p className="w-full mb-1 text-xs text-gray-500 truncate text-ellipsis">Preview:</p>
-                                        <Image
-                                            // Prioritize local file preview, fallback to Base64 data URL from state
-                                            src={imagePreviewUrl || eventInfoEdits.picture} // Both createObjectURL and data URLs work in src
-                                            alt="Preview"
-                                            height={96}
-                                            width={96}
-
-                                            className="object-contain w-auto h-24 border border-gray-200 rounded"
-                                            // Add basic error handling for potentially invalid base64/url
-                                            onError={(e) => {
-                                                e.target.style.display = 'none';
-                                                //  console.error("Failed to load image preview."); 
-                                            }}
-                                        />
+                                        <div className="flex items-center gap-2">
+                                            <Image
+                                                // Prioritize local file preview, fallback to Base64 data URL from state
+                                                src={imagePreviewUrl || eventInfoEdits.picture} // Both createObjectURL and data URLs work in src
+                                                alt="Preview"
+                                                height={96}
+                                                width={96}
+                                                className="object-contain w-auto h-24 border border-gray-200 rounded"
+                                                // Add basic error handling for potentially invalid base64/url
+                                                onError={(e) => {
+                                                    e.target.style.display = 'none';
+                                                    //  console.error("Failed to load image preview."); 
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={removeImage}
+                                                className="px-3 py-1 text-xs text-white bg-red-500 rounded hover:bg-red-600"
+                                            >
+                                                Remove Image
+                                            </button>
+                                        </div>
                                     </div>
                                 )}
                                 {/* Option to clear selection */}
@@ -929,6 +1006,7 @@ export default function UpcomingAdminCard({ number }) {
                         <div className="flex flex-col gap-2">
                             <button type="submit" disabled={isSavingInfo} className="flex items-center justify-center w-full gap-2 px-4 py-2 text-white rounded bg-gradient-to-br from-secondary-light to-secondary-dark hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed">{isSavingInfo ? <><IconLoader size={18} className="animate-spin" /> Saving...</> : 'Save Info'}</button>
                             <button type="button" onClick={closeModal} disabled={isSavingInfo} className="w-full px-4 py-2 text-gray-700 truncate bg-gray-200 rounded text-ellipsis hover:bg-gray-300 disabled:opacity-50">Cancel</button>
+                            <button type="button" onClick={clearEventInfo} disabled={isSavingInfo} className="w-full px-4 py-2 text-white bg-red-500 rounded hover:bg-red-600 disabled:opacity-50">Clear Info</button>
                         </div>
                     </div>
                 </form>

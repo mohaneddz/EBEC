@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+html{
+
+  @media screen and (max-width: 360px) {
+    font-size: 6px;
+  }
+
+  @media screen and (max-width: 480px) {
+    font-size: 8px;
+  }
+
+  @media screen and (max-width: 720px) {
+    font-size: 10px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    font-size: 12px;
+  }
+
+  @media screen and (max-width: 1440px) {
+    font-size: 14px;
+  }
+}
+
+body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  overflow-x: hidden;
+}

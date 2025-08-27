@@ -1,0 +1,26 @@
+::selection {
+	background-color: var(--color-secondary-light);
+	color: white;
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-track {
+	background: #1e085e;
+}
+
+::-webkit-scrollbar-thumb {
+	background: #25097f;
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #1f1479;
+}
+
+* {
+	scrollbar-width: thin;
+	scrollbar-color: #fda916 #eef1f6;
+}

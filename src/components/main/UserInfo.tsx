@@ -18,8 +18,9 @@ export default function UserInfo({ image, name, email, role, department, openMod
 
     return (
         <div className="userSection mt-10 flex flex-col items-center justify-center">
+
             <div className="cursor-pointer relative z-30">
-                <div className="relative w-[200px] h-[200px]">
+                <div className="relative w-40 h-40">
                     <Image
                         src={image}
                         alt="pfp"
@@ -31,27 +32,24 @@ export default function UserInfo({ image, name, email, role, department, openMod
                     />
                 </div>
             </div>
-            <motion.div className="lg:w-[35rem] md:w-[30rem] sm:w-[20rem] settings bg-white rounded-lg p-12 flex flex-col items-center -translate-y-4">
-                <h1 className="text-3xl text-slate-700 font-semibold mb-6">Settings</h1>
-                <div className="w-full flex flex-col gap-4">
-                    <div>
-                        <Input value={name} placeholder="Name" readonly />
+
+            <motion.div className="lg:w-[25rem] md:w-[20rem] sm:w-[15rem] settings bg-white rounded-lg p-10 flex flex-col items-center -translate-y-4">
+                <div className="w-full flex flex-col">
+                    <div className="flex flex-col gap-2">
+                        <Input id={`name-${name}`} value={name} placeholder="Name" readonly />
+                        <Input id={`email-${email}`} value={email} placeholder="Email" type="email" readonly />
+                        <Input id={`role-${role}`} value={role} placeholder="Role" readonly />
+                        <div className="flex gap-0 flex-col">
+                            <Input id={`department-${department}`} value={department} placeholder="Department" readonly />
+                            <p className="text-center text-xs">Need to <span className="text-primary-light-40 underline click" onClick={openModal}>switch your department?</span></p>
+                        </div>
                     </div>
-                    <div>
-                        <Input value={email} placeholder="Email" type="email" readonly />
-                    </div>
-                    <div>
-                        <Input value={role} placeholder="Role" readonly />
-                    </div>
-                    <div>
-                        <Input value={department} placeholder="Department" readonly />
-                    </div>
-                    <div className="w-full flex flex-col items-center justify-center gap-4 [&>*]:w-full">
-                        <Button className="mt-4" text={'Change Department'} color1={'#1B3764'} color2={'#0E2A4D'} onClick={openModal} />
-                        <Button className="mt-4" text={'Logout'} color1={'#FFC208'} color2={'#FDA916'} onClick={handleLogOut} />
+                    <div className="w-full flex items-center justify-center gap-4 [&>*]:w-full">
+                        <Button text={'Logout'} color1={'#FFC208'} color2={'#FDA916'} onClick={handleLogOut} />
                     </div>
                 </div>
             </motion.div>
+
         </div>
     );
 };

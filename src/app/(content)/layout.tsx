@@ -1,5 +1,4 @@
 import Navbar from "@/layout/Navbar";
-import Footer from '@/layout/Footer';
 
 import { ReactNode } from 'react';
 
@@ -16,7 +15,6 @@ export default function Body({ children }: { children: ReactNode }) {
     <>
       <Navbar />
       {children}
-      <Footer />
     </>
   );
 }

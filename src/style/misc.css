@@ -1,5 +1,5 @@
 ::selection {
-	background-color: var(--color-secondary-light);
+	background-color: var(--color-primary-light);
 	color: white;
 }
 
@@ -23,4 +23,25 @@
 * {
 	scrollbar-width: thin;
 	scrollbar-color: #fda916 #eef1f6;
+}
+
+.custom-shape-divider-top-1738426196 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+	z-index: -1;
+}
+
+.custom-shape-divider-top-1738426196 svg {
+    position: relative;
+    display: block;
+    width: calc(300% + 1.3px);
+    height: 30rem;
+}
+
+.custom-shape-divider-top-1738426196 .shape-fill {
+    fill: #062a58;
 }

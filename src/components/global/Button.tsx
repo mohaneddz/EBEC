@@ -11,12 +11,6 @@ type ButtonProps = {
 
 export const Button: React.FC<ButtonProps> = ({ text, color1, color2, onClick, disabled, className }) => {
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        if (onClick) {
-            onClick(e);
-        }
-    };
-
     const buttonStyle = {
         background: color1 && color2 ? `linear-gradient(to bottom right, ${color1}, ${color2})` : color1 ? color1 : color2,
         ...(color1 && color2 === undefined && { background: color1 }),
@@ -60,7 +54,7 @@ export const Button: React.FC<ButtonProps> = ({ text, color1, color2, onClick, d
                 ${disabled ? 'pointer-events-none opacity-50' : ''}
             `}
             style={buttonStyle}
-            onClick={handleClick}
+            onClick={onClick}
         >
             {text}
         </button>

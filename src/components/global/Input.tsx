@@ -69,7 +69,7 @@ export const Input: React.FC<InputProps> = ({
                     className={`
                         peer
                         w-full 
-                        py-[15px] px-[15px]
+                        py-3 px-2
                         border-2 border-transparent 
                         rounded-xl 
                         bg-[rgba(240,240,240,0.6)]
@@ -78,8 +78,8 @@ export const Input: React.FC<InputProps> = ({
                         duration-400 
                         ease-in-out
                         text-xs
-                        sm:text-md
-                        md:text-lg
+                        sm:text-sm
+                        md:text-base
                         relative 
                         z-[1]
                         focus:border-primary-light
@@ -102,11 +102,11 @@ export const Input: React.FC<InputProps> = ({
                     className={`
                         absolute 
                         top-1/2 
-                        left-[15px] 
+                        left-1
                         -translate-y-1/2 
                         text-[#aaa] 
                         text-xs
-                        md:text-base 
+                        md:text-sm 
                         pointer-events-none 
                         transition-all 
                         duration-300 

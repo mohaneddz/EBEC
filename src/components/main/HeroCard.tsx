@@ -46,6 +46,7 @@ export default function HeroCardContent({
                     className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"
                         }`}
                     alt={card.title}
+                    // TODO : fix not loading on cache
                     onLoad={() => setLoaded(true)}
                     onError={() => setLoaded(true)}
                     initial={{ opacity: 0 }}

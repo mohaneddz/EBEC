@@ -2,46 +2,25 @@
 
 import { useRouter, usePathname } from "next/navigation";
 import { IconUser, IconHome, IconCalendarEvent, IconHelp } from "@tabler/icons-react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+
+import useAuth from "@/hooks/useAuth";
 
 import { motion } from "motion/react";
-import { User } from "@supabase/supabase-js";
 
-import supabase from '@/config/supabaseClient';
 import Image from "next/image";
-
 const logo = "/EBEC.png";
 
 
 export default function Navbar({ }) {
 
   const router = useRouter();
-  const pathname = usePathname(); 
+  const pathname = usePathname();
   const navbarRef = useRef<HTMLDivElement>(null);
-  
+
   const [isOpen, setIsOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
+  const { user, loading } = useAuth();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
-    };
-
-    fetchUser();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setUser(session?.user ?? null);
-      }
-    );
-
-    return () => {
-      authListener?.subscription.unsubscribe();
-    };
-  }, []);
 
   const navItems = [
     { name: "Home", path: "/", icon: IconHome },
@@ -73,6 +52,7 @@ export default function Navbar({ }) {
   };
 
   const profilePath = user?.id ? `/user/${user.id}` : "/login";
+  // const profilePath = `/user/5`;
 
   return (
     <header
@@ -129,19 +109,28 @@ export default function Navbar({ }) {
           <div className="hidden md:flex ml-auto">
             {
               !loading &&
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="cursor-pointer p-2"
-                onClick={() => handleNavigation(profilePath)}
-              >
-                <IconUser
-                  size={24}
-                  className={`${isUserSectionActive()
-                    ? "text-secondary-dark"
-                    : "text-gray-600 hover:text-primary-dark"
-                    }`}
-                />
-              </motion.div>
+              (user?.id ? (
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="cursor-pointer p-2"
+                  onClick={() => handleNavigation(profilePath)}
+                >
+                  <IconUser
+                    size={24}
+                    className={`${isUserSectionActive()
+                      ? "text-secondary-dark"
+                      : "text-gray-600 hover:text-primary-dark"
+                      }`}
+                  />
+                </motion.div>
+              ) : (
+                <button
+                  className="px-4 py-1 rounded-md text-sm font-medium bg-secondary-light hover:bg-secondary-dark text-white transition cursor-pointer hover:scale-105 active:scale-95 duration-100"
+                  onClick={() => handleNavigation("/login")}
+                >
+                  Sign in
+                </button>
+              ))
             }
           </div>
 

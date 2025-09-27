@@ -91,10 +91,10 @@ const data = {
       icon: ClipboardType,
       isActive: true,
       items: [
-        {
-          title: "Forms",
-          url: "/dashboard/forms/archive",
-        },
+        // {
+        //   title: "Forms",
+        //   url: "/dashboard/forms/archive",
+        // },
         {
           title: "Submissions",
           url: "/dashboard/forms/submissions",
@@ -104,8 +104,8 @@ const data = {
   ],
   tools: [
     {
-      name: "Form Creator",
-      url: "/dashboard/tools/form_creator",
+      name: "Forms Manager",
+      url: "/dashboard/tools/form_manager",
       icon: ClipboardPen,
     },
   ]
@@ -119,9 +119,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         <Link className="flex items-center gap-4 cursor-pointer" href="/">
-          <Image src='/imgs/logo.png' alt='EBEC Logo' width={40} height={40} />
+          <Image src='/imgs/logo-bw.png' alt='EBEC Logo' width={40} height={40} />
           {state === "expanded" && (
-            <span className="text-sm text-secondary-light font-bold">EBEC</span>
+            <span className="text-sm text-primary-light font-bold">EBEC</span>
           )}
         </Link>
       </SidebarHeader>

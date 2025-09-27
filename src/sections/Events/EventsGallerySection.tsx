@@ -1,22 +1,16 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+
 import { ExpandableCardDemo } from "@/components/events/ExpandableCards";
-import supabase from '@/config/supabaseClient';
-import { motion } from "motion/react";
+import { createClient } from '@/utils/supabase/client';
+
 import type { EventCard } from "@/types/events";
 
-type EventRow = {
-	id: number | string;
-	name?: string | null;
-	mainPicture?: string | null;
-	description?: string | null;
-	brief?: string | null;
-	date?: string | null;
-};
-
+import { motion } from "motion/react";
 
 const EventsGallery = () => {
+
 	const ref = useRef<HTMLParagraphElement | null>(null);
 
 	const [loading, setLoading] = useState<boolean>(true);
@@ -27,7 +21,7 @@ const EventsGallery = () => {
 		const fetchEvent = async () => {
 			setLoading(true);
 			try {
-				const { data, error } = await supabase.from('Events').select('*');
+				const { data, error } = await createClient().from('Events').select('*');
 				if (error) {
 					setFetchError('Could not fetch the Events!');
 					setEvents(null);
@@ -35,13 +29,13 @@ const EventsGallery = () => {
 				}
 				if (data) {
 					const events: EventCard[] = data
-						.map(({ id, name, mainPicture, description, brief, date }) => ({
+						.map(({ id, name, pictures, description, brief, date }) => ({
 							id: String(id),
 							title: name ?? '',
-							src: mainPicture ?? null,
+							src: pictures[0] ?? null,
 							description: brief ?? '',
 							content: description ?? '',
-							ctaText: "Learn More",
+							ctaText: "More",
 							ctaLink: `/events/${id}`,
 							event_date: date ?? '',
 						}))
@@ -49,8 +43,10 @@ const EventsGallery = () => {
 						.sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
 					setEvents(events);
 					setFetchError(null);
+					console.log('Events fetched successfully: ' + events.length + ' events.');
 				} else {
 					setEvents(null);
+					console.log('No data found');
 				}
 			} catch {
 				setFetchError('Could not fetch the Events!');
@@ -84,7 +80,7 @@ const EventsGallery = () => {
 				{Events && Events.length > 0 ? (
 					<ExpandableCardDemo cards={Events} />
 				) : loading ? (
-					<p ref={ref} className="text-2xl font-bold text-slate-700 text-center">Loading Evnets...</p>
+					<p ref={ref} className="text-2xl font-bold text-slate-700 text-center">Loading Events...</p>
 				) : <p className="text-2xl font-bold text-slate-700 text-center">{fetchError ? 'There was an error fetching the events' : 'No Events found yet!'}</p>
 				}
 			</div>

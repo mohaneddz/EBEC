@@ -3,7 +3,6 @@
 import {
   Folder,
   Forward,
-  MoreHorizontal,
   Trash2,
   type LucideIcon,
 } from "lucide-react"

@@ -14,9 +14,9 @@ import {
 
 export interface Signups {
     userId: string;
-    email: string;
     name: string;
-    chosenDepartment: string;
+    email: string;
+    chosenDepartment: 'IT' | 'HR' | 'Multimedia' | 'Design' | 'Relex' | 'Events';
     motivation: string;
     createdAt: Date;
 }

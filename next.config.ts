@@ -4,9 +4,26 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   images: {
     remotePatterns: [
-      new URL('https://randomuser.me/api/portraits/men/**'),
-      new URL('https://randomuser.me/api/portraits/women/**'),
-      new URL('https://picsum.photos/seed/**'),
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        pathname: '/api/portraits/men/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'randomuser.me',
+        pathname: '/api/portraits/women/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'picsum.photos',
+        pathname: '/seed/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'edzfolktdbbgtrbmubxp.supabase.co',
+        pathname: '/storage/v1/object/public/**',
+      },
     ],
   },
 };

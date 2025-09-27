@@ -1,20 +1,29 @@
 import { motion } from "motion/react";
-import { Input } from "@/components/global/Input";
-import { Button } from "@/components/global/Button";
+
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label"
+
+import { Button } from "@/components/ui/button";
 
 import Image from 'next/image'
+import { useState } from "react";
 
 type UserInfoProps = {
     image: string;
     name: string;
+    status: string;
     email: string;
     role: string;
     department: string;
     openModal: () => void;
     handleLogOut: () => void;
+    handleDeleteAccount?: () => void;
+    handleSaveChanges?: (name: string) => void;
 };
 
-export default function UserInfo({ image, name, email, role, department, openModal, handleLogOut }: UserInfoProps) {
+export default function UserInfo({ image, name, email, role, department, openModal, handleLogOut, status, handleSaveChanges }: UserInfoProps) {
+
+    const [username, setUsername] = useState<string>(name);
 
     return (
         <div className="userSection mt-10 flex flex-col items-center justify-center">
@@ -34,19 +43,97 @@ export default function UserInfo({ image, name, email, role, department, openMod
             </div>
 
             <motion.div className="lg:w-[25rem] md:w-[20rem] sm:w-[15rem] settings bg-white rounded-lg p-10 flex flex-col items-center -translate-y-4">
+
                 <div className="w-full flex flex-col">
-                    <div className="flex flex-col gap-2">
-                        <Input id={`name-${name}`} value={name} placeholder="Name" readonly />
-                        <Input id={`email-${email}`} value={email} placeholder="Email" type="email" readonly />
-                        <Input id={`role-${role}`} value={role} placeholder="Role" readonly />
-                        <div className="flex gap-0 flex-col">
-                            <Input id={`department-${department}`} value={department} placeholder="Department" readonly />
-                            <p className="text-center text-xs">Need to <span className="text-primary-light-40 underline click" onClick={openModal}>switch your department?</span></p>
+
+                    <div className="grid gap-4">
+
+                        <div>
+                            <Label className="mb-2" htmlFor="name">Name</Label>
+                            <Input
+                                id="name"
+                                type="text"
+                                placeholder="John Doe"
+                                className="border-gray-400"
+                                required
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                        </div>
+                        <div>
+                            <Label className="mb-2" htmlFor="email">Email</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                placeholder="m@example.com"
+                                className="border-gray-400"
+                                required
+                                value={email}
+                                disabled
+                                readOnly
+                            />
+                        </div>
+
+                        <div>
+                            <Label className="mb-2" htmlFor="role">Role</Label>
+                            <Input
+                                id="role"
+                                type="text"
+                                placeholder="Admin"
+                                className="border-gray-400"
+                                required
+                                value={role}
+                                disabled
+                                readOnly
+                            />
+                        </div>
+                        <div>
+                            <Label className="mb-2" htmlFor="department">Department</Label>
+                            <Input
+                                id="department"
+                                type="text"
+                                placeholder="Engineering"
+                                className="border-gray-400"
+                                required
+                                value={department}
+                                disabled
+                                readOnly
+                            />
+                        </div>
+                        <div>
+                            <Label className="mb-2" htmlFor="status">Status</Label>
+                            <Input
+                                id="status"
+                                type="text"
+                                placeholder="Active"
+                                className="border-gray-400"
+                                required
+                                value={status}
+                                disabled
+                                readOnly
+                            />
+                        </div>
+                        <p className="text-center text-xs">Need to <span className="text-primary-light-40 underline hover:text-secondary-dark click" onClick={openModal}>switch your department?</span></p>
+                    </div>
+
+                    <div className="my-4">
+
+                        <Button onClick={() => handleSaveChanges && handleSaveChanges(username)} className="mt-4 w-full text-white" variant="secondary">
+                            Save Changes
+                        </Button>
+
+                        <div className="grid grid-cols-2 gap-4 w-full">
+
+                            <Button onClick={handleLogOut} className="mt-6 w-full text-white" variant="default">
+                                Logout
+                            </Button>
+                            <Button onClick={handleLogOut} className="mt-6 w-full text-white" variant="destructive">
+                                Delete Account
+                            </Button>
+
                         </div>
                     </div>
-                    <div className="w-full flex items-center justify-center gap-4 [&>*]:w-full">
-                        <Button text={'Logout'} color1={'#FFC208'} color2={'#FDA916'} onClick={handleLogOut} />
-                    </div>
+
                 </div>
             </motion.div>
 

@@ -23,7 +23,7 @@ export default function WobbleCardSection() {
     };
 
     return (
-        <div id="WobbleCardSection" className="min-h-screen flex flex-col justify-center w-full bg-gradient-to-br from-primary-light to-primary-dark pb-24 ">
+        <div id="WobbleCardSection" className="mb-40 min-h-screen flex flex-col justify-center w-full bg-gradient-to-br from-primary-light to-primary-dark pb-24 ">
             <TextGenerateEffect
                 words="Memorable Events"
                 className="relative block my-16 md:my-20 text-center mt-20"

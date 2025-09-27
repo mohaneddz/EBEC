@@ -5,17 +5,17 @@ import InfiniteMovingCardsSection from '@/sections/Landing/InfiniteMovingCardsSe
 import WobbleCardSection from '@/sections/Landing/WobbleCardsSection';
 import ServicesSection from '@/sections/Landing/ServicesSection';
 import {EBECInfoSlide} from '@/sections/Landing/EBECInfoSlide';
-import MeetOurTeam from '@/sections/Landing/MeetOurTeam';
+import Footer from '@/layout/Footer';
 
 export default function Home() {
   return (
     <div className="bg-[#e1e4ea] flex flex-col justify-center align-center items-center">
       <Hero />
-      {/* <MeetOurTeam /> */}
+      <InfiniteMovingCardsSection />
       <EBECInfoSlide />
       <ServicesSection />
       <WobbleCardSection />
-      <InfiniteMovingCardsSection />
+      <Footer />
     </div >
   )
 }

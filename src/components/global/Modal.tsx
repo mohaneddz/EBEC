@@ -27,31 +27,28 @@ export default function Modal ({
 }: ModalProps) {
     const modalRef = useRef<HTMLDivElement>(null);
 
+    // Lock body scroll while the modal is open
     useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-                onClose();
-            }
-        };
-
         if (isOpen) {
-            document.addEventListener('mousedown', handleClickOutside);
             document.body.style.overflow = 'hidden';
         } else {
-            document.removeEventListener('mousedown', handleClickOutside);
             document.body.style.overflow = 'unset';
         }
-
         return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
             document.body.style.overflow = 'unset';
         };
-    }, [isOpen, onClose]);
+    }, [isOpen]);
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm bg-black/20">
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm bg-black/20"
+                    onMouseDown={(e) => {
+                        // Close only when clicking the backdrop itself, not when interacting with content or portals
+                        if (e.target === e.currentTarget) onClose();
+                    }}
+                >
                     <motion.div
                         ref={modalRef}
                         className="bg-white rounded-lg shadow-lg p-6 max-w-lg w-full max-h-[70vh] overflow-y-auto"
@@ -59,6 +56,8 @@ export default function Modal ({
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.2 }}
+                        role="dialog"
+                        aria-modal="true"
                     >
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-lg font-medium text-gray-900">{title}</h3>

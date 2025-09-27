@@ -13,12 +13,22 @@ import {
 } from "@/components/ui/dropdown-menu"
 
 export interface Forms {
-    userId: string;
-    email: string;
-    name: string;
-    chosenDepartment: string;
-    motivation: string;
-    createdAt: Date;
+    formId: string;
+    formTitle: string;
+    formDescription: string;
+    formOpenDate: Date;
+    formCloseDate: Date;
+
+    field1: string;
+    field2: string;
+    field3: string;
+    field4: string;
+    field5: string;
+    field6: string;
+    field7: string;
+    field8: string;
+    field9: string;
+    field10: string;
 }
 
 export const columns: ColumnDef<Forms>[] = [

@@ -7,7 +7,7 @@ import { cn } from "@/utils/cn";
 import Image from "next/image";
 import Button from "@/components/global/Button";
 import Toast from "@/components/global/Toast";
-import supabase from "@/config/supabaseClient";
+import { createClient } from '@/utils/supabase/client';
 
 interface ModalProps {
   isOpen: boolean;
@@ -52,7 +52,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, title, children, imageUr
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm bg-black/20">
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4 backdrop-blur-sm bg-red-700 rounded-3xl">
           <motion.div
             ref={modalRef}
             className="bg-white rounded-lg max-h-[80vh] overflow-y-scroll shadow-lg max-w-lg w-full flex flex-col"
@@ -108,7 +108,7 @@ export function GlareCardDemo({ cards }: { cards: CardData[] }) {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const res: any = await supabase.auth.getUser();
+      const res: any = await createClient().auth.getUser();
       const user = res?.data?.user ?? null;
       setUser(user);
     };

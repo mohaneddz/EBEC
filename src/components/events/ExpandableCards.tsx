@@ -6,11 +6,8 @@ import { useOutsideClick } from "@/hooks/UseOutsideClick";
 import type { EventCard } from "@/types/events";
 
 
-type ExpandableCardDemoProps = {
-  cards: EventCard[];
-};
-
-export function ExpandableCardDemo({ cards }: ExpandableCardDemoProps) {
+export function ExpandableCardDemo({ cards }: { cards: EventCard[] }) {
+  
   const [active, setActive] = useState<EventCard | null>(null);
   const id = useId();
   const ref = useRef<HTMLDivElement>(null);
@@ -87,6 +84,9 @@ export function ExpandableCardDemo({ cards }: ExpandableCardDemoProps) {
                     </motion.h3>
                     <p className="text-neutral-200 text-base">
                       {active.description}
+                    </p>
+                    <p className="text-neutral-400 text-sm mt-2">
+                      {new Date(active.event_date).toLocaleDateString()}
                     </p>
                   </div>
 

@@ -6,8 +6,7 @@ import ShowcaseCard from '@/components/main/ShowcaseCard';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
-
-import supabase from '@/config/supabaseClient';
+import { createClient } from '@/utils/supabase/client';
 
 const images = ['/imgs/general/12.avif', '/imgs/general/1.avif', '/imgs/general/8.avif'];
 
@@ -29,9 +28,9 @@ export default function EventTypesSection() {
         const handleResize = () => {
 
             (async () => {
-                const { data: { session }, error } = await supabase.auth.getSession();
+                const { data: { user }, error } = await createClient().auth.getUser();
                 if (!error)
-                    setUser(session?.user ?? null);
+                    setUser(user ?? null);
             })();
 
             setIsMobile(window.innerWidth < 768); // md breakpoint is 768px

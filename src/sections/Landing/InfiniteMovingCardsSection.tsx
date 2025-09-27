@@ -8,7 +8,7 @@ export default function InfiniteMovingCardsSection() {
   return (
 
     <div id="InfiniteMovingCardsSection"
-      className="w-full bg-gradient-to-br min-h-screen flex flex-col justify-center items-center content-center from-slate-50 to-slate-200 ">
+      className="w-full min-h-screen flex flex-col justify-center items-center content-center bg-gray-100">
 
       <TextGenerateEffect
         words="What's your opinion on EBEC?"

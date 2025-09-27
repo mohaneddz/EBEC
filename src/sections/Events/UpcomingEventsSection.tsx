@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import supabase from "@/config/supabaseClient";
+import { createClient } from '@/utils/supabase/client';
 
 import { motion } from "motion/react";
 import { GlareCardDemo } from '@/components/events/GlareCard'
@@ -13,12 +13,12 @@ export default function UpcomingEventsSection() {
 
     useEffect(() => {
         const fetchEvents = async () => {
-            const { data, error } = await supabase
-                .from('Upcomings')
+            const { data, error } = await createClient()
+                .from('Upcoming')
                 .select('*')
                 .order('id', { ascending: true });
             if (error) {
-                // console.error("Error fetching events:", error);
+                console.error("Error fetching events:", error);
             }
             if (data) {
                 const updatedEvents = data.map((event) => ({
@@ -30,6 +30,7 @@ export default function UpcomingEventsSection() {
                 }));
                 setData(updatedEvents);
                 setLoading(false);
+                console.log('Upcoming events fetched successfully: ' + updatedEvents.length + ' events.');
             }
         };
         fetchEvents();

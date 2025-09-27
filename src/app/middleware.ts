@@ -1,32 +1,41 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
+import { updateSession } from '@/utils/supabase/middleware';
 
 export async function middleware(req: NextRequest) {
-	const res = NextResponse.next();
+  // Run Supabase session update first
+  const updateRes = await updateSession(req);
 
-	try {
-		const supabase = createMiddlewareClient({ req, res });
-		const {
-			data: { user },
-		} = await supabase.auth.getUser();
+  // If updateSession already returns a response (redirect, rewrite, etc.), return it
+  if (updateRes) return updateRes;
 
-		const role = user?.user_metadata?.role;
-		const department = user?.user_metadata?.department;
+  const res = NextResponse.next();
 
-		const allowed =
-			role === 'Manager' && (department === 'IT' || department === 'HR');
+  try {
+    const supabase = createMiddlewareClient({ req, res });
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-		if (!allowed) {
-			// Forward to not-found without changing the URL
-			return NextResponse.rewrite(new URL('/not-found', req.url));
-		}
+    const role = user?.app_metadata?.role;
+    const department = user?.app_metadata?.department;
 
-		return res;
-	} catch {
-		return NextResponse.rewrite(new URL('/not-found', req.url));
-	}
+    const allowed =
+      role === 'Manager' && (department === 'IT' || department === 'HR');
+
+    if (!allowed) {
+      // Forward to not-found without changing the URL
+      return NextResponse.rewrite(new URL('/not-found', req.url));
+    }
+
+    return res;
+  } catch {
+    return NextResponse.rewrite(new URL('/not-found', req.url));
+  }
 }
 
 export const config = {
-	matcher: ['/dashboard/:path*'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 };

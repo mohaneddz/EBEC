@@ -15,7 +15,7 @@ type ToastVariant = "info" | "success" | "warning" | "error";
 type ToastProps = {
     variant?: ToastVariant;
     className?: string;
-    message: string;
+    message?: string;
     onClose?: () => void;
     duration?: number;
 };
@@ -48,7 +48,7 @@ const toastVariants: Record<ToastVariant, { icon: JSX.Element; bg: string; text:
 };
 
 const Toast: React.FC<ToastProps> = ({ variant = "info", className, message, onClose, duration = 5000 }) => {
-    const [visible, setVisible] = useState(true);
+    const [visible, setVisible] = useState(false);
     const variantStyles = toastVariants[variant] || toastVariants.info;
 
     useEffect(() => {

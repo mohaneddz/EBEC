@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, MotionValue } from "motion/react";
 import type { HeroCard } from '@/types/hero';
 
@@ -20,6 +20,17 @@ export default function HeroCardContent({
     initial,
 }: HeroCardContentProps) {
     const [loaded, setLoaded] = useState(false);
+
+    useEffect(() => {
+        const img = new Image();
+        img.src = card.thumbnail;
+        if (img.complete) {
+            setLoaded(true); // already cached
+        } else {
+            img.onload = () => setLoaded(true);
+            img.onerror = () => setLoaded(true);
+        }
+    }, [card.thumbnail]);
 
     return (
         <motion.div
@@ -46,9 +57,6 @@ export default function HeroCardContent({
                     className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"
                         }`}
                     alt={card.title}
-                    // TODO : fix not loading on cache
-                    onLoad={() => setLoaded(true)}
-                    onError={() => setLoaded(true)}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: loaded ? 1 : 0 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}

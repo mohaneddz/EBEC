@@ -116,22 +116,25 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
         return (
             // Added margin-bottom to space it from potential following content
             <div className={`${gridClasses} w-full ${containerAspect} mb-12 md:mb-16`}>
-                {images.slice(0, 5).map((img: string, index: number) => { // Limit to 5 images
-                    let itemClasses = '';
-                    if (count === 3) {
-                        if (index === 0) itemClasses = 'col-span-2 row-span-2';
-                        else if (index === 1) itemClasses = 'col-span-1 row-span-1';
-                        else if (index === 2) itemClasses = 'col-span-1 row-span-1';
-                    } else if (count >= 5) {
-                        if (index === 0) itemClasses = 'col-span-3 row-span-1';
-                        else if (index === 1) itemClasses = 'col-span-3 row-span-1';
-                        else if (index === 2) itemClasses = 'col-span-2 row-span-1';
-                        else if (index === 3) itemClasses = 'col-span-2 row-span-1';
-                        else if (index === 4) itemClasses = 'col-span-2 row-span-1';
-                    }
+                {images.slice(0, 5).map((img: string, index: number) => {
+                    const rules: Record<string, string> = {
+                        "3-0": "col-span-2 row-span-2",
+                        "3-1": "col-span-1 row-span-1",
+                        "3-2": "col-span-1 row-span-1",
+                        "5-0": "col-span-3 row-span-1",
+                        "5-1": "col-span-3 row-span-1",
+                        "5-2": "col-span-2 row-span-1",
+                        "5-3": "col-span-2 row-span-1",
+                        "5-4": "col-span-2 row-span-1",
+                    };
+
+                    const key = `${count >= 5 ? 5 : count}-${index}`;
+                    const itemClasses = rules[key] || "";
+
                     return <ImageItem key={img || index} src={img} className={itemClasses} />;
                 })}
             </div>
+
         );
     };
 

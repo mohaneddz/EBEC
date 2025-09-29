@@ -7,7 +7,7 @@ type ShowcaseCardProps = {
     className?: string;
 };
 
-export default function ShowcaseCard({ image, title, description, className }: ShowcaseCardProps) {
+export default function ActivityCard({ image, title, description, className }: ShowcaseCardProps) {
     return (
 
         <div className={`hover:scale-105 transition-all duration-200 hover:shadow-xl hover:cursor-pointer active:scale-95 z-10 group min-h-min h-min min-w-min  lg:w-full bg-white flex flex-col rounded-sm overflow-hidden shadow-md shadow-black/20 ${className}`}>

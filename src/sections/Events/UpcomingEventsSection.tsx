@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { createClient } from '@/utils/supabase/client';
 
 import { motion } from "motion/react";
-import { GlareCardDemo } from '@/components/events/GlareCard'
+import { GlareCardDemo } from '@/sections/Events/UpcomingEvnetsGlareCard'
 
 export default function UpcomingEventsSection() {
 
@@ -23,7 +23,7 @@ export default function UpcomingEventsSection() {
             if (data) {
                 const updatedEvents = data.map((event) => ({
                     id: event.id,
-                    title: event.name || "Coming Soon!",
+                    title: event.title || "Coming Soon!",
                     description: event.brief,
                     src: event.picture,
                     open: event.open,
@@ -40,7 +40,7 @@ export default function UpcomingEventsSection() {
     const titleRef = useRef(null);
 
     return (
-        <div className="flex flex-col min-h-screen mt-40 mb-8 h-min " >
+        <div className="flex flex-col min-h-screen mt-40 mb-8 h-min" >
 
             <svg className="top-0 translate-y-2 -z-10" width="100%" height="192" viewBox="0 0 960 192" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <g clipPath="url(#clip0_505_1163)">

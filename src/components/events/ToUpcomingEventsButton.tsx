@@ -9,12 +9,15 @@ export default function ToUpcomingEventsButton() {
         if (el) {
             el.scrollIntoView({ behavior: "smooth", block: "center" });
         }
+        else{
+            window.scrollBy({ top: window.innerHeight * 2.2, behavior: "smooth" });
+        }
     };
 
     return (
 
         <Button
-            className="text-foreground hover:text-primary-foreground z-40"
+            className="text-foreground z-40"
             aria-label="Scroll to Upcoming Events"
             text="I'm Ready!"
             onClick={scrollToUpcomingEvents}

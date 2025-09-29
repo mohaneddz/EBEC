@@ -10,7 +10,7 @@ import {
     IconX,
 } from '@tabler/icons-react';
 
-type ToastVariant = "info" | "success" | "warning" | "error";
+export type ToastVariant = "info" | "success" | "warning" | "error";
 
 type ToastProps = {
     variant?: ToastVariant;

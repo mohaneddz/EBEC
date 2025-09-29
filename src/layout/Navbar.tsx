@@ -11,16 +11,13 @@ import { motion } from "motion/react";
 import Image from "next/image";
 const logo = "/EBEC.png";
 
-
-export default function Navbar({ }) {
-
+export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
   const navbarRef = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
   const { user, loading } = useAuth();
-
 
   const navItems = [
     { name: "Home", path: "/", icon: IconHome },
@@ -29,15 +26,11 @@ export default function Navbar({ }) {
   ];
 
   const isNavItemActive = (itemPath: string) => {
-    if (itemPath === '/') {
-      return pathname === '/';
-    }
+    if (itemPath === '/') return pathname === '/';
     return pathname === itemPath;
   };
 
-  const isUserSectionActive = () => {
-    return pathname.startsWith('/user/');
-  };
+  const isUserSectionActive = () => pathname.startsWith('/user/');
 
   const handleNavigation = (path: string) => {
     if (path) {
@@ -52,13 +45,12 @@ export default function Navbar({ }) {
   };
 
   const profilePath = user?.id ? `/user/${user.id}` : "/login";
-  // const profilePath = `/user/5`;
 
   return (
     <header
       ref={navbarRef}
-      className="navbar sticky w-full top-0 z-50 shadow-md bg-white">
-
+      className="navbar sticky w-full top-0 z-50 shadow-md bg-white"
+    >
       <nav className="container mx-auto px-4 py-2 z-50">
         <div className="flex items-center">
 
@@ -97,6 +89,7 @@ export default function Navbar({ }) {
                   {isActive && (
                     <motion.div
                       layoutId="underline"
+                      initial={false} // <-- Fix initial render glitch
                       className="absolute -bottom-1 left-0 right-0 h-0.5 bg-secondary-dark"
                     />
                   )}
@@ -107,9 +100,8 @@ export default function Navbar({ }) {
 
           {/* User Icon - Desktop */}
           <div className="hidden md:flex ml-auto">
-            {
-              !loading &&
-              (user?.id ? (
+            {!loading && (
+              user?.id ? (
                 <motion.div
                   whileHover={{ scale: 1.05 }}
                   className="cursor-pointer p-2"
@@ -130,8 +122,8 @@ export default function Navbar({ }) {
                 >
                   Sign in
                 </button>
-              ))
-            }
+              )
+            )}
           </div>
 
           {/* Burger Menu Button */}
@@ -163,7 +155,7 @@ export default function Navbar({ }) {
           transition={{ duration: 0.3, ease: "easeInOut" }}
           className="md:hidden"
         >
-          <div className="pt-4 pb-3 space-y-1"> {/* Removed conditional rendering wrapper */}
+          <div className="pt-4 pb-3 space-y-1">
             {navItems.map((item) => {
               const isActive = isNavItemActive(item.path);
               return (
@@ -171,7 +163,8 @@ export default function Navbar({ }) {
                   key={item.name}
                   onClick={() => handleNavigation(item.path)}
                   className={`flex items-center gap-2 px-3 rounded-md cursor-pointer ${isActive ? "text-secondary-dark bg-yellow-50"
-                    : "text-sm text-gray-400 hover:text-primary-dark hover:bg-gray-100"}`}>
+                    : "text-sm text-gray-400 hover:text-primary-dark hover:bg-gray-100"}`}
+                >
                   <item.icon size={20} />
                   {item.name}
                 </div>
@@ -179,17 +172,17 @@ export default function Navbar({ }) {
             })}
 
             {/* Mobile Profile Link */}
-            {
-              !loading &&
+            {!loading && (
               <div
                 onClick={() => handleNavigation(profilePath)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${isUserSectionActive()
                   ? "text-secondary-dark bg-yellow-50"
-                  : "text-sm text-gray-400 hover:text-primary-dark hover:bg-gray-100"}`}>
+                  : "text-sm text-gray-400 hover:text-primary-dark hover:bg-gray-100"}`}
+              >
                 <IconUser size={20} />
                 <span>Profile</span>
               </div>
-            }
+            )}
           </div>
         </motion.div>
       </nav>

@@ -48,7 +48,7 @@ export default function ServicesCards({
 				boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
 				backgroundColor: "#ffc00e",
 			}}
-			className="p-8 bg-slate-50/50 rounded-lg cursor-pointer flex flex-col items-center justify-center border-2 border-transparent group"
+			className="p-8 bg-slate-300/50 rounded-lg cursor-pointer flex flex-col items-center justify-center border-2 border-transparent group"
 		>
 			<Link href={link} className="flex flex-col items-center justify-center">
 				<div className="relative flex flex-col items-center justify-center">

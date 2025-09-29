@@ -90,7 +90,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({ question, answer, 
                         }}
                         className="overflow-hidden"
                     >
-                        <div className="p-6 bg-gradient-to-b from-white/5 to-white/10 text-white/90">
+                        <div className="p-6 bg-gradient-to-b from-primary/50 to-primary-light/70 text-white/90">
                             {answer} {/* Changed from content */}
                         </div>
                     </motion.section>

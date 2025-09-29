@@ -1,16 +1,19 @@
 "use client";
 
 import Button from '@/components/global/Button';
-import ShowcaseCard from '@/components/main/ShowcaseCard';
+import ActivityCard from '@/components/main/ActivityCard';
 
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useRef, useState, useEffect } from 'react';
 import { User } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
 
-const images = ['/imgs/general/12.avif', '/imgs/general/1.avif', '/imgs/general/8.avif'];
+const images = [
+                '/imgs/general/16.avif',
+                '/imgs/general/1.avif',
+                '/imgs/general/8.avif'];
 
-export default function EventTypesSection() {
+export default function ActivitiesSection() {
     
     const [user, setUser] = useState<User | null>(null);
 
@@ -67,18 +70,18 @@ export default function EventTypesSection() {
                 <div className="grid grid-cols-1 items-center justify-center content-center md:grid-cols-3 gap-24 md:gap-16 relative ">
 
                     <motion.div className='z-10 md:col-start-1 md:col-end-2 flex items-center justify-center' style={{ translateY: translateY1 }}>
-                        <ShowcaseCard image={images[1]} title={"Workshops"} description={"Prepare for the real world!"} className={'relative w-full'} />
+                        <ActivityCard image={images[1]} title={"Workshops"} description={"Prepare for the real world!"} className={'relative w-full'} />
                     </motion.div>
 
                     <motion.div
                         className='z-10 md:col-start-2 md:col-end-3 md:row-span-2 flex items-center justify-center'
                         style={{ translateY: translateY2 }}
                     >
-                        <ShowcaseCard image={images[2]} title={"Competetions"} description={"Your chance to show your skills!"} className={'relative w-full'} />
+                        <ActivityCard image={images[2]} title={"Competetions"} description={"Your chance to show your skills!"} className={'relative w-full'} />
                     </motion.div>
 
                     <motion.div className='z-10 md:col-start-1 md:col-end-2 md:row-start-2 md:row-end-3 flex items-center justify-center' style={{ translateY: translateY3 }}>
-                        <ShowcaseCard image={images[0]} title={"Events"} description={"Making Incredible experiences"} className={'relative w-full'} />
+                        <ActivityCard image={images[0]} title={"Events"} description={"Making Incredible experiences"} className={'relative w-full'} />
                     </motion.div>
 
                     {/* Decorative SVG (Responsive) */}

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 // import useAuth from '@/hooks/useAuth';
 import { createClient } from '@/utils/supabase/client';
-import { supabaseAdmin } from '@/utils/supabase/admin';
+import { getSupabaseAdmin } from '@/utils/supabase/admin';
 
 interface User {
 	id: string;
@@ -115,6 +115,7 @@ export default function useUser() {
 	};
 
 	const handleSaveChanges = async (displayName: string) => {
+		const supabaseAdmin = await getSupabaseAdmin();
 		const { error } = await supabaseAdmin.auth.updateUser({
 			data: { display_name: displayName },
 		});

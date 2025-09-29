@@ -1,6 +1,6 @@
 import { faqData } from "@/data/faq";
 import { generateFAQSchema } from "@/utils/faqSchema";
-import { Accordion } from "@/components/others/Accordion";
+import { Accordion } from "@/components/about/Accordion";
 
 export default function FrequentQuestions() {
     const faqSchema = generateFAQSchema(faqData);

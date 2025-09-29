@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from "react";
 
-import Modal from "@/components/others/UpcomingEventsModal";
+import Modal from "@/components/events/UpcomingEventsModal";
 import Button from "@/components/global/Button";
 import Toast, { ToastVariant } from "@/components/global/Toast";
 

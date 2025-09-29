@@ -3,8 +3,8 @@
 import { ColumnDef } from "@tanstack/react-table"
 import Image from "next/image"
 
-// The data structure for a single manager
-export interface Manager {
+// The data structure for a single leaderboard user
+export interface LeaderboardUser {
     userId: string;
     picture: string;
     name: string;
@@ -12,18 +12,10 @@ export interface Manager {
     score: number;
 }
 
-// Helper function to determine the color of the score badge
-const getScoreColor = (score: number) => {
-    if (score >= 90) return "bg-green-100 text-green-800"
-    if (score >= 75) return "bg-blue-100 text-blue-800"
-    if (score >= 60) return "bg-yellow-100 text-yellow-800"
-    return "bg-red-100 text-red-800"
-}
-
-export const columns: ColumnDef<Manager>[] = [
+export const columns: ColumnDef<LeaderboardUser>[] = [
     {
         accessorKey: "picture",
-        header: "Picture",
+        header: "Member",
         cell: ({ row }) => {
             const pictureUrl = row.original.picture;
             const name = row.original.name;
@@ -41,14 +33,13 @@ export const columns: ColumnDef<Manager>[] = [
         },
     },
     {
-        // We combine Name and Department into a single column for a cleaner look
         accessorKey: "name",
-        header: "Manager",
+        header: "Name",
         cell: ({ row }) => {
             const name = row.original.name;
             const department = row.original.department;
             return (
-                <div>
+                <div className="w-full">
                     <div className="font-semibold text-gray-900">{name}</div>
                     <div className="text-sm text-gray-500">{department}</div>
                 </div>
@@ -63,7 +54,7 @@ export const columns: ColumnDef<Manager>[] = [
             return (
                 <div className="flex justify-end">
                     <div
-                        className={`px-3 py-1 text-xs font-medium rounded-full ${getScoreColor(score)}`}
+                        className={`px-3 py-1 text-xs font-bold rounded-full bg-secondary-light/20 text-secondary-dark`}
                     >
                         {score}
                     </div>

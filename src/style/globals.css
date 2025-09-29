@@ -41,6 +41,10 @@ body {
   @apply flex justify-center items-center;
 }
 
+.col{
+  @apply flex flex-col;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

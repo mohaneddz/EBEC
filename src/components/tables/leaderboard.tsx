@@ -1,106 +1,68 @@
 "use client"
 
-import React from "react"
-import {
-    flexRender,
-    getCoreRowModel,
-    useReactTable,
-    type ColumnDef,
-} from "@tanstack/react-table"
+import * as React from "react"
+import { ColumnDef, flexRender, getCoreRowModel, useReactTable, SortingState, getSortedRowModel } from "@tanstack/react-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table" // Assuming you use shadcn/ui
-
-// Define a generic type for our data that must include a 'score' property
-interface ScorableData {
-    score: number;
-    [key: string]: any; // Allows for any other properties
+interface DataTableProps<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  department: string
 }
 
-// Props for our new, more reusable component
-interface LeaderboardTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
-    topCount?: number // Optional: how many top items to show
-    noResultsMessage?: string // Optional: message to show when data is empty
-}
+export function Leaderboard<TData, TValue>({ columns, data, department }: DataTableProps<TData, TValue>) {
+  const [sorting, setSorting] = React.useState<SortingState>([])
 
-/**
- * A reusable table component to display the top N items from a list of data,
- * sorted by a 'score' property in descending order.
- */
-export function LeaderboardTable<TData extends ScorableData, TValue>({
+  // Only take top 5 members for the specified department or all if "All"
+  const topData = React.useMemo(() => {
+    const filtered = department === "All" ? data : data.filter((item: any) => item.department === department);
+    return filtered.sort((a: any, b: any) => b.score - a.score).slice(0, 5);
+  }, [data, department])
+
+  const table = useReactTable({
+    data: topData,
     columns,
-    data,
-    topCount = 5, // Default to showing the top 5
-    noResultsMessage = "No members found.", // A more specific default message
-}: LeaderboardTableProps<TData, TValue>) {
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    onSortingChange: setSorting,
+    state: { sorting },
+  })
 
-    // 1. Sort the data by score in descending order.
-    // 2. Limit the result to the specified topCount.
-    // We use React.useMemo to avoid re-calculating this on every render.
-    const topSortedData = React.useMemo(() => {
-        return data
-            .sort((a, b) => b.score - a.score)
-            .slice(0, topCount);
-    }, [data, topCount]); // Dependency array includes topCount now
+  return (
+    <div className="overflow-hidden rounded-md border overflow-x-auto w-full overflow-y-auto">
+      <Table>
+        <TableHeader className="bg-primary-dark">
+          {table.getHeaderGroups().map(headerGroup => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map(header => (
+                <TableHead key={header.id} className="text-secondary-dark font-bold">
+                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                </TableHead>
+              ))}
+            </TableRow>
+          ))}
+        </TableHeader>
 
-    const table = useReactTable({
-        data: topSortedData, // Use the processed data
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-    })
-
-    return (
-        <div className="rounded-lg border shadow-sm">
-            <Table>
-                <TableHeader>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                        <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
-                                return (
-                                    <TableHead key={header.id} className="font-semibold text-gray-600 bg-gray-50">
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
-                                    </TableHead>
-                                )
-                            })}
-                        </TableRow>
-                    ))}
-                </TableHeader>
-                <TableBody>
-                    {table.getRowModel().rows?.length ? (
-                        table.getRowModel().rows.map((row) => (
-                            <TableRow
-                                key={row.id}
-                                data-state={row.getIsSelected() && "selected"}
-                            >
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id} className="py-3">
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        ))
-                    ) : (
-                        <TableRow>
-                            <TableCell colSpan={columns.length} className="h-24 text-center">
-                                {noResultsMessage}
-                            </TableCell>
-                        </TableRow>
-                    )}
-                </TableBody>
-            </Table>
-        </div>
-    )
+        <TableBody className="bg-slate-100">
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map(row => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map(cell => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No results.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  )
 }

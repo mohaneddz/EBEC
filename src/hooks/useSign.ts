@@ -130,9 +130,10 @@ export default function useSign() {
 
 		try {
 			await signInWithEmail(email, password);
+			const { data: { user } } = await supabase.auth.getUser();
 			setToast({ message: 'Login Successful!', type: 'success' });
 
-			window.location.href = '/';
+			window.location.href = `/user/${user?.id}`;
 		} catch (err) {
 			setToast({ message: 'Invalid login credentials.', type: 'error' });
 		} finally {

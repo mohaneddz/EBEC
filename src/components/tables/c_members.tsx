@@ -17,7 +17,7 @@ export interface Members {
     picture: string;
     name: string;
     email: string;
-    department: 'IT' | 'HR' | 'Multimedia' | 'Design' | 'Relex' | 'Events' | 'Directors';
+    department: departments;
     role: 'Member' | 'Manager'  | 'President' | 'Vice President' | 'SA';
     status: 'Active' | 'Inactive';
     attendance: number;

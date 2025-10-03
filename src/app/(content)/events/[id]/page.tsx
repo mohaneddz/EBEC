@@ -34,7 +34,7 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
 
             try {
                 const { data, error } = await supabase
-                    .from('Events')
+                    .from('events')
                     .select('*')
                     .eq('id', id)
                     .maybeSingle();

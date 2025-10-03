@@ -18,7 +18,7 @@ export interface Managers {
     picture: string;
     name: string;
     email: string;
-    department: 'IT' | 'HR' | 'Multimedia' | 'Design' | 'Relex' | 'Events';
+    department: departments;
     role: 'Manager' | 'President' | 'Vice President' | 'SA';
     status: 'Active' | 'Inactive';
     assignedAt: Date;

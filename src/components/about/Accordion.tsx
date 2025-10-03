@@ -64,7 +64,7 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({ question, answer, 
                 whileHover={{ scale: 1.01 }}
                 whileTap={{ scale: 0.99 }}
                 onClick={onClick}
-                className={`w-full flex justify-between items-center p-6 bg-gradient-to-r from-primary-dark/90 to-primary-light/90 ${isOpen ? 'text-slate-400' : 'text-white'
+                className={`cursor-pointer w-full flex justify-between items-center p-6 bg-gradient-to-r from-primary-dark/90 to-primary-light/90 ${isOpen ? 'text-slate-400' : 'text-white'
                     } hover:text-secondary-dark transition duration-200`}
             >
                 <span className="text-xl font-medium tracking-tight text-left mr-4">

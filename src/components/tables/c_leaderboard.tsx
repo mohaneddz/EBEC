@@ -5,28 +5,27 @@ import Image from "next/image"
 
 // The data structure for a single leaderboard user
 export interface LeaderboardUser {
-    userId: string;
     picture: string;
     name: string;
-    department: 'IT' | 'HR' | 'Multimedia' | 'Design' | 'Relex' | 'Events';
+    department: string;
     score: number;
 }
 
 export const columns: ColumnDef<LeaderboardUser>[] = [
     {
         accessorKey: "picture",
-        header: "Member",
+        header: () => <div className="p-4">Picture</div>,
         cell: ({ row }) => {
             const pictureUrl = row.original.picture;
             const name = row.original.name;
             return (
-                <div className="flex-shrink-0">
+                <div className="flex-shrink-0 py-4 px-4">
                     <Image
-                        src={pictureUrl}
+                        src={pictureUrl || "/imgs/DEFAULT.webp"}
                         alt={`Picture of ${name}`}
-                        width={40}
-                        height={40}
-                        className="rounded-full object-cover"
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 rounded-full object-cover"
                     />
                 </div>
             )
@@ -37,24 +36,34 @@ export const columns: ColumnDef<LeaderboardUser>[] = [
         header: "Name",
         cell: ({ row }) => {
             const name = row.original.name;
+            return (
+                <div className="w-full py-4">
+                    <div className="text-lg font-semibold text-gray-900">{name}</div>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "department",
+        header: "Department",
+        cell: ({ row }) => {
             const department = row.original.department;
             return (
-                <div className="w-full">
-                    <div className="font-semibold text-gray-900">{name}</div>
-                    <div className="text-sm text-gray-500">{department}</div>
+                <div className="w-full py-4">
+                    <div className="text-lg text-gray-500">{department}</div>
                 </div>
             )
         },
     },
     {
         accessorKey: "score",
-        header: () => <div className="text-right">Score</div>,
+        header: () => <div className="text-right p-4">Score</div>,
         cell: ({ row }) => {
             const score = row.original.score;
             return (
-                <div className="flex justify-end">
+                <div className="flex justify-end py-4 px-4">
                     <div
-                        className={`px-3 py-1 text-xs font-bold rounded-full bg-secondary-light/20 text-secondary-dark`}
+                        className={`px-4 py-2 text-lg font-bold rounded-full bg-secondary-light/20 text-secondary-dark`}
                     >
                         {score}
                     </div>

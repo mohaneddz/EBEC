@@ -16,7 +16,7 @@ export interface Signups {
     userId: string;
     name: string;
     email: string;
-    chosenDepartment: 'IT' | 'HR' | 'Multimedia' | 'Design' | 'Relex' | 'Events';
+    chosenDepartment: departments;
     motivation: string;
     createdAt: Date;
 }

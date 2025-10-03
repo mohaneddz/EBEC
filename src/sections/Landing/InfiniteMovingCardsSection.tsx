@@ -8,11 +8,11 @@ export default function InfiniteMovingCardsSection() {
   return (
 
     <div id="InfiniteMovingCardsSection"
-      className="w-full min-h-screen flex flex-col justify-center items-center content-center bg-gray-100">
+      className="w-full min-h-[30vh] flex flex-col justify-center items-center content-center bg-gray-100">
 
       <TextGenerateEffect
         words="What's your opinion on EBEC?"
-        className="mt-40 mb-16 lt:my-40 text-3xl sm:text-4xl md:text-5xl lg:text-9xl text-center font-bold"
+        className="mt-10 mb-16 lt:my-40 text-3xl sm:text-4xl md:text-5xl lg:text-9xl text-center font-bold"
         color={"primary-light"}
       />
 

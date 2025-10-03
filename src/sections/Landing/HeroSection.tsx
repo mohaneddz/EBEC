@@ -3,7 +3,7 @@ import HeroHeader from "@/components/main/HeroHeader";
 
 const cards = Array.from({ length: 15 }, (_, i) => ({
   id: i + 1,
-  title: `Memory`,
+  title: `Memory` + (i + 1),
   thumbnail: `imgs/general/${i + 1}.avif`
 }));
 

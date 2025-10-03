@@ -14,7 +14,7 @@ export default function UpcomingEventsSection() {
     useEffect(() => {
         const fetchEvents = async () => {
             const { data, error } = await createClient()
-                .from('Upcoming')
+                .from('upcoming')
                 .select('*')
                 .order('id', { ascending: true });
             if (error) {

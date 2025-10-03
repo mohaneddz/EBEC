@@ -35,7 +35,7 @@ export function Leaderboard<TData, TValue>({ columns, data, department }: DataTa
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <TableHead key={header.id} className="text-secondary-dark font-bold">
+                <TableHead key={header.id} className="text-secondary-dark font-bold text-lg">
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}

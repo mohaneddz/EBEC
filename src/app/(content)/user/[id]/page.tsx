@@ -12,7 +12,6 @@ import UserInfo from "@/components/main/UserInfo";
 
 const DEFAULT_PIC = "/imgs/DEFAULT.webp"
 
-
 interface UserPageProps {
   id: string;
 }
@@ -20,7 +19,7 @@ interface UserPageProps {
 export default function UserPage({ id }: UserPageProps) {
 
   const {
-    user, allowed, setManager, openModal, handleLogOut, handleSaveChanges, visible, departments, isVisible, selectedDepartment, handleMotivationChange, handleSendRequest, closeModal, handleCloseToast, motivation, toastMessage, toastVariant, handleSelect
+    user, allowed, openModal, handleLogOut, handleSaveChanges, visible, departments, isVisible, selectedDepartment, handleMotivationChange, handleSendRequest, closeModal, handleCloseToast, motivation, toastMessage, toastVariant, handleSelect
   } = useUser();
 
   return (
@@ -41,7 +40,7 @@ export default function UserPage({ id }: UserPageProps) {
       <Modal isOpen={isVisible} onClose={closeModal} title="Select Department & Add Motivation">
         
         {/* Department Selection Grid */}
-        <div className="grid grid-cols-3 gap-4 justify-items-center mt-4">
+        <div className="center flex-wrap gap-4 justify-items-center mt-4">
           {departments.map((department: string) => (
             <button
               key={department}
@@ -85,9 +84,7 @@ export default function UserPage({ id }: UserPageProps) {
 
       {user &&
 
-        (allowed.includes(user.app_metadata?.role || '') ||
-          ((user.app_metadata?.role === 'Manager'))
-        ) &&
+        (allowed.includes(user.user_metadata?.role || '')) &&
 
         <a href="/dashboard"
           className={"z-50 fixed hover:scale-105 acitve:scale-95 bottom-0 right-0 m-8  rounded-full bg-gradient-to-br from-primary-light to-primary-dark text-white p-4 shadow-lg hover:shadow-xl transition duration-300 ease-in-out"}>
@@ -146,22 +143,18 @@ export default function UserPage({ id }: UserPageProps) {
 
       {user && (
         <UserInfo
-          name={user.app_metadata?.display_name || "No Name"}
+          name={user.user_metadata?.display_name || "No Name"}
           email={user?.email || "No Email"}
-          role={user.app_metadata?.role || "Member"}
-          department={user.app_metadata?.department || "No Department"}
+          role={user.user_metadata?.role || "Member"}
+          department={user.user_metadata?.department || "No Department"}
           openModal={openModal}
-          image={DEFAULT_PIC}
-          status={user.app_metadata?.status || "Unverified"}
+          image={user.user_metadata?.image || DEFAULT_PIC}
+          status={user.user_metadata?.status || "Unverified"}
           handleLogOut={handleLogOut}
           handleDeleteAccount={() => { }}
           handleSaveChanges={handleSaveChanges}
         />
       )}
-
-      <button className='fixed bottom-8 left-8 h-20 w-20 rounded-full bg-primary-dark text-white click' onClick={setManager}>
-        Manager
-      </button>
 
     </main>
   );

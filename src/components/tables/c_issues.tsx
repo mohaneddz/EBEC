@@ -16,7 +16,7 @@ export interface Issues {
     userId: string;
     email: string;
     name: string;
-    department: 'IT' | 'HR' | 'Multimedia' | 'Design' | 'Relex' | 'Events';
+    department: departments;
     issue: string;
     createdAt: Date;
     status: 'open' | 'in_progress' | 'resolved';

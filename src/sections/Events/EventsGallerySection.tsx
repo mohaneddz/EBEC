@@ -21,7 +21,7 @@ const EventsGallery = () => {
 		const fetchEvent = async () => {
 			setLoading(true);
 			try {
-				const { data, error } = await createClient().from('Events').select('*');
+				const { data, error } = await createClient().from('events').select('*');
 				if (error) {
 					setFetchError('Could not fetch the Events!');
 					setEvents(null);

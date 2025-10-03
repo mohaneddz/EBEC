@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 // import useAuth from '@/hooks/useAuth';
 import { createClient } from '@/utils/supabase/client';
 import { getSupabaseAdmin } from '@/utils/supabase/admin';
+import { createAdminClient } from '@/app/actions';
 
 interface User {
 	id: string;
@@ -15,6 +16,10 @@ interface User {
 	};
 	user_metadata?: {
 		display_name?: string;
+		image?: string;
+		department?: string;
+		status?: string;
+		role?: string;
 	};
 }
 
@@ -25,7 +30,7 @@ export default function useUser() {
 
 	const [isVisible, setIsVisible] = useState<boolean>(false);
 	const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
-	const departments: string[] = ['IT', 'HR', 'Multimedia', 'Design', 'Relex', 'Events'];
+	const departments: string[] = ['IT', 'Finance', 'Media', 'Design', 'Relex', 'Events', 'Logistics'];
 	const [motivation, setMotivation] = useState<string>('');
 
 	const [toastMessage, setToastMessage] = useState<string>('');
@@ -114,36 +119,84 @@ export default function useUser() {
 			});
 	};
 
-	const handleSaveChanges = async (displayName: string) => {
+	const uploadImageToStorage = async (userId: string, imageDataUrl: string): Promise<string | null> => {
 		const supabaseAdmin = await getSupabaseAdmin();
-		const { error } = await supabaseAdmin.auth.updateUser({
-			data: { display_name: displayName },
-		});
+
+		// Convert data URL to Blob
+		const response = await fetch(imageDataUrl);
+		const blob = await response.blob();
+
+		// Upload to 'Profiles' bucket with userId.jpg as file name, overwrite if exists
+		const { data, error } = await supabaseAdmin.storage
+			.from('Profiles')
+			.upload(`public/${userId}.jpg`, blob, {
+				upsert: true,
+				contentType: 'image/jpeg',
+			});
+
 		if (error) {
-			console.error('Error updating display name:', error);
-			return;
+			console.error('Error uploading image:', error);
+			return null;
 		}
-		// Refresh local user state
-		const { data } = await supabaseAdmin.auth.getUser();
-		setUser((data?.user as unknown as User) ?? null);
+
+		// Get public URL
+		const { data: publicUrlData } = supabaseAdmin.storage
+			.from('Profiles')
+			.getPublicUrl(`public/${userId}.jpg`);
+
+		return publicUrlData.publicUrl;
 	};
 
 	const sendRequest = async () => {
 		const displayName = user?.app_metadata?.display_name || user?.user_metadata?.display_name;
-		await supabase.from('Emails').insert([
+
+		const { error } = await supabase.from('department_switch').insert([
 			{
-				name: displayName,
-				email: user?.email,
-				type: 'Change Department',
-				message: `Change from ${user?.app_metadata?.department} to ${selectedDepartment}.\nMotivation: ${motivation}`,
-				date: new Date().toISOString(),
+				user_id: user?.id,
+				old_department: user?.app_metadata?.department ?? null,
+				new_department: selectedDepartment ?? null,
+				motivation: motivation ?? '',
+				created_at: new Date().toISOString(),
 			},
 		]);
 
+		if (error) {
+			console.error('Error inserting department request:', error);
+			showToast('Failed to send request.', 'error');
+			return;
+		}
+
+		showToast('Request sent successfully!', 'success');
 		closeModal();
 	};
 
-	const allowed = ['President', 'Vice President', 'General Secretary'];
+	const handleSaveChanges = async (displayName: string, image?: string) => {
+		let imageUrl: string | undefined;
+
+		if (image) {
+			const uploadedUrl = await uploadImageToStorage(user!.id, image);
+			if (!uploadedUrl) {
+				showToast('Failed to upload image.', 'error');
+				return;
+			}
+			imageUrl = uploadedUrl;
+		}
+
+		const { data, error } = await supabase.auth.updateUser({
+			data: { display_name: displayName, image: imageUrl },
+		});
+
+		if (error) {
+			console.error('Error updating user:', error);
+			showToast('Failed to save changes.', 'error');
+			return;
+		}
+
+		setUser((data?.user as User) ?? null);
+		showToast('Changes saved successfully!', 'success');
+	};
+
+	const allowed = ['President', 'Vice President', 'General Secretary', 'Manager'];
 
 	return {
 		user,

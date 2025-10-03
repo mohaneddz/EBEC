@@ -11,7 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import Image from "next/image" // Assuming you are in a Next.js environment for Image component
+import Image from "next/image" 
 
 export interface Gallery {
     eventId: string;

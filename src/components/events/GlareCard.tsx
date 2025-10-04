@@ -22,12 +22,12 @@ export const GlareCard = ({
   });
 
   // Inline styles remain the same as they are dynamically calculated
-  const containerStyle: React.CSSProperties = {
+  const containerStyle: React.CSSProperties & Record<string, string> = {
     "--m-x": "50%", "--m-y": "50%", "--r-x": "0deg", "--r-y": "0deg",
     "--bg-x": "50%", "--bg-y": "50%", "--duration": "300ms", "--foil-size": "100%",
     "--opacity": "0", "--radius": "12px", "--easing": "ease",
     "--transition": "var(--duration) var(--easing)"
-  } as any;
+  };
 
   const updateStyles = () => {
     if (refElement.current) {

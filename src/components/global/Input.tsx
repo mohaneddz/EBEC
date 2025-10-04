@@ -35,15 +35,10 @@ export const Input: React.FC<InputProps> = ({
     onBlur,
     visible
 }) => {
-    const [isFocused, setIsFocused] = useState(false);
-
-    const handleFocus = () => setIsFocused(true);
+    const handleFocus = () => {};
     const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
-        setIsFocused(false);
         if (onBlur) onBlur(e);
     };
-
-    const isActive = isFocused || (value && value.length > 0);
 
     return (
         <div className="group relative mb-[0.5rem] sm:mb-[1rem] w-full">
@@ -149,6 +144,7 @@ export const Input: React.FC<InputProps> = ({
 
 export default Input;
 
+// replaced the loose index signature that used `any` with proper HTML attribute intersections
 type Input2Props = {
     label?: string;
     type?: string;
@@ -158,14 +154,13 @@ type Input2Props = {
     placeholder?: string;
     required?: boolean;
     className?: string;
-    [key: string]: any;
-};
+} & React.InputHTMLAttributes<HTMLInputElement> & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 function cn(...classes: (string | undefined | false)[]) {
     return classes.filter(Boolean).join(' ');
 }
 
-export function Input2 ({
+export function Input2({
     label,
     type = "text",
     value,

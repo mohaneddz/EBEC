@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { columns, UpcomingEvent } from "@/components/tables/columns/c_upcoming"
+import { columns, Upcoming } from "@/components/tables/columns/c_upcoming"
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
 
 export default function UpcomingEventsTable() {
-  const [data, setData] = useState<UpcomingEvent[]>([]);
+  const [data, setData] = useState<Upcoming[]>([]);
 
   const fetchData = useCallback(async () => {
     const supabase = await getSupabaseAdmin();
@@ -19,7 +19,7 @@ export default function UpcomingEventsTable() {
       return;
     }
 
-    setData(upcomingEventsData as UpcomingEvent[]);
+    setData(upcomingEventsData as Upcoming[]);
   }, []);
 
   useEffect(() => {

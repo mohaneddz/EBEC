@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function useFormCreator () {
     
-const [formData, setFormData] = useState<any>({});
+const [formData, setFormData] = useState<Record<string, unknown>>({});
 
   return {
     formData,

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, ReactNode } from 'react';
+import React, { useState, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import type { FAQItem } from '@/types/about';
 

@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { columns, LeaderboardEntry } from "@/components/tables/columns/c_leaderboard"
+import { columns, LeaderboardUser } from "@/components/tables/columns/c_leaderboard"
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
 
 export default function LeaderboardTable() {
-  const [data, setData] = useState<LeaderboardEntry[]>([]);
+  const [data, setData] = useState<LeaderboardUser[]>([]);
 
   const fetchData = useCallback(async () => {
     const supabase = await getSupabaseAdmin();
@@ -19,7 +19,7 @@ export default function LeaderboardTable() {
       return;
     }
 
-    setData(leaderboardData as LeaderboardEntry[]);
+    setData(leaderboardData as LeaderboardUser[]);
   }, []);
 
   useEffect(() => {

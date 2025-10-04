@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AuthResponse } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
 
 import type { FormEvent } from 'react';
@@ -20,7 +19,6 @@ export default function useSign() {
 	const [password, setPassword] = useState<string>('');
 	const [confirmPassword, setConfirmPassword] = useState<string>('');
 
-	const [error, setError] = useState<string>('');
 	const [loading, setLoading] = useState<boolean>(false);
 
 	const handleSignUpClick = (): void => setSignup(true);
@@ -39,15 +37,15 @@ export default function useSign() {
 		};
 
 		checkAuthStatus();
-	}, []);
+	}, [supabase]);
 
-	const signUpNewUser = async (email: string, password: string): Promise<AuthResponse> => {
+	const signUpNewUser = async (email: string, password: string): Promise<void> => {
 		try {
-			const { data, error } = await supabase.auth.signUp({
+			const { error } = await supabase.auth.signUp({
 				email,
 				password,
 				options: {
-					emailRedirectTo: 'http://localhost:3000/',
+					emailRedirectTo: 'https://ebec.vercel.app/',
 					data: {
 						display_name: 'First Last',
 						department: 'Unassigned',
@@ -61,7 +59,6 @@ export default function useSign() {
 			if (error) {
 				throw error; 
 			}
-			return { data, error };
 		} catch (err) {
 			throw err;
 		}
@@ -77,8 +74,7 @@ export default function useSign() {
 			if (error) {
 				throw error; 
 			}
-		} catch (err: any) {
-			setError(err.message); //Set local error
+		} catch (err: unknown) {
 			throw err;
 		}
 	};
@@ -107,9 +103,9 @@ export default function useSign() {
 			});
 			const { data: { user } } = await supabase.auth.getUser();
 			window.location.href = `/user/${user?.id}`;
-		} catch (err: any) {
-			setToast({ message: err.message, type: 'error' });
-			console.log('ERROR');
+		} catch (err: unknown) {
+			const message = err instanceof Error ? err.message : 'An error occurred';
+			setToast({ message, type: 'error' });
 		} finally {
 			setLoading(false);
 			setTimeout(() => {
@@ -133,7 +129,7 @@ export default function useSign() {
 			const { data: { user } } = await supabase.auth.getUser();
 			setToast({ message: 'Login Successful!', type: 'success' });
 			window.location.href = `/user/${user?.id}`;
-		} catch (err) {
+		} catch {
 			setToast({ message: 'Invalid login credentials.', type: 'error' });
 		} finally {
 			setLoading(false);

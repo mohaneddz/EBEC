@@ -12,6 +12,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image" 
+import type { CheckedState } from "@radix-ui/react-checkbox"
 
 export interface Gallery {
     eventId: string;
@@ -30,16 +31,20 @@ export interface Gallery {
 export const columns: ColumnDef<Gallery>[] = [
     {
         id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
+        header: ({ table }) => {
+            const headerChecked: CheckedState = table.getIsAllPageRowsSelected()
+                ? true
+                : table.getIsSomePageRowsSelected()
+                ? "indeterminate"
+                : false;
+            return (
+                <Checkbox
+                    checked={headerChecked}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            )
+        },
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
@@ -239,9 +244,7 @@ export const columns: ColumnDef<Gallery>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
-            const event = row.original
-
+        cell: ({  }) => {
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -252,20 +255,20 @@ export const columns: ColumnDef<Gallery>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
-                            console.log("View event details for:", event.eventId);
+                            //console.log("View event details for:", event.eventId);
                             // Implement navigation or a modal to show all event details, including all images
                         }}>
                             View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
-                            console.log("Edit event:", event.eventId);
+                            //console.log("Edit event:", event.eventId);
                             // Implement navigation or a modal for editing
                         }}>
                             Edit Event
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            console.log("Delete event:", event.eventId);
+                            //console.log("Delete event:", event.eventId);
                             // Implement delete logic, possibly with a confirmation dialog
                         }}>
                             Delete Event

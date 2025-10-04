@@ -1,19 +1,15 @@
 "use client";
-import { Button } from "@/components/ui/button";
-
 import Modal from "./Modal";
-import { useState } from "react";
 
 type PromoteUserModalProps = {
     isOpen: boolean;
     onClose: () => void;
-    onSelect: (role: string) => void;
     onSubmit: (role: string) => void;
 };
 
 const roles = ["Manager", "Co-Manager", "President", "Vice-President", "SG", "Member"];
 
-export default function PromoteUserModal({ isOpen, onClose, onSelect, onSubmit }: PromoteUserModalProps) {
+export default function PromoteUserModal({ isOpen, onClose, onSubmit }: PromoteUserModalProps) {
     return (
         <Modal
             isOpen={isOpen}

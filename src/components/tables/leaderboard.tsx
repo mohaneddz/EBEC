@@ -4,19 +4,19 @@ import * as React from "react"
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable, SortingState, getSortedRowModel } from "@tanstack/react-table"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends { department?: string; score?: number }, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   department: string
 }
 
-export function Leaderboard<TData, TValue>({ columns, data, department }: DataTableProps<TData, TValue>) {
+export function Leaderboard<TData extends { department?: string; score?: number }, TValue>({ columns, data, department }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
 
   // Only take top 5 members for the specified department or all if "All"
   const topData = React.useMemo(() => {
-    const filtered = department === "All" ? data : data.filter((item: any) => item.department === department);
-    return filtered.sort((a: any, b: any) => b.score - a.score).slice(0, 5);
+    const filtered = department === "All" ? data : data.filter((item) => item.department === department)
+    return [...filtered].sort((a, b) => (b.score ?? 0) - (a.score ?? 0)).slice(0, 5)
   }, [data, department])
 
   const table = useReactTable({

@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, FocusEvent, ReactNode, InputHTMLAttributes, SelectHTMLAttributes, TextareaHTMLAttributes } from 'react';
+import React, { useState, ChangeEvent, FocusEvent, ReactNode, InputHTMLAttributes, SelectHTMLAttributes } from 'react';
 import { cn } from "@/utils/cn";
 
 const theme = {

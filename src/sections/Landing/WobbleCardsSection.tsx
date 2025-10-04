@@ -3,6 +3,8 @@
 import { motion, useInView } from "motion/react";
 import { useRef } from "react";
 
+import type { Variants } from "motion/react";
+
 import { TextGenerateEffect } from "@/components/global/TextGenerator";
 import { WobbleCard } from "@/components/main/WobbleCard";
 
@@ -17,7 +19,7 @@ export default function WobbleCardSection() {
     const isInView2 = useInView(ref2, { once: true });
     const isInView3 = useInView(ref3, { once: true });
 
-    const cardVariants = {
+    const cardVariants: Variants = {
         hidden: { opacity: 0, y: 20 },
         visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
     };

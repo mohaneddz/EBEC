@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import type { CheckedState } from "@radix-ui/react-checkbox"
 
 export interface Forms {
     formId: string;
@@ -34,16 +35,20 @@ export interface Forms {
 export const columns: ColumnDef<Forms>[] = [
     {
         id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
+        header: ({ table }) => {
+            const headerChecked: CheckedState = table.getIsAllPageRowsSelected()
+                ? true
+                : table.getIsSomePageRowsSelected()
+                ? "indeterminate"
+                : false;
+            return (
+                <Checkbox
+                    checked={headerChecked}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            )
+        },
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
@@ -133,9 +138,7 @@ export const columns: ColumnDef<Forms>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
-            const signup = row.original
-
+        cell: ({  }) => {
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -147,20 +150,20 @@ export const columns: ColumnDef<Forms>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
                             // Example action for opening/viewing a signup
-                            console.log("View signup details for:", signup.userId);
+                            //console.log("View signup details for:", signup.userId);
                             // Add navigation or modal logic here
                         }}>
                             View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
-                            console.log("View user profile for:", signup.userId);
+                            //console.log("View user profile for:", signup.userId);
                             // Add navigation to user profile
                         }}>
                             View User
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            console.log("Delete signup for:", signup.userId);
+                            //console.log("Delete signup for:", signup.userId);
                             // Add logic to handle signup deletion
                         }}>
                             Delete Signup

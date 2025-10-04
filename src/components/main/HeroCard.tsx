@@ -1,15 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion, MotionValue } from "motion/react";
+import type { MotionProps } from "motion/react";
 import type { HeroCard } from '@/types/hero';
 
 type HeroCardContentProps = {
     card: HeroCard;
     translate: MotionValue<number>;
-    transition: any;
-    animate: any;
-    initial: any;
+    transition: MotionProps["transition"];
+    animate: MotionProps["animate"];
+    initial: MotionProps["initial"];
 };
 
 export default function HeroCardContent({
@@ -37,7 +37,7 @@ export default function HeroCardContent({
                     width="350"
                     loading="eager"
                     decoding="async"
-                    className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500}`}
+                    className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500`}
                     alt={card.title}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}

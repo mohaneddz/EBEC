@@ -10,10 +10,10 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
+import type { CheckedState } from "@radix-ui/react-checkbox"
 
 export interface DepartmentSwitch {
     user_id: string;
@@ -29,16 +29,20 @@ export interface DepartmentSwitch {
 export const getColumns = (removeRow: (userId: string) => void): ColumnDef<DepartmentSwitch>[] => [
     {
         id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
+        header: ({ table }) => {
+            const headerChecked: CheckedState = table.getIsAllPageRowsSelected()
+                ? true
+                : table.getIsSomePageRowsSelected()
+                ? "indeterminate"
+                : false;
+            return (
+                <Checkbox
+                    checked={headerChecked}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            )
+        },
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}

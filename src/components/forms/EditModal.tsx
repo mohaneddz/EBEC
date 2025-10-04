@@ -6,18 +6,32 @@ import { Button } from "@/components/ui/button";
 
 import useEditModal from "@/hooks/useEditModal";
 
+interface Constraints {
+  required?: boolean;
+  pattern?: string;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+  step?: number;
+}
+
+interface QuestionData {
+  type: string;
+  constraints: Constraints;
+  questionText: string;
+}
+
 export default function EditModal({
   isEditModalOpen,
   onClose,
   onSave,
-  setQuestions,
   editData = null,
 }: {
   isEditModalOpen: boolean;
   onClose: () => void;
-  onSave: (data: any) => void;
-  setQuestions: (questions: any) => void;
-  editData?: any;
+  onSave: (data: QuestionData) => void;
+  editData?: QuestionData | null;
 }) {
   const {
     groups,
@@ -48,9 +62,10 @@ export default function EditModal({
         {compatible.includes("required") && (
           <div className="flex items-center gap-2">
             <Checkbox
-              checked={constraints.required}
+              // ensure boolean passed to Checkbox
+              checked={Boolean(constraints?.required)}
               onCheckedChange={(checked) =>
-                setConstraints({ ...constraints, required: checked })
+                setConstraints({ ...constraints, required: Boolean(checked) })
               }
             />
             <label className="text-sm font-medium">Required</label>
@@ -62,7 +77,7 @@ export default function EditModal({
             <label className="text-sm font-medium">Regex Pattern</label>
             <EditInput
               placeholder="e.g. ^[A-Za-z0-9]+$"
-              value={constraints.pattern}
+              value={constraints?.pattern ?? ''}
               customOnChange={(value) =>
                 setConstraints({ ...constraints, pattern: value })
               }
@@ -76,9 +91,10 @@ export default function EditModal({
             <EditInput
               type="number"
               placeholder="e.g. 3"
-              value={constraints.minLength}
+              // EditInput expects a string value — convert number -> string
+              value={String(constraints?.minLength ?? '')}
               customOnChange={(value) =>
-                setConstraints({ ...constraints, minLength: value })
+                setConstraints({ ...constraints, minLength: value === '' ? 0 : Number(value) })
               }
             />
           </>
@@ -90,9 +106,9 @@ export default function EditModal({
             <EditInput
               type="number"
               placeholder="e.g. 255"
-              value={constraints.maxLength}
+              value={String(constraints?.maxLength ?? '')}
               customOnChange={(value) =>
-                setConstraints({ ...constraints, maxLength: value })
+                setConstraints({ ...constraints, maxLength: value === '' ? 0 : Number(value) })
               }
             />
           </>
@@ -104,9 +120,9 @@ export default function EditModal({
             <EditInput
               type="number"
               placeholder="e.g. 1"
-              value={constraints.min}
+              value={String(constraints?.min ?? '')}
               customOnChange={(value) =>
-                setConstraints({ ...constraints, min: value })
+                setConstraints({ ...constraints, min: value === '' ? 0 : Number(value) })
               }
             />
           </>
@@ -118,9 +134,9 @@ export default function EditModal({
             <EditInput
               type="number"
               placeholder="e.g. 100"
-              value={constraints.max}
+              value={String(constraints?.max ?? '')}
               customOnChange={(value) =>
-                setConstraints({ ...constraints, max: value })
+                setConstraints({ ...constraints, max: value === '' ? 0 : Number(value) })
               }
             />
           </>
@@ -133,9 +149,9 @@ export default function EditModal({
               type="number"
               step="any"
               placeholder="e.g. 0.1"
-              value={constraints.step}
+              value={String(constraints?.step ?? '')}
               customOnChange={(value) =>
-                setConstraints({ ...constraints, step: value })
+                setConstraints({ ...constraints, step: value === '' ? 0 : parseFloat(value) })
               }
             />
           </>

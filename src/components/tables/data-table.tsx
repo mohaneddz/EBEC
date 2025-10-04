@@ -65,7 +65,6 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
             {table.getFilteredSelectedRowModel().rows.length} /{" "}
             {table.getFilteredRowModel().rows.length}
           </div>
-          {/* global search */}
           <Input placeholder="Filter rows..." value={table.getState().globalFilter ?? ''} onChange={(event) => table.setGlobalFilter(String(event.target.value))} className="max-w-lg text-black" />
         </div>
 

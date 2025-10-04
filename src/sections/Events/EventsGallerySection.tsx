@@ -43,10 +43,10 @@ const EventsGallery = () => {
 						.sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
 					setEvents(events);
 					setFetchError(null);
-					console.log('Events fetched successfully: ' + events.length + ' events.');
+					//console.log('Events fetched successfully: ' + events.length + ' events.');
 				} else {
 					setEvents(null);
-					console.log('No data found');
+					//console.log('No data found');
 				}
 			} catch {
 				setFetchError('Could not fetch the Events!');

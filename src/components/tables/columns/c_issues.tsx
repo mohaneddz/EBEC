@@ -29,8 +29,11 @@ export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Is
             header: ({ table }) => (
                 <Checkbox
                     checked={
-                        table.getIsAllPageRowsSelected() ||
-                        (table.getIsSomePageRowsSelected() && "indeterminate")
+                        table.getIsAllPageRowsSelected()
+                            ? true
+                            : table.getIsSomePageRowsSelected()
+                            ? "indeterminate"
+                            : false
                     }
                     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                     aria-label="Select all"
@@ -162,13 +165,13 @@ export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Is
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => {
-                                console.log("Mark issue as in progress for:", issue.user_id);
+                                //console.log("Mark issue as in progress for:", issue.user_id);
                                 // Add logic to update status
                             }}>
                                 Mark In Progress
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-red-600" onClick={() => {
-                                console.log("Delete issue for:", issue.user_id);
+                                //console.log("Delete issue for:", issue.user_id);
                                 // Add logic to handle issue deletion
                             }}>
                                 Delete Issue

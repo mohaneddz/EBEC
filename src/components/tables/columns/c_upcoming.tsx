@@ -29,8 +29,11 @@ export const columns: ColumnDef<Upcoming>[] = [
         header: ({ table }) => (
             <Checkbox
                 checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                    table.getIsAllPageRowsSelected()
+                        ? true
+                        : table.getIsSomePageRowsSelected()
+                        ? "indeterminate"
+                        : false
                 }
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label="Select all"
@@ -183,26 +186,26 @@ export const columns: ColumnDef<Upcoming>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
-                            console.log("View upcoming event details for:", event.eventId);
+                            //console.log("View upcoming event details for:", event.eventId);
                             // Add navigation or modal logic here
                         }}>
                             View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
-                            console.log("Edit upcoming event:", event.eventId);
+                            //console.log("Edit upcoming event:", event.eventId);
                             // Add edit form/modal logic here
                         }}>
                             Edit Event
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem onClick={() => {
-                            console.log(`Toggle visibility for event ${event.eventId}: currently ${event.shown ? 'shown' : 'hidden'}`);
+                            //console.log(`Toggle visibility for event ${event.eventId}: currently ${event.shown ? 'shown' : 'hidden'}`);
                             // Add logic to toggle 'shown' status
                         }}>
                             {event.shown ? 'Hide Event' : 'Show Event'}
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            console.log("Delete upcoming event:", event.eventId);
+                            //console.log("Delete upcoming event:", event.eventId);
                             // Add logic to handle deletion
                         }}>
                             Delete Event

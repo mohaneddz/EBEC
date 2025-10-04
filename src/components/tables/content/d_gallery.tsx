@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { columns, GalleryItem } from "@/components/tables/columns/c_gallery"
+import { columns, Gallery } from "@/components/tables/columns/c_gallery"
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
 
 export default function GalleryTable() {
-  const [data, setData] = useState<GalleryItem[]>([]);
+  const [data, setData] = useState<Gallery[]>([]);
 
   const fetchData = useCallback(async () => {
     const supabase = await getSupabaseAdmin();
@@ -19,7 +19,7 @@ export default function GalleryTable() {
       return;
     }
 
-    setData(galleryData as GalleryItem[]);
+    setData(galleryData as Gallery[]);
   }, []);
 
   useEffect(() => {

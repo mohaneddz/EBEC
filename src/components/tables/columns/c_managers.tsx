@@ -6,12 +6,13 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
+    DropdownMenuSeparator,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image" // Assuming you are in a Next.js environment for Image component
+import type { CheckedState } from "@radix-ui/react-checkbox"
 
 export interface Managers {
     user_id: string;
@@ -24,16 +25,20 @@ export interface Managers {
 export const columns: ColumnDef<Managers>[] = [
     {
         id: "select",
-        header: ({ table }) => (
-            <Checkbox
-                checked={
-                    table.getIsAllPageRowsSelected() ||
-                    (table.getIsSomePageRowsSelected() && "indeterminate")
-                }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-                aria-label="Select all"
-            />
-        ),
+        header: ({ table }) => {
+            const headerChecked: CheckedState = table.getIsAllPageRowsSelected()
+                ? true
+                : table.getIsSomePageRowsSelected()
+                    ? "indeterminate"
+                    : false;
+            return (
+                <Checkbox
+                    checked={headerChecked}
+                    onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                    aria-label="Select all"
+                />
+            )
+        },
         cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
@@ -118,9 +123,7 @@ export const columns: ColumnDef<Managers>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => {
-            const manager = row.original
-
+        cell: ({  }) => {
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -131,26 +134,26 @@ export const columns: ColumnDef<Managers>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
-                            console.log("View manager details for:", manager.user_id);
+                            //console.log("View manager details for:", manager.user_id);
                             // Add navigation or modal logic here
                         }}>
                             View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
-                            console.log("Edit manager for:", manager.user_id);
+                            //console.log("Edit manager for:", manager.user_id);
                             // Add edit form/modal logic here
                         }}>
                             Edit Manager
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            console.log("Deactivate manager:", manager.user_id);
+                            //console.log("Deactivate manager:", manager.user_id);
                             // Add logic to change status to Inactive
                         }}>
                             Deactivate
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            console.log("Remove manager:", manager.user_id);
+                            //console.log("Remove manager:", manager.user_id);
                         }}>
                             Remove Manager
                         </DropdownMenuItem>

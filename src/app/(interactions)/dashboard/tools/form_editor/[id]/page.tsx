@@ -40,7 +40,6 @@ export default function Page() {
           isEditModalOpen={isEditModalOpen}
           onClose={() => setIsEditModalOpen(false)}
           onSave={onSaveQuestion}
-          setQuestions={setQuestions}
         />
 
         {/* Form Header */}
@@ -54,19 +53,19 @@ export default function Page() {
         {/* Form Metadata */}
         <EditInput
           placeholder="Form Name"
-          value={formData.name}
+          value={String(formData.name ?? "")}
           customOnChange={(value) => setFormData({ ...formData, name: value })}
         />
         <EditInput
           placeholder="Form Description"
-          value={formData.description}
+          value={String(formData.description ?? "")}
           customOnChange={(value) =>
             setFormData({ ...formData, description: value })
           }
         />
         <EditInput
           placeholder="Form Brief"
-          value={formData.brief}
+          value={String(formData.brief ?? "")}
           customOnChange={(value) =>
             setFormData({ ...formData, brief: value })
           }
@@ -126,9 +125,6 @@ export default function Page() {
           <Button
             variant="secondary"
             className="w-full h-min text-white font-black"
-            onClick={() =>
-              console.log("Form Saved:", { ...formData, questions })
-            }
           >
             Save Form
           </Button>

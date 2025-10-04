@@ -2,11 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { columns, Signup } from "@/components/tables/columns/c_signups"
+import { columns, Signups } from "@/components/tables/columns/c_signups"
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
 
 export default function SignupsTable() {
-  const [data, setData] = useState<Signup[]>([]);
+  const [data, setData] = useState<Signups[]>([]);
 
   const fetchData = useCallback(async () => {
     const supabase = await getSupabaseAdmin();
@@ -19,7 +19,7 @@ export default function SignupsTable() {
       return;
     }
 
-    setData(signupsData as Signup[]);
+    setData(signupsData as Signups[]);
   }, []);
 
   useEffect(() => {

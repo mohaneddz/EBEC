@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 // import useAuth from '@/hooks/useAuth';
 import { createClient } from '@/utils/supabase/client';
 import { getSupabaseAdmin } from '@/utils/supabase/admin';
-import { createAdminClient } from '@/app/actions';
 
 interface User {
 	id: string;
@@ -170,7 +169,7 @@ export default function useUser() {
 		const blob = await response.blob();
 
 		// Upload to 'Profiles' bucket with userId.jpg as file name, overwrite if exists
-		const { data, error } = await supabaseAdmin.storage
+		const { error } = await supabaseAdmin.storage
 			.from('Profiles')
 			.upload(`public/${userId}.jpg`, blob, {
 				upsert: true,

@@ -1,17 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-export default function useEditModal(editData: any = null) {
+interface EditModalProps {
+	isOpen?: boolean;
+	questionText?: string;
+	type?: string;
+	constraints?: {
+		required?: boolean;
+		minLength?: number;
+		maxLength?: number;
+		pattern?: string;
+		min?: number;
+		max?: number;
+		step?: number;
+	};
+}
+
+export default function useEditModal(editData: EditModalProps | null) {
 	const [questionText, setQuestionText] = useState(editData?.questionText || '');
 	const [selectedType, setSelectedType] = useState(editData?.type || '');
-	const [constraints, setConstraints] = useState<any>(
+	const [constraints, setConstraints] = useState<EditModalProps['constraints']>(
 		editData?.constraints || {
 			required: false,
-			minLength: '',
-			maxLength: '',
+			minLength: 0,
+			maxLength: 0,
 			pattern: '',
-			min: '',
-			max: '',
-			step: '',
+			min: 0,
+			max: 0,
+			step: 0,
 		}
 	);
 
@@ -93,12 +108,12 @@ export default function useEditModal(editData: any = null) {
 		setSelectedType('');
 		setConstraints({
 			required: false,
-			minLength: '',
-			maxLength: '',
+			minLength: 0,
+			maxLength: 0,
 			pattern: '',
-			min: '',
-			max: '',
-			step: '',
+			min: 0,
+			max: 0,
+			step: 0,
 		});
 	};
 

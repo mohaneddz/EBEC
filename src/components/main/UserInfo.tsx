@@ -8,6 +8,8 @@ import Image from 'next/image'
 import { useState, useRef, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
+const supabase = createClient(); 
+
 type UserInfoProps = {
     image: string;
     name: string;
@@ -23,54 +25,53 @@ type UserInfoProps = {
 
 export default function UserInfo({ image, name, email, role, department, openModal, handleLogOut, status, handleSaveChanges }: UserInfoProps) {
 
-    const supabase = createClient();
-
     const [username, setUsername] = useState<string>(name);
     const [profileImage, setProfileImage] = useState<string>(image);
     const [canChangeDepartment, setCanChangeDepartment] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
+        // moved inside effect to avoid changing dependencies on every render
+        const isAllowedToChangeDepartment = async () => {
+            try {
+                const { data: { user }, error: authError } = await supabase.auth.getUser();
+                if (authError || !user) {
+                    console.error('Authentication error:', authError);
+                    return false;
+                }
+
+                const { data, error } = await supabase
+                    .from('department_switch')
+                    .select('created_at')
+                    .eq('user_id', user.id)
+                    .order('created_at', { ascending: false })
+                    .limit(1);
+
+                if (error) {
+                    console.error('Error fetching department switch data:', error);
+                    return false;
+                }
+
+                if (!data || data.length === 0) {
+                    return true; // No previous request, allow change
+                }
+
+                const lastRequest = new Date(data[0].created_at);
+                const now = new Date();
+                const oneDayMs = 24 * 60 * 60 * 1000;
+                return (now.getTime() - lastRequest.getTime()) > oneDayMs;
+            } catch (err) {
+                console.error('Unexpected error:', err);
+                return false;
+            }
+        };
+
         const checkPermission = async () => {
             const allowed = await isAllowedToChangeDepartment();
             setCanChangeDepartment(allowed);
         };
         checkPermission();
-    }, []);
-
-    async function isAllowedToChangeDepartment() {
-        try {
-            const { data: { user }, error: authError } = await supabase.auth.getUser();
-            if (authError || !user) {
-                console.error('Authentication error:', authError);
-                return false;
-            }
-
-            const { data, error } = await supabase
-                .from('department_switch')
-                .select('created_at')
-                .eq('user_id', user.id)
-                .order('created_at', { ascending: false })
-                .limit(1);
-
-            if (error) {
-                console.error('Error fetching department switch data:', error);
-                return false;
-            }
-
-            if (!data || data.length === 0) {
-                return true; // No previous request, allow change
-            }
-
-            const lastRequest = new Date(data[0].created_at);
-            const now = new Date();
-            const oneDayMs = 24 * 60 * 60 * 1000;
-            return (now.getTime() - lastRequest.getTime()) > oneDayMs;
-        } catch (err) {
-            console.error('Unexpected error:', err);
-            return false;
-        }
-    }
+    }, []); 
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
@@ -117,7 +118,9 @@ export default function UserInfo({ image, name, email, role, department, openMod
             setProfileImage(imageUrl);
         }
 
-        handleSaveChanges && handleSaveChanges(username, imageUrl);
+        if (handleSaveChanges) {
+            handleSaveChanges(username, imageUrl);
+        }
     };
 
     return (

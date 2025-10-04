@@ -1,4 +1,4 @@
-export default function ManagerCard ({ name, picture, title }: { name: string; picture: string; title: string }) {
+export default function ManagerCard () {
   return (
     <div>
       ManagerCard Component

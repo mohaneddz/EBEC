@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { createClient } from '@/utils/supabase/client';
 
 import { motion } from "motion/react";
@@ -28,7 +28,7 @@ export default function UpcomingEventsSection() {
                     src: event.picture,
                     open: event.open,
                 }));
-                console.log('Upcoming events fetched successfully: ' + updatedEvents.length + ' events.');
+                //console.log('Upcoming events fetched successfully: ' + updatedEvents.length + ' events.');
                 setData(updatedEvents);
             }
             setLoading(false);

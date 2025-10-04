@@ -9,11 +9,10 @@ type MeetMemberProps = {
 };
 
 export default function MeetMember({ name, role, image }: MeetMemberProps) {
-    const [isVisible, setIsVisible] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsVisible(true);
+        // Removed unused isVisible
     }, []);
 
     return (

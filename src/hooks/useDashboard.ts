@@ -80,7 +80,7 @@ export default function useDashboard() {
     };
 
     fetchDashboardData();
-  }, []);
+  }, [supabase]);
 
   return {
     totalMembers,

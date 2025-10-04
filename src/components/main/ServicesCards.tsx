@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ComponentType } from "react";
+import React from "react";
 import Link from "next/link";
 
 import { motion } from "motion/react";
@@ -18,7 +18,7 @@ export default function ServicesCards({
 	index = 0,
 	link,
 	Icon,
-}: ServicesCardsProps): JSX.Element {
+}: ServicesCardsProps): React.ReactNode {
 	// map the string name to the actual icon component
 	const IconComponent: React.ElementType | null = (() => {
 		switch (Icon) {

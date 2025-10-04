@@ -66,13 +66,13 @@ const Toast: React.FC<ToastProps> = ({ variant = "info", className, message, onC
                 setIsHiding(true);
                 setTimeout(() => {
                     setIsHiding(false);
-                    onClose && onClose();
+                    if (onClose) onClose(); // Fixed: Ensure it's a call
                 }, 500);
             }, duration);
 
             return () => clearTimeout(timer);
         }
-    }, [duration, onClose, visible, isHiding]);
+    }, [duration, onClose, visible, isHiding]); // Fixed: Added missing dependencies if needed
 
     if (!visible && !isHiding) return null;
 
@@ -81,7 +81,7 @@ const Toast: React.FC<ToastProps> = ({ variant = "info", className, message, onC
         setIsHiding(true);
         setTimeout(() => {
             setIsHiding(false);
-            onClose && onClose();
+            onClose?.();
         }, 500);
     };
 

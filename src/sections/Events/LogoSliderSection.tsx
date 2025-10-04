@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 const baseUrl = "imgs/logos/";
-const images = Array.from({ length: 17 }, (_, i) => `${baseUrl}${i + 1}.webp`);
+const images = Array.from({ length: 16 }, (_, i) => `${baseUrl}${i + 1}.webp`);
 
 export default function LogoSliderSection() {
     const [paused, setPaused] = useState(false);

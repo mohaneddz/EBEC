@@ -49,18 +49,41 @@ const toastVariants: Record<ToastVariant, { icon: JSX.Element; bg: string; text:
 
 const Toast: React.FC<ToastProps> = ({ variant = "info", className, message, onClose, duration = 5000 }) => {
     const [visible, setVisible] = useState(false);
+    const [isHiding, setIsHiding] = useState(false);
     const variantStyles = toastVariants[variant] || toastVariants.info;
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setVisible(false);
+        if (message) {
+            setVisible(true);
+            setIsHiding(false);
+        }
+    }, [message]);
+
+    useEffect(() => {
+        if (visible && !isHiding) {
+            const timer = setTimeout(() => {
+                setVisible(false);
+                setIsHiding(true);
+                setTimeout(() => {
+                    setIsHiding(false);
+                    onClose && onClose();
+                }, 500);
+            }, duration);
+
+            return () => clearTimeout(timer);
+        }
+    }, [duration, onClose, visible, isHiding]);
+
+    if (!visible && !isHiding) return null;
+
+    const handleClose = () => {
+        setVisible(false);
+        setIsHiding(true);
+        setTimeout(() => {
+            setIsHiding(false);
             onClose && onClose();
-        }, duration);
-
-        return () => clearTimeout(timer);
-    }, [duration, onClose]);
-
-    if (!visible) return null;
+        }, 500);
+    };
 
     return (
         <div
@@ -76,10 +99,7 @@ const Toast: React.FC<ToastProps> = ({ variant = "info", className, message, onC
                 <div className="text-sm mr-3">{variantStyles.icon}</div>
                 <div className="text-sm flex-1">{message}</div>
                 <button
-                    onClick={() => {
-                        setVisible(false);
-                        onClose && onClose();
-                    }}
+                    onClick={handleClose}
                     className="ml-3 text-gray-500 hover:text-gray-700 focus:outline-none"
                 >
                     <IconX size={16} />

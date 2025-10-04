@@ -1,4 +1,4 @@
-import type { Upcoming } from "@/components/tables/c_upcoming";
+import type { Upcoming } from "@/components/tables/columns/c_upcoming";
 
 export const dummyData: Upcoming[] = [
     {

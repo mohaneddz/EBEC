@@ -51,8 +51,8 @@ export default function Navbar() {
       ref={navbarRef}
       className="navbar sticky w-full top-0 z-50 shadow-md bg-white"
     >
-      <nav className="container mx-auto px-4 py-2 z-50">
-        <div className="flex items-center">
+      <nav className="lg:container mx-auto md:px-4 md:py-2 z-50">
+        <div className="flex items-center px-4 py-1 md:p-0">
 
           {/* Logo Section */}
           <div className="flex items-center gap-3 cursor-pointer" onClick={handleLogoClick}>
@@ -153,19 +153,19 @@ export default function Navbar() {
           animate={{ height: isOpen ? 'auto' : 0 }}
           style={{ overflow: 'hidden' }}
           transition={{ duration: 0.3, ease: "easeInOut" }}
-          className="md:hidden"
+          className="md:hidden bg-slate-100 w-screen"
         >
-          <div className="pt-4 pb-3 space-y-1">
+          <div className="pt-4 pb-3 space-y-4 font-semibold text-lg cursor-pointer">
             {navItems.map((item) => {
               const isActive = isNavItemActive(item.path);
               return (
                 <div
                   key={item.name}
                   onClick={() => handleNavigation(item.path)}
-                  className={`flex items-center gap-2 px-3 rounded-md cursor-pointer ${isActive ? "text-secondary-dark bg-yellow-50"
+                  className={`flex items-center gap-2 px-3 rounded-md cursor-pointer ${isActive ? "text-secondary-dark text-md font-bold"
                     : "text-sm text-gray-400 hover:text-primary-dark hover:bg-gray-100"}`}
                 >
-                  <item.icon size={20} />
+                  <item.icon size={24} />
                   {item.name}
                 </div>
               );
@@ -175,7 +175,7 @@ export default function Navbar() {
             {!loading && (
               <div
                 onClick={() => handleNavigation(profilePath)}
-                className={`flex items-center gap-2 px-3 py-2 rounded-md cursor-pointer ${isUserSectionActive()
+                className={`flex items-center gap-2 px-3 pb-2 rounded-md cursor-pointer ${isUserSectionActive()
                   ? "text-secondary-dark bg-yellow-50"
                   : "text-sm text-gray-400 hover:text-primary-dark hover:bg-gray-100"}`}
               >

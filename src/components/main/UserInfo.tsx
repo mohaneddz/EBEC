@@ -18,7 +18,7 @@ type UserInfoProps = {
     openModal: () => void;
     handleLogOut: () => void;
     handleDeleteAccount?: () => void;
-    handleSaveChanges?: (name: string, image?: string) => void; 
+    handleSaveChanges?: (name: string, image?: string) => void;
 };
 
 export default function UserInfo({ image, name, email, role, department, openModal, handleLogOut, status, handleSaveChanges }: UserInfoProps) {
@@ -47,7 +47,7 @@ export default function UserInfo({ image, name, email, role, department, openMod
             }
 
             const { data, error } = await supabase
-                .from('department_switches')
+                .from('department_switch')
                 .select('created_at')
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: false })
@@ -85,11 +85,14 @@ export default function UserInfo({ image, name, email, role, department, openMod
                 img.onload = () => {
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    canvas.width = 128;
-                    canvas.height = 128;
-                    ctx?.drawImage(img, 0, 0, 128, 128);
-                    const resizedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
-                    setProfileImage(resizedDataUrl);
+                    canvas.width = 256;
+                    canvas.height = 256;
+                    const size = Math.min(img.width, img.height);
+                    const x = (img.width - size) / 2;
+                    const y = (img.height - size) / 2;
+                    ctx?.drawImage(img, x, y, size, size, 0, 0, 256, 256);
+                    const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                    setProfileImage(croppedDataUrl);
                 };
                 img.src = e.target?.result as string;
             };
@@ -110,7 +113,7 @@ export default function UserInfo({ image, name, email, role, department, openMod
         let imageUrl = image;
 
         if (profileImage !== image) {
-            imageUrl = profileImage; 
+            imageUrl = profileImage;
             setProfileImage(imageUrl);
         }
 

@@ -1,4 +1,4 @@
-import { columns } from "@/components/tables/c_gallery" 
+import { columns } from "@/components/tables/columns/c_gallery" 
 import { DataTable } from "@/components/tables/data-table"
 import { dummyData } from "@/data/gallery" 
 

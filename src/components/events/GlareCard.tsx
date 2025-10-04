@@ -107,9 +107,13 @@ export const GlareCard = ({
 
         {/* Card Content */}
         <div className="w-full h-full grid [clipPath:inset(0_0_0_0_round_var(--radius))]">
-          <div className="w-full h-full bg-primary-dark">
+          <div className="w-full h-full"
+            style={{
+              background: 'radial-gradient(circle, #1b2755 0%, #0a1029 100%)',
+            }}
+          >
             {cardData.src ? (
-              <div className="relative w-full h-full group bg-red-700">
+              <div className="relative w-full h-full group ">
                 <Image
                   height={400}
                   width={300}

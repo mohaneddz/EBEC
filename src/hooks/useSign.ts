@@ -49,20 +49,18 @@ export default function useSign() {
 				options: {
 					emailRedirectTo: 'http://localhost:3000/',
 					data: {
-						display_name: 'EBEC User!',
+						display_name: 'First Last',
 						department: 'Unassigned',
 						image: null,
+						score: 0,
 						join_date: new Date().toISOString(),
 					},
 				},
 			});
 
 			if (error) {
-				throw error; // Re-throw the Supabase error
+				throw error; 
 			}
-
-			// The signUp function returns a response object which includes user and session data.
-			// Depending on your email confirmation settings, the session might be null initially.
 			return { data, error };
 		} catch (err) {
 			throw err;
@@ -77,7 +75,7 @@ export default function useSign() {
 			});
 
 			if (error) {
-				throw error; // Re-throw the Supabase error
+				throw error; 
 			}
 		} catch (err: any) {
 			setError(err.message); //Set local error
@@ -107,6 +105,8 @@ export default function useSign() {
 				message: 'Account created successfully! Check your email to verify.',
 				type: 'success',
 			});
+			const { data: { user } } = await supabase.auth.getUser();
+			window.location.href = `/user/${user?.id}`;
 		} catch (err: any) {
 			setToast({ message: err.message, type: 'error' });
 			console.log('ERROR');
@@ -132,7 +132,6 @@ export default function useSign() {
 			await signInWithEmail(email, password);
 			const { data: { user } } = await supabase.auth.getUser();
 			setToast({ message: 'Login Successful!', type: 'success' });
-
 			window.location.href = `/user/${user?.id}`;
 		} catch (err) {
 			setToast({ message: 'Invalid login credentials.', type: 'error' });

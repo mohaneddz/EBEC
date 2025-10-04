@@ -11,20 +11,17 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import Image from "next/image" // Assuming you are in a Next.js environment for Image component
 
-export interface Members {
-    userId: string;
+export interface Managers {
+    user_id: string;
     picture: string;
     name: string;
-    email: string;
     department: departments;
-    role: 'Member' | 'Manager'  | 'President' | 'Vice President' | 'SA';
-    status: 'Active' | 'Inactive';
-    attendance: number;
-    joinedAt: Date;
+    role: 'Co-Manager' | 'Manager' | 'President' | 'Vice President' | 'SA';
 }
 
-export const columns: ColumnDef<Members>[] = [
+export const columns: ColumnDef<Managers>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -48,19 +45,31 @@ export const columns: ColumnDef<Members>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "email",
-        header: ({ column }) => {
+        accessorKey: "picture",
+        header: "Picture",
+        cell: ({ row }) => {
+            const pictureUrl = row.getValue("picture") as string;
             return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Email
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
+                <div className="flex items-center justify-center h-8 w-8 rounded-full overflow-hidden"> {/* Adjusted container size */}
+                    {pictureUrl ? (
+                        <Image
+                            src={pictureUrl}
+                            alt="Profile"
+                            width={32}
+                            height={32}
+                            className="object-cover rounded-full"
+                            loading="lazy"
+                        />
+                    ) : (
+                        <div className="bg-gray-200 text-gray-600 flex items-center justify-center h-full w-full rounded-full text-xs">
+                            N/A
+                        </div>
+                    )}
+                </div>
+            );
         },
-        cell: ({ row }) => <div className="max-w-[180px] truncate">{row.getValue("email")}</div>,
+        enableSorting: false,
+        enableHiding: false,
     },
     {
         accessorKey: "name",
@@ -78,7 +87,22 @@ export const columns: ColumnDef<Members>[] = [
         cell: ({ row }) => <div className="max-w-[150px] truncate">{row.getValue("name")}</div>,
     },
     {
-        accessorKey: "chosenDepartment",
+        accessorKey: "role",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Role
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            )
+        },
+        cell: ({ row }) => <div className="w-[120px] truncate">{row.getValue("role")}</div>,
+    },
+    {
+        accessorKey: "department",
         header: ({ column }) => {
             return (
                 <Button
@@ -90,44 +114,12 @@ export const columns: ColumnDef<Members>[] = [
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="max-w-[150px] truncate">{row.getValue("chosenDepartment")}</div>,
-    },
-    {
-        accessorKey: "motivation",
-        header: "Motivation",
-        cell: ({ row }) => <div className="max-w-[250px] truncate">{row.getValue("motivation")}</div>,
-    },
-    {
-        accessorKey: "createdAt",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Signed Up At
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => {
-            const val = row.getValue("createdAt") as string | Date | undefined;
-            const date = typeof val === "string" ? new Date(val) : (val as Date | undefined);
-            if (!date || Number.isNaN(date.getTime())) return <div>N/A</div>;
-            const formattedDate = new Intl.DateTimeFormat("en-US", {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            }).format(date);
-            return <div>{formattedDate}</div>;
-        },
+        cell: ({ row }) => <div className="w-[100px] truncate">{row.getValue("department")}</div>,
     },
     {
         id: "actions",
         cell: ({ row }) => {
-            const signup = row.original
+            const manager = row.original
 
             return (
                 <DropdownMenu>
@@ -139,24 +131,28 @@ export const columns: ColumnDef<Members>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {
-                            // Example action for opening/viewing a signup
-                            console.log("View signup details for:", signup.userId);
+                            console.log("View manager details for:", manager.user_id);
                             // Add navigation or modal logic here
                         }}>
                             View Details
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={() => {
-                            console.log("View user profile for:", signup.userId);
-                            // Add navigation to user profile
+                            console.log("Edit manager for:", manager.user_id);
+                            // Add edit form/modal logic here
                         }}>
-                            View User
+                            Edit Manager
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            console.log("Delete signup for:", signup.userId);
-                            // Add logic to handle signup deletion
+                            console.log("Deactivate manager:", manager.user_id);
+                            // Add logic to change status to Inactive
                         }}>
-                            Delete Signup
+                            Deactivate
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600" onClick={() => {
+                            console.log("Remove manager:", manager.user_id);
+                        }}>
+                            Remove Manager
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

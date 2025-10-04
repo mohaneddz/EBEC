@@ -28,10 +28,10 @@ export default function UpcomingEventsSection() {
                     src: event.picture,
                     open: event.open,
                 }));
-                setData(updatedEvents);
-                setLoading(false);
                 console.log('Upcoming events fetched successfully: ' + updatedEvents.length + ' events.');
+                setData(updatedEvents);
             }
+            setLoading(false);
         };
         fetchEvents();
     }, []);
@@ -58,13 +58,11 @@ export default function UpcomingEventsSection() {
             <div className="flex items-center justify-center bg-primary-dark">
                 <div className="z-10 flex flex-col items-center justify-center gap-32 px-8 py-20 lg:h-screen lg:px-16 bg-primary-dark">
                     <motion.h1 className="text-2xl font-black text-secondary-dark vsm:text-3xl sm:text-5xl lg:text-7xl"   >Stay Up To Date</motion.h1>
-                    
+
                     {loading ? <p id="upcomingEvents" className="text-2xl font-bold text-center text-slate-700">Loading Upcoming Events...</p> :
                         <div>
                             {
-                                data && (
-                                    <GlareCardDemo cards={data} />
-                                )
+                                <GlareCardDemo cards={data} />
                             }
                         </div>
                     }

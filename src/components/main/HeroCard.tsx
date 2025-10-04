@@ -19,18 +19,6 @@ export default function HeroCardContent({
     animate,
     initial,
 }: HeroCardContentProps) {
-    const [loaded, setLoaded] = useState(false);
-
-    useEffect(() => {
-        const img = new Image();
-        img.src = card.thumbnail;
-        if (img.complete) {
-            setLoaded(true); // already cached
-        } else {
-            img.onload = () => setLoaded(true);
-            img.onerror = () => setLoaded(true);
-        }
-    }, [card.thumbnail]);
 
     return (
         <motion.div
@@ -42,11 +30,6 @@ export default function HeroCardContent({
             key={card.title}
             className="group/product h-96 w-full sm:w-[30rem] relative flex-shrink-0"
         >
-            {/* Placeholder */}
-            {!loaded && (
-                <div className="absolute inset-0 h-full w-full bg-gray-400 animate-pulse" />
-            )}
-
             <div className="block group-hover/product:shadow-2xl">
                 <motion.img
                     src={card.thumbnail}
@@ -54,11 +37,10 @@ export default function HeroCardContent({
                     width="350"
                     loading="eager"
                     decoding="async"
-                    className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500 ${loaded ? "opacity-100" : "opacity-0"
-                        }`}
+                    className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500}`}
                     alt={card.title}
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: loaded ? 1 : 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}
                 />
             </div>

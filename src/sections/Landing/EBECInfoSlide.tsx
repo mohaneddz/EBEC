@@ -29,7 +29,7 @@ export const EBECInfoSlide = () => {
                 <div className="relative block h-40">a</div>
                 <div ref={headerRef} className="w-full text-center pb-6">
                     <motion.h1
-                        className="text-secondary-light text-2xl vsm:text-3xl sm:text-5xl lg:text-7xl font-black pt-8"
+                        className="text-secondary-light text-5xl sm:text-6xl lg:text-7xl font-black pt-8"
                         initial={{ opacity: 0, y: -50 }}
                         animate={isHeaderInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -41,7 +41,7 @@ export const EBECInfoSlide = () => {
                 <div ref={cardsRef} className="top-0 flex-1 flex items-center pb-8">
                     <motion.div
                         style={{ x }}
-                        className="flex gap-4"
+                        className="flex gap-16 md:gap-4"
                         initial={{ opacity: 0, y: 50 }}
                         animate={isCardsInView ? { opacity: 1, y: 0 } : {}}
                         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
@@ -69,20 +69,20 @@ const Card = ({ card }: CardProps) => {
     return (
         <div
             key={card.id}
-            className="group relative h-[450px] w-[450px] overflow-hidden bg-neutral-200  mb-8 lg:mb-0"
+            className="group relative h-64 w-64 sm:h-80 sm:w-80 md:h-96 md:w-96 lg:h-[28.125rem] lg:w-[28.125rem] overflow-hidden bg-neutral-200 mb-8 lg:mb-0"
         >
             <div
-                style={{
-                    backgroundImage: `url(${card.url})`,
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                }}
-                className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
+            style={{
+                backgroundImage: `url(${card.url})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+            }}
+            className="absolute inset-0 z-0 transition-transform duration-300 group-hover:scale-110"
             ></div>
             <div className="absolute inset-0 z-10 grid place-content-center">
-                <p className="bg-gradient-to-br from-white/20 to-white/0 p-8 text-6xl font-black text-white backdrop-blur-lg rounded-sm">
-                    {card.title}
-                </p>
+            <p className="bg-gradient-to-br from-white/20 to-white/0 p-4 sm:p-6 lg:p-8 text-4xl sm:text-5xl lg:text-6xl font-black text-white backdrop-blur-lg rounded-sm">
+                {card.title}
+            </p>
             </div>
         </div>
     );

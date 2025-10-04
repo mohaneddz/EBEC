@@ -1,4 +1,4 @@
-import type { LeaderboardUser } from "@/components/tables/c_leaderboard";
+import type { LeaderboardUser } from "@/components/tables/columns/c_leaderboard";
 
 export const dummyData: LeaderboardUser[] = [
   {

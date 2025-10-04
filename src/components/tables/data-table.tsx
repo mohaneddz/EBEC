@@ -5,6 +5,10 @@ import * as React from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
+import { IconReload } from "@tabler/icons-react"
+import { IconDotsVertical } from "@tabler/icons-react"
+import { IconFilter } from "@tabler/icons-react"
+
 import {
   ColumnDef,
   flexRender,
@@ -31,9 +35,10 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  onReload?: () => void
 }
 
-export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableProps<TData, TValue>) {
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [rowSelection, setRowSelection] = React.useState({})
@@ -65,11 +70,20 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
         </div>
 
         <div className="center gap-2 mx-4">
+          {/* reload button */}
+          {onReload && (
+            <Button variant="classic" size="sm" onClick={onReload} className="bg-white font-semibold">
+              <IconReload />
+              Reload
+            </Button>
+          )}
+
           {/* quick actions */}
           <DropdownMenu>
 
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="sm" className="bg-secondary-light font-semibold">
+                <IconDotsVertical />
                 Actions
               </Button>
             </DropdownMenuTrigger>
@@ -86,6 +100,7 @@ export function DataTable<TData, TValue>({ columns, data }: DataTableProps<TData
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="sm" className="ml-auto font-semibold">
+                <IconFilter />
                 Columns
               </Button>
             </DropdownMenuTrigger>

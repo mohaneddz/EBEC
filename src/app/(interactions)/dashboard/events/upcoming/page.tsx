@@ -1,4 +1,4 @@
-import { columns } from "@/components/tables/c_upcoming" 
+import { columns } from "@/components/tables/columns/c_upcoming" 
 import { DataTable } from "@/components/tables/data-table"
 import { dummyData } from "@/data/upcoming" 
 

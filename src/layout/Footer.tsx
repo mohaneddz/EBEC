@@ -58,7 +58,13 @@ const Footer = () => {
 
       <div className="relative z-10 text-center mt-20 text-gray-400">
         <div className="w-full border-t border-gray-600 my-8" />
-        © 2025 EBEC - ENSIA. All rights reserved.
+        <div className="w-max mx-auto center col gap-4">
+          © 2025 EBEC - ENSIA. All rights reserved.
+          <span>
+            <div className="w-full border-t border-gray-600" />
+            Made By <a href="https://github.com/mohaneddz" className='text-secondary-light underline'>MANAA Mohaned</a> - 2024
+          </span>
+        </div>
       </div>
     </footer>
   );

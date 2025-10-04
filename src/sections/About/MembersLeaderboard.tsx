@@ -1,7 +1,7 @@
 'use client';
 
 import { Leaderboard } from "@/components/tables/leaderboard";
-import { columns } from "@/components/tables/c_leaderboard"
+import { columns } from "@/components/tables/columns/c_leaderboard"
 
 import { TextGenerateEffect } from "@/components/global/TextGenerator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -55,7 +55,7 @@ export default function MembersLeaderboard() {
 
       <Tabs defaultValue="IT" className="center w-[80vw] max-w-[60rem]">
 
-        <TabsList className="grid w-full mb-8 grid-cols-8">
+        <TabsList className="w-full mb-8 ">
           <TabsTrigger value="All">All</TabsTrigger>
           <TabsTrigger value="IT">IT</TabsTrigger>
           <TabsTrigger value="Finance">Finance</TabsTrigger>

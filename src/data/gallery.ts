@@ -1,4 +1,4 @@
-import { Gallery } from '@/components/tables/c_gallery';
+import { Gallery } from '@/components/tables/columns/c_gallery';
 
 export const dummyData: Gallery[] = [
     {

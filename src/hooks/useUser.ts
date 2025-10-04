@@ -57,7 +57,12 @@ export default function useUser() {
 
 	const [visible, setVisible] = useState<boolean>(false);
 
-	function setManager() {
+	async function setManager() {
+		const allowed = await isAllowedToChangeDepartment();
+		if (!allowed) {
+			showToast('You can only request to change department once a day.', 'error');
+			return;
+		}
 		if (user) {
 			supabase.auth.updateUser({
 				data: {
@@ -68,14 +73,52 @@ export default function useUser() {
 		}
 	}
 
+	async function isAllowedToChangeDepartment() {
+		try {
+			const {
+				data: { user },
+				error: authError,
+			} = await supabase.auth.getUser();
+			if (authError || !user) {
+				console.error('Authentication error:', authError);
+				return false;
+			}
+
+			const { data, error } = await supabase
+				.from('department_switch')
+				.select('created_at')
+				.eq('user_id', user.id)
+				.order('created_at', { ascending: false })
+				.limit(1);
+
+			if (error) {
+				console.error('Error fetching department switch data:', error);
+				return false;
+			}
+
+			if (!data || data.length === 0) {
+				return true; // No previous request, allow change
+			}
+
+			const lastRequest = new Date(data[0].created_at);
+			const now = new Date();
+			const oneDayMs = 24 * 60 * 60 * 1000;
+			return now.getTime() - lastRequest.getTime() > oneDayMs;
+		} catch (err) {
+			console.error('Unexpected error:', err);
+			return false;
+		}
+	}
+
 	const handleMotivationChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
 		setMotivation(e.target.value);
 	};
 
-	const handleSendRequest = () => {
+	async function handleSendRequest () {
 		if (selectedDepartment) {
-			sendRequest();
-			showToast('Request sent successfully!', 'success');
+			await sendRequest();
+			window.location.reload();
+			// showToast('Request sent successfully!', 'success');
 		} else {
 			showToast('Please select a department before sending a request.', 'error');
 		}
@@ -153,8 +196,7 @@ export default function useUser() {
 		const { error } = await supabase.from('department_switch').insert([
 			{
 				user_id: user?.id,
-				old_department: user?.app_metadata?.department ?? null,
-				new_department: selectedDepartment ?? null,
+				department: selectedDepartment ?? null,
 				motivation: motivation ?? '',
 				created_at: new Date().toISOString(),
 			},

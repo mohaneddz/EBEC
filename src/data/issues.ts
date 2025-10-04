@@ -1,4 +1,4 @@
-import type { Issues } from "@/components/tables/c_issues";
+import type { Issues } from "@/components/tables/columns/c_issues";
 
 export const dummyData: Issues[] = [
     {

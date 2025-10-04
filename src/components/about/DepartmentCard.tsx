@@ -8,11 +8,13 @@ export default function DepartmentCard({
     picture,
     title,
     onClick,
+    id,
     onFlip,
     isFlipped
 }: {
     picture: string;
     title: string;
+    id: string | undefined;
     onClick: () => void;
     onFlip: () => void;
     isFlipped: boolean;
@@ -48,6 +50,7 @@ export default function DepartmentCard({
 
     return (
         <div
+            id={id}
             className={`card-container w-min ${isHovered ? 'hovered' : ''}`}
             style={{ margin: '10px' }}
             onClick={handleClick}

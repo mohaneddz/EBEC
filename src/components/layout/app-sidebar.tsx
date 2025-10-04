@@ -40,10 +40,6 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "SignUps",
-          url: "/dashboard/emails/signups",
-        },
-        {
           title: "Departments",
           url: "/dashboard/emails/departments",
         },

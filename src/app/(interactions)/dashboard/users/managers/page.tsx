@@ -1,15 +1,9 @@
-import { columns } from "@/components/tables/c_managers" 
-import { DataTable } from "@/components/tables/data-table"
-import { dummyData } from "@/data/managers" 
+import ManagersTable from "@/components/tables/content/d_managers"
 
-export default async function page() {
-  
-  const data = dummyData;
-
+export default function page() {
   return (
     <section className="mx-auto full">
-
-      <DataTable columns={columns} data={data} />
+      <ManagersTable />
     </section>
   );
 }

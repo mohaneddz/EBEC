@@ -1,4 +1,4 @@
-import type { Signups } from "@/components/tables/c_signups";
+import type { Signups } from "@/components/tables/columns/c_signups";
 
 export const dummyData: Signups[] = [
     {

@@ -8,7 +8,7 @@ import Image from 'next/image'
 import { useState, useRef, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-const supabase = createClient(); 
+const supabase = createClient();
 
 type UserInfoProps = {
     image: string;
@@ -71,7 +71,7 @@ export default function UserInfo({ image, name, email, role, department, openMod
             setCanChangeDepartment(allowed);
         };
         checkPermission();
-    }, []); 
+    }, []);
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
@@ -149,7 +149,10 @@ export default function UserInfo({ image, name, email, role, department, openMod
                 style={{ display: 'none' }}
             />
 
-            <motion.div className="lg:w-[25rem] md:w-[20rem] sm:w-[15rem] settings bg-white rounded-lg p-10 flex flex-col items-center -translate-y-4">
+            <motion.div className="lg:w-[25rem] md:w-[20rem] sm:w-[15rem] settings bg-white rounded-lg px-10 pb-10 pt-6 flex flex-col items-center -translate-y-4">
+
+                <p className="text-center text-xs pb-4 text-gray-500">Tap on the image to change your picture</p>
+
 
                 <div className="w-full flex flex-col">
 

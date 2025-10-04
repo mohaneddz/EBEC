@@ -1,8 +1,6 @@
 "use client"
-
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
-
 import { cn } from "@/lib/utils"
 
 function Tabs({
@@ -26,7 +24,8 @@ function TabsList({
     <TabsPrimitive.List
       data-slot="tabs-list"
       className={cn(
-        "bg-primary-dark text-muted-foreground center flex-warp h-9 w-fit rounded-lg p-8 ",
+        "bg-primary-dark text-muted-foreground h-auto w-fit rounded-lg p-4 md:p-8",
+        "grid grid-cols-4 grid-rows-2 gap-2 md:grid-rows-1 md:flex md:flex-wrap md:h-9",
         className
       )}
       {...props}
@@ -42,7 +41,7 @@ function TabsTrigger({
     <TabsPrimitive.Trigger
       data-slot="tabs-trigger"
       className={cn(
-        "cursor-pointer data-[state=active]:bg-background data-[state=active]:p-6 data-[state=active]:text-foreground data-[state=active]:font-bold focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-white dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[state=active]:bg-secondary-dark",
+        "cursor-pointer data-[state=active]:-mt-3 data-[state=active]:-ml-3 data-[state=active]:bg-background data-[state=active]:py-4 md:data-[state=active]:p-4 data-[state=active]:text-foreground data-[state=active]:font-bold focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-white dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 data-[state=active]:bg-secondary-dark",
         className
       )}
       {...props}

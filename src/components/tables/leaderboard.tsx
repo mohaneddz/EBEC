@@ -35,7 +35,7 @@ export function Leaderboard<TData extends { department?: string; score?: number 
           {table.getHeaderGroups().map(headerGroup => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map(header => (
-                <TableHead key={header.id} className="text-secondary-dark font-bold text-lg">
+                <TableHead key={header.id} className="text-secondary-dark font-bold md:text-lg">
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               ))}

@@ -8,7 +8,7 @@ import { GlareCardDemo } from '@/sections/Events/UpcomingEvnetsGlareCard'
 
 export default function UpcomingEventsSection() {
 
-    const [data, setData] = React.useState<{ id: any; title: string; description: string; src: string; open: boolean }[]>([]);
+    const [data, setData] = React.useState<{ id: string; title: string; description: string; src: string; open: boolean }[]>([]);
     const [loading, setLoading] = React.useState(true);
 
     useEffect(() => {
@@ -36,8 +36,6 @@ export default function UpcomingEventsSection() {
         fetchEvents();
     }, []);
 
-
-    const titleRef = useRef(null);
 
     return (
         <div className="flex flex-col min-h-screen mt-40 mb-8 h-min" >

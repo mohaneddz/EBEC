@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/dist/client/link";
 
 interface Props {
     title: string;
@@ -15,11 +16,11 @@ export default function FormCard(props: Props) {
                 <Button className="mt-auto text-white w-full" variant="destructive">
                     Remove
                 </Button>
-                <a href="/dashboard/tools/form_editor">
+                <Link href="/dashboard/tools/form_editor">
                     <Button className="mt-auto text-white w-full" variant="secondary">
                         Manage
                     </Button>
-                </a>
+                </Link>
             </div>
 
         </div>

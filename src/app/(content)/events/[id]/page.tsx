@@ -9,12 +9,23 @@ import Image from 'next/image'
 
 // Removed unused imports
 
+interface Event {
+    id: string;
+    name: string;
+    brief: string;
+    description: string;
+    date: string;
+    location: string;
+    mainPicture: string;
+    pictures: string[]; 
+}
+
 export default function EventPage({ params }: { params: Promise<{ id: string }> }) {
 
     const unwrappedParams = React.use(params);
     const id = unwrappedParams?.id;
 
-    const [event, setEvent] = useState<any>(null);
+    const [event, setEvent] = useState<Event | null>(null);
     const [fetchError, setFetchError] = useState<string | null>(null);
     const [allImages, setAllImages] = useState<string[]>([]);
 
@@ -60,7 +71,7 @@ export default function EventPage({ params }: { params: Promise<{ id: string }> 
                     setEvent(null);
                     setAllImages([]);
                 }
-            } catch (error) {
+            } catch {
                 setFetchError('Could not fetch the event!');
                 setEvent(null);
                 setAllImages([]);

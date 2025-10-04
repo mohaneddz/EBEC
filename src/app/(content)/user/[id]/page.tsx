@@ -12,11 +12,8 @@ import UserInfo from "@/components/main/UserInfo";
 
 const DEFAULT_PIC = "/imgs/DEFAULT.webp"
 
-interface UserPageProps {
-  id: string;
-}
 
-export default function UserPage({ id }: UserPageProps) {
+export default function UserPage() {
 
   const {
     user, allowed, openModal, handleLogOut, handleSaveChanges, visible, departments, isVisible, selectedDepartment, handleMotivationChange, handleSendRequest, closeModal, handleCloseToast, motivation, toastMessage, toastVariant, handleSelect

@@ -17,7 +17,7 @@ export function GlareCardDemo({ cards }: GlareCardDemoProps) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedCard, setSelectedCard] = useState<CardData | null>(null);
     const [toasts, setToasts] = useState<{ id: number; message: string; variant: ToastVariant; }[]>([]);
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<{ id: string } | null>(null);
     const router = useRouter();
 
     useEffect(() => {

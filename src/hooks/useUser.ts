@@ -141,14 +141,14 @@ export default function useUser() {
 		setVisible(false);
 	};
 
-	const showToast = (message: string, variant: ToastVariant) => {
+	const showToast = (message: string, variant: ToastVariant = 'info', duration = 3000) => {
 		setToastMessage(message);
 		setToastVariant(variant);
 		setVisible(true);
 
 		setTimeout(() => {
 			setVisible(false);
-		}, 3000); // Auto-hide after 3 seconds
+		}, duration); // Auto-hide after 3 seconds
 	};
 
 	const handleLogOut = () => {
@@ -157,7 +157,7 @@ export default function useUser() {
 			.then(() => {
 				window.location.href = '/login';
 			})
-			.catch((_error) => {
+			.catch(() => {
 				// silent
 			});
 	};
@@ -191,8 +191,6 @@ export default function useUser() {
 	};
 
 	const sendRequest = async () => {
-		const displayName = user?.app_metadata?.display_name || user?.user_metadata?.display_name;
-
 		const { error } = await supabase.from('department_switch').insert([
 			{
 				user_id: user?.id,
@@ -224,7 +222,7 @@ export default function useUser() {
 			imageUrl = uploadedUrl;
 		}
 
-		const { data, error } = await supabase.auth.updateUser({
+		const { error } = await supabase.auth.updateUser({
 			data: { display_name: displayName, image: imageUrl },
 		});
 
@@ -234,7 +232,7 @@ export default function useUser() {
 			return;
 		}
 
-		setUser((data?.user as User) ?? null);
+		setUser((prevUser) => prevUser ? { ...prevUser, user_metadata: { ...prevUser.user_metadata, display_name: displayName, image: imageUrl } } : null);
 		showToast('Changes saved successfully!', 'success');
 	};
 

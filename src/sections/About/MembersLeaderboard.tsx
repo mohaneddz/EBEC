@@ -32,7 +32,7 @@ export default function MembersLeaderboard() {
 
   // Helper function to pad data to always have 5 rows with placeholders
   const padData = (data: LeaderboardItem[], department: string) => {
-    let filtered = department === "All" ? data : data.filter((item) => item.department === department);
+    const filtered = department === "All" ? data : data.filter((item) => item.department === department);
     while (filtered.length < 5) {
       filtered.push({
         picture: "/imgs/DEFAULT.webp",

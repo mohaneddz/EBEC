@@ -20,7 +20,7 @@ type ToastProps = {
     duration?: number;
 };
 
-const toastVariants: Record<ToastVariant, { icon: JSX.Element; bg: string; text: string; border: string }> = {
+const toastVariants: Record<ToastVariant, { icon: React.ReactElement; bg: string; text: string; border: string }> = {
     info: {
         icon: <IconInfoCircle size={20} />,
         bg: "bg-blue-100",

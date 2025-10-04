@@ -2,8 +2,6 @@ import React from 'react';
 import SocialLinks from '@/components/layout/FooterSocialLinks';
 import QuickLinksMenu from '@/components/layout/FooterQuickLinks';
 
-const image1 = "https://fdvaqkemvuyjgtoywjbt.supabase.co/storage/v1/object/public/Event%20Images//6.jpg";
-
 const Footer = () => {
   return (
     <footer className="w-full relative text-white py-16 bg-gradient-to-r from-[#0a1028] to-[#132051]">

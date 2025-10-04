@@ -8,14 +8,18 @@ import EditModal from "@/components/forms/EditModal";
 import EditInput from "@/components/forms/EditInput";
 import EditControls from "@/components/forms/EditControls";
 
+interface Question {
+  questionText: string;
+}
+
 export default function Page() {
   const { formData, setFormData } = useFormCreator();
 
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [questions, setQuestions] = useState<any[]>([]);
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null);
 
-  const onSaveQuestion = (questionData: any) => {
+  const onSaveQuestion = (questionData: Question) => {
     if (currentEditIndex !== null) {
       const updatedQuestions = [...questions];
       updatedQuestions[currentEditIndex] = questionData;

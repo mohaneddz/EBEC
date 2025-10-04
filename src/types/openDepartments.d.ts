@@ -1,0 +1,1 @@
+declare type departments = 'IT' | 'Finance' | 'Media' | 'Design' | 'Relex' | 'Events' | 'Logistics';

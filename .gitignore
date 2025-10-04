@@ -1,10 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Workspace
-/.vscode
-/.history
-/.Next.js-15-Tutorials-main
-
 # dependencies
 /node_modules
 /.pnp
@@ -33,6 +28,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -43,6 +39,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-/model
-/data

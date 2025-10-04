@@ -1,0 +1,93 @@
+::selection {
+    background-color: var(--color-primary-light);
+    color: white;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e085e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #25097f;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #1f1479;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #fda916 #eef1f6;
+}
+
+.custom-shape-divider-top-1738426196 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: -1;
+}
+
+.custom-shape-divider-top-1738426196 svg {
+    position: relative;
+    display: block;
+    width: calc(300% + 1.3px);
+    height: 30rem;
+}
+
+.custom-shape-divider-top-1738426196 .shape-fill {
+    fill: #062a58;
+}
+
+/* DepartmentCard styles */
+.card-container {
+    perspective: 1000px;
+    transition: transform 0.3s ease;
+}
+
+.card-container.hovered {
+    transform: translateY(-10px);
+}
+
+.card {
+    position: relative;
+    width: 300px;
+    height: calc(300px * 3.5 / 2.5);
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+}
+
+.card.flipped {
+    transform: rotateY(180deg);
+}
+
+.card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card-face.front {
+    background-size: cover;
+    background-position: center;
+}
+
+.card-face.back {
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}

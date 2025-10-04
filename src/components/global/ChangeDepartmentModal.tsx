@@ -3,7 +3,7 @@
 import Modal from "./Modal";
 
 // Assuming departments is imported or defined elsewhere
-const departments = ['IT' , 'Finance' , 'Media' , 'Design' , 'Relex' , 'Events' , 'Logistics', 'Executive']; // Replace with actual departments
+const departments = ['IT' , 'Finance' , 'Media' , 'Design' , 'Relex' , 'Events' , 'Logistics', 'Executive', 'HR']; 
 
 type ChangeDepartmentModalProps = {
     isOpen: boolean;

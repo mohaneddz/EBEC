@@ -43,5 +43,9 @@ export default function DepartmentsTable() {
 
   const columns = getColumns(removeRow);
 
-  return <DataTable columns={columns} data={data} onReload={fetchData} />;
+  return (
+    <div className="w-full">
+      <DataTable columns={columns} data={data} onReload={fetchData} />
+    </div>
+  );
 }

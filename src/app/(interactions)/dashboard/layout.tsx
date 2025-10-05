@@ -21,7 +21,7 @@ export default function Page({ children }: React.PropsWithChildren) {
             <SidebarTrigger />
             <h1 className="text-2xl font-bold text-white">{title}</h1>
           </div>
-          <main className="p-4 overflow-hidden full">
+          <main className="p-4 overflow-hidden full flex flex-col gap-4">
             {children}
           </main>
         </SidebarInset>

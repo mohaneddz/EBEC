@@ -9,6 +9,7 @@ import {
   Mail,
   Calendar,
   ClipboardType,
+  Star,
   ClipboardPen
 } from "lucide-react"
 
@@ -103,6 +104,11 @@ const data = {
       name: "Forms Manager",
       url: "/dashboard/tools/form_manager",
       icon: ClipboardPen,
+    },
+    {
+      name: "Score Manager",
+      url: "/dashboard/tools/form_manager",
+      icon: Star,
     },
   ]
 }

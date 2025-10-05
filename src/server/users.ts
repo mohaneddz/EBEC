@@ -41,3 +41,16 @@ export async function promoteUser(userId: string, newRole: string) {
 
     return { success: true, data };
 }
+
+export async function deleteUser(userId: string){
+    const supabaseAdmin = await createAdminClient();
+
+    const { data, error } = await supabaseAdmin.auth.admin.deleteUser(userId);
+
+    if (error) {
+        console.error('Error deleting user:', error.message);
+        return { success: false, error: 'Could not delete user.' };
+    }
+
+    return { success: true, data };
+}

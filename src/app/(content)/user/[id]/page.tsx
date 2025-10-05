@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import Modal from "@/components/global/Modal";
 import Toast from "@/components/global/Toast";
 
+import { deleteUser } from '@/server/users';
+
 import useUser from '@/hooks/useUser';
 import UserInfo from "@/components/main/UserInfo";
 
@@ -35,7 +37,7 @@ export default function UserPage() {
       }
 
       <Modal isOpen={isVisible} onClose={closeModal} title="Select Department & Add Motivation">
-        
+
         {/* Department Selection Grid */}
         <div className="center flex-wrap gap-4 justify-items-center mt-4">
           {departments.map((department: string) => (
@@ -148,7 +150,7 @@ export default function UserPage() {
           image={user.user_metadata?.image || DEFAULT_PIC}
           status={user.user_metadata?.status || "Unverified"}
           handleLogOut={handleLogOut}
-          handleDeleteAccount={() => { }}
+          handleDeleteAccount={() => deleteUser(user.id)}
           handleSaveChanges={handleSaveChanges}
         />
       )}

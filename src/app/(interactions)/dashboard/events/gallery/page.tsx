@@ -7,7 +7,7 @@ export default async function page() {
   const data = dummyData;
 
   return (
-    <section className="mx-auto full">
+    <section className="full">
 
       <DataTable columns={columns} data={data} />
     </section>

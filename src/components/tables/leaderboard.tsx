@@ -56,7 +56,7 @@ export function Leaderboard<TData extends { department?: string; score?: number 
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
+              <TableCell colSpan={columns.length} className="h-full text-center">
                 No results.
               </TableCell>
             </TableRow>

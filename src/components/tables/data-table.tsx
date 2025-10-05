@@ -54,48 +54,64 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
   })
 
   return (
-    <div className="overflow-hidden rounded-md border overflow-x-auto max-h-[91vh] overflow-y-auto">
+    <div className="flex flex-col w-full h-[calc(100vh-6rem)] border rounded-md overflow-hidden">
 
-      <div className="flex items-center justify-between w-full p-4 pr-0 bg-primary-light mb-4">
-
-        <div className="w-full items-center flex gap-4">
-
-          {/* selection state */}
+      {/* Top bar */}
+      <div className="screen flex items-center justify-between w-full p-4 pr-0 bg-primary-light">
+        <div className="w-full flex items-center gap-4">
+          {/* Selection count */}
           <div className="text-white text-sm">
             {table.getFilteredSelectedRowModel().rows.length} /{" "}
             {table.getFilteredRowModel().rows.length}
           </div>
-          <Input placeholder="Filter rows..." value={table.getState().globalFilter ?? ''} onChange={(event) => table.setGlobalFilter(String(event.target.value))} className="max-w-lg text-black" />
+
+          {/* Global filter */}
+          <Input
+            placeholder="Filter rows..."
+            value={table.getState().globalFilter ?? ""}
+            onChange={(e) => table.setGlobalFilter(String(e.target.value))}
+            className="max-w-lg text-black"
+          />
         </div>
 
-        <div className="center gap-2 mx-4">
-          {/* reload button */}
+        {/* Actions */}
+        <div className="flex items-center gap-2 mx-4">
           {onReload && (
-            <Button variant="classic" size="sm" onClick={onReload} className="bg-white font-semibold">
+            <Button
+              variant="classic"
+              size="sm"
+              onClick={onReload}
+              className="bg-white font-semibold"
+            >
               <IconReload />
               Reload
             </Button>
           )}
 
-          {/* quick actions */}
+          {/* Quick actions */}
           <DropdownMenu>
-
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="sm" className="bg-secondary-light font-semibold">
+              <Button
+                variant="secondary"
+                size="sm"
+                className="bg-secondary-light font-semibold"
+              >
                 <IconDotsVertical />
                 Actions
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="start">
-              <DropdownMenuItem onClick={() => table.resetColumnFilters()}>Reset Filters</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => table.resetColumnFilters()}>Accept Selected</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => table.resetColumnFilters()}>Reject Selected</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => table.resetColumnFilters()}>Delete Selection</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => table.resetColumnFilters()}>
+                Reset Filters
+              </DropdownMenuItem>
+              <DropdownMenuItem>Accept Selected</DropdownMenuItem>
+              <DropdownMenuItem>Reject Selected</DropdownMenuItem>
+              <DropdownMenuItem>Delete Selection</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
 
-          {/* visibility */}
+          {/* Column visibility */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="sm" className="ml-auto font-semibold">
@@ -103,59 +119,88 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
                 Columns
               </Button>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent align="end">
               {table
                 .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => (
-                  <DropdownMenuCheckboxItem key={column.id} className="capitalize" checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-                    {column.id}
+                .filter((col) => col.getCanHide())
+                .map((col) => (
+                  <DropdownMenuCheckboxItem
+                    key={col.id}
+                    className="capitalize"
+                    checked={col.getIsVisible()}
+                    onCheckedChange={(val) => col.toggleVisibility(!!val)}
+                  >
+                    {col.id}
                   </DropdownMenuCheckboxItem>
                 ))}
             </DropdownMenuContent>
           </DropdownMenu>
-
         </div>
-
       </div>
 
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableHead key={header.id}>
-                  {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
+      {/* Table container */}
+      <div className="flex-1 overflow-auto">
+        <Table className="min-w-full h-full">
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
                 ))}
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">No results.</TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ))}
+          </TableHeader>
 
-      <hr />
-      <div className="flex items-center justify-end space-x-2 py-4 mr-4">
-        <Button variant="outline" size="sm" onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>Previous</Button>
-        <Button variant="outline" size="sm" onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>Next</Button>
+          <TableBody className="h-full border-b">
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow className="h-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center text-lg h-[calc(100vh-14rem)] align-middle"
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+
+        </Table>
+      </div>
+
+      <div className="flex items-center justify-end space-x-2 p-4 border-t bg-white">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
     </div>
-  )
+  );
+
 }

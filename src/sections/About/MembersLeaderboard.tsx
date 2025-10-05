@@ -45,7 +45,7 @@ export default function MembersLeaderboard() {
   };
 
   return (
-    <section className="mx-auto full center col">
+    <section className="full center col">
 
       <TextGenerateEffect
         words="Our Best Peforming Members!"

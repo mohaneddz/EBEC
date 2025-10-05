@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
 import { getColumns, Members } from "@/components/tables/columns/c_members"
 
-import { promoteUser, getUser, getAllUsers } from "@/server/users";
+import { promoteUser, getUser, getAllUsers, deleteUser } from "@/server/users";
 import { changeUserDepartment } from "@/server/departments";
 
 import ConfirmDeleteModal from "@/components/global/ConfirmDeleteModal";
@@ -69,9 +69,8 @@ export default function MembersTable() {
   };
 
   const handleDelete = () => {
-    // console.log("Deleting user:", selectedUser?.user_id);
-    // Add delete logic here
     setIsDeleteModalOpen(false);
+    deleteUser(selectedUser?.user_id || '');
     setSelectedUser(null);
   };
 

@@ -151,7 +151,7 @@ export function ExpandableCardDemo({ cards }: { cards: EventCard[] }) {
               >
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="font-semibold text-secondary-dark text-center text-base truncate text-ellipsis w-full"
+                  className="font-bold text-secondary-dark text-center text-xl truncate text-ellipsis w-full"
                 >
                   {card.title}
                 </motion.h3>

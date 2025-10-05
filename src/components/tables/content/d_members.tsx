@@ -3,16 +3,14 @@
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
 import { getColumns, Members } from "@/components/tables/columns/c_members"
-import { getUser } from '@/app/actions';
 
-import { promoteUser } from "@/app/actions";
-import {changeUserDepartment} from "@/app/actions";
+import { promoteUser, getUser, getAllUsers } from "@/server/users";
+import { changeUserDepartment } from "@/server/departments";
 
 import ConfirmDeleteModal from "@/components/global/ConfirmDeleteModal";
 import PromoteUserModal from "@/components/global/PromoteUserModal";
 import ChangeDepartmentModal from "@/components/global/ChangeDepartmentModal";
 
-import { getAllUsers } from '@/app/actions';
 import { User } from '@supabase/supabase-js';
 
 export default function MembersTable() {

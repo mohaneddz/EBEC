@@ -1,6 +1,6 @@
 "use client"
 
-import { switchDepartment, deleteDepartmentSwitch } from "@/app/actions"
+import { switchDepartment, deleteDepartmentSwitch } from "@/server/departments"
 
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"

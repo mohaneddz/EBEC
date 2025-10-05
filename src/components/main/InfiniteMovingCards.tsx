@@ -87,7 +87,7 @@ export const InfiniteMovingCards = ({
       ref={containerRef}
       className={cn(
         "scroller relative z-20 w-full overflow-hidden",
-        "[mask-image:linear-gradient(to_right,transparent,white_5%,white_95%,transparent)] sm:[mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)]",
+        "[mask-image:linear-gradient(to_right,transparent,white_5%,white_95%,transparent)] sm:[mask-image:linear-gradient(to_right,transparent,white_10%,white_90%,transparent)] md:[mask-image:linear-gradient(to_right,transparent,white_15%,white_85%,transparent)]",
         "max-w-7xl",
         className
       )}
@@ -96,7 +96,7 @@ export const InfiniteMovingCards = ({
         ref={scrollerRef}
         className={cn(
           "flex min-w-full shrink-0 py-4 w-max flex-nowrap",
-          "gap-4 sm:gap-6 md:gap-8",
+          "gap-4 sm:gap-6 md:gap-8 xl:gap-10 2xl:gap-12",
           start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
@@ -105,8 +105,8 @@ export const InfiniteMovingCards = ({
           <li
             className={cn(
               "relative rounded-2xl border border-b-0 flex-shrink-0 border-slate-700",
-              "w-[90vw] max-w-full sm:w-[350px] md:w-[400px] lg:w-[450px]",
-              "px-6 py-5 sm:px-8 sm:py-6",
+              "w-[90vw] max-w-full sm:w-[21.875rem] md:w-[25rem] lg:w-[28.125rem] xl:w-[31.25rem] 2xl:w-[34.375rem]",
+              "px-6 py-5 sm:px-8 sm:py-6 md:px-10 md:py-8",
               "hover:-translate-y-1 transition-transform duration-200 ease-in-out"
             )}
             style={{
@@ -120,15 +120,15 @@ export const InfiniteMovingCards = ({
                 aria-hidden="true"
                 className="user-select-none -z-1 pointer-events-none absolute -left-0.5 -top-0.5 h-[calc(100%_+_4px)] w-[calc(100%_+_4px)]"
               ></div>
-              <span className=" relative z-20 text-sm leading-[1.6] text-gray-100 font-normal">
+              <span className=" relative z-20 text-sm md:text-base leading-[1.6] text-gray-100 font-normal">
                 {item.quote}
               </span>
-              <div className="relative z-20 mt-4 sm:mt-6 flex flex-row items-center">
+              <div className="relative z-20 mt-4 sm:mt-6 md:mt-8 flex flex-row items-center">
                 <span className="flex flex-col gap-1">
-                  <span className=" text-sm font-medium text-secondary-dark">
+                  <span className=" text-sm md:text-base font-medium text-secondary-dark">
                     {item.name}
                   </span>
-                  <span className=" text-xs sm:text-sm leading-[1.6] text-gray-400 font-normal">
+                  <span className=" text-xs sm:text-sm md:text-base leading-[1.6] text-gray-400 font-normal">
                     {item.title}
                   </span>
                 </span>

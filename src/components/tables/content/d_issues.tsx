@@ -5,7 +5,7 @@ import { DataTable } from "@/components/tables/data-table"
 import { getColumns, Issues } from "@/components/tables/columns/c_issues"
 import Modal from "@/components/global/Modal";
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
-import { getUser } from '@/app/actions';
+import { getUser } from '@/server/users';
 
 export default function IssuesTable() {
     const [data, setData] = useState<Issues[]>([]);

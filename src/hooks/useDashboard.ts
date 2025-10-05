@@ -4,7 +4,7 @@
 
 import { useState, useEffect } from 'react';
 import { createClient } from '@/utils/supabase/client';
-import { getTotalMembers } from '@/app/actions'; // ✨ Import the Server Action
+import { getTotalMembers } from '@/server/leaderboard';
 
 export default function useDashboard() {
   const supabase = createClient(); // normal client

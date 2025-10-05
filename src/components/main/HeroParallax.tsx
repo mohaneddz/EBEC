@@ -49,6 +49,7 @@ export default function HeroParallax({ cards }: { cards: dHeroCard[] }) {
   return (
     <>
       <motion.div
+        ref={ref}
         style={{
           rotateX,
           rotateZ,

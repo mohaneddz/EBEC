@@ -6,7 +6,7 @@ import { columns } from "@/components/tables/columns/c_leaderboard"
 import { TextGenerateEffect } from "@/components/global/TextGenerator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useState, useEffect } from "react";
-import { getLeaderboardData } from '@/app/actions';
+import { getLeaderboardData } from '@/server/leaderboard';
 
 // Define the type for leaderboard data
 type LeaderboardItem = {

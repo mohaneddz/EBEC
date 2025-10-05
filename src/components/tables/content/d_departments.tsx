@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
 import { getColumns, DepartmentSwitch } from "@/components/tables/columns/c_departments"
 import { getSupabaseAdmin } from '@/utils/supabase/admin';
-import { getUser } from '@/app/actions';
+import { getUser } from '@/server/users';
 
 export default function DepartmentsTable() {
   const [data, setData] = useState<DepartmentSwitch[]>([]);

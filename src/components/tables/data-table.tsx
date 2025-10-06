@@ -36,9 +36,11 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   onReload?: () => void
+  actions?: { title: string; action: (...args: unknown[]) => void }[]
+  loading?: boolean
 }
 
-export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({ columns, data, onReload, actions, loading }: DataTableProps<TData, TValue>) {
 
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [rowSelection, setRowSelection] = React.useState({})
@@ -47,7 +49,7 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
 
   const table = useReactTable({
     data, columns, getCoreRowModel: getCoreRowModel(), getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 10, }, },
+    initialState: { pagination: { pageSize: 20, }, },
     onSortingChange: setSorting, onColumnFiltersChange: setColumnFilters, onRowSelectionChange: setRowSelection, onColumnVisibilityChange: setColumnVisibility,
     getSortedRowModel: getSortedRowModel(), getFilteredRowModel: getFilteredRowModel(), globalFilterFn: 'includesString',
     state: { sorting, columnFilters, rowSelection, columnVisibility, },
@@ -60,7 +62,7 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
       <div className="screen flex items-center justify-between w-full p-4 pr-0 bg-primary-light">
         <div className="w-full flex items-center gap-4">
           {/* Selection count */}
-          <div className="text-white text-sm">
+          <div className="text-white md:text-sm text-[0.5rem]">
             {table.getFilteredSelectedRowModel().rows.length} /{" "}
             {table.getFilteredRowModel().rows.length}
           </div>
@@ -75,7 +77,7 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-2 mx-4">
+        <div className="items-center gap-2 mx-4 hidden md:flex">
           {onReload && (
             <Button
               variant="classic"
@@ -89,27 +91,28 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
           )}
 
           {/* Quick actions */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="secondary"
-                size="sm"
-                className="bg-secondary-light font-semibold"
-              >
-                <IconDotsVertical />
-                Actions
-              </Button>
-            </DropdownMenuTrigger>
+          {actions && actions.length > 0 && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="bg-secondary-light font-semibold"
+                >
+                  <IconDotsVertical />
+                  Actions
+                </Button>
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="start">
-              <DropdownMenuItem onClick={() => table.resetColumnFilters()}>
-                Reset Filters
-              </DropdownMenuItem>
-              <DropdownMenuItem>Accept Selected</DropdownMenuItem>
-              <DropdownMenuItem>Reject Selected</DropdownMenuItem>
-              <DropdownMenuItem>Delete Selection</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+              <DropdownMenuContent align="start">
+                {actions.map((act, index) => (
+                  <DropdownMenuItem key={index} onClick={() => act.action(table.getFilteredSelectedRowModel().rows.map(row => row.original), onReload || (() => {}))}>
+                    {act.title}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
           {/* Column visibility */}
           <DropdownMenu>
@@ -157,7 +160,18 @@ export function DataTable<TData, TValue>({ columns, data, onReload }: DataTableP
           </TableHeader>
 
           <TableBody className="h-full border-b">
-            {table.getRowModel().rows?.length ? (
+            {loading ? (
+              <TableRow className="h-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="text-center text-lg h-[calc(100vh-14rem)] align-middle"
+                >
+                  <div className="flex justify-center items-center">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id} data-state={row.getIsSelected() && "selected"}>
                   {row.getVisibleCells().map((cell) => (

@@ -2,7 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "motion/react";
-import type { HeroCard as dHeroCard} from '@/types/hero';
+import type { HeroCard as dHeroCard } from '@/types/hero';
 
 
 import HeroCard from '@/components/main/HeroCard';
@@ -14,10 +14,10 @@ export default function HeroParallax({ cards }: { cards: dHeroCard[] }) {
   const thirdRow = cards.slice(10, 15);
 
   const ref = useRef(null);
-  
+
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ["-0.15 start", "end start"], // starts animation a bit earlier
   });
 
   const springConfig = { stiffness: 300, damping: 30, bounce: 100 };

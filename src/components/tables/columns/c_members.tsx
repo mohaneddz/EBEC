@@ -6,6 +6,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
+
+import { deleteUser } from "@/server/users"
+
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -220,3 +223,15 @@ export function getColumns(onDelete: (user: Members) => void, onPromote: (user: 
         },
     ];
 }
+
+export const actions = [
+    {
+        title: "Delete Selection",
+        action: (selectedRows: Members[], onReload: () => void) => {
+            selectedRows.forEach((user) => {
+                deleteUser(user.user_id);
+                
+            })
+        }
+    },
+]

@@ -1,5 +1,7 @@
 "use client"
 
+import { deleteEvent } from "@/server/events"
+
 import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -11,32 +13,35 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import Image from "next/image" 
+import Image from "next/image"
 import type { CheckedState } from "@radix-ui/react-checkbox"
 
 export interface Gallery {
-    eventId: string;
-    eventName: string;
-    eventDate: Date;
-    eventLocation: string;
-    eventAttendance: number;
-    eventBrief: string;
-    eventDescription: string;
-    image1: string;
-    image2: string;
-    image3: string;
-    image4: string;
+
+    id: string;
+    name: string;
+    date: Date;
+    brief: string;
+
+    location: string;
+    attendance: number;
+    description: string;
+
+    picture1: string;
+    picture2: string;
+    picture3: string;
+    picture4: string;
 }
 
-export const columns: ColumnDef<Gallery>[] = [
+export const getColumns = (openEditModal: (event: Gallery) => void): ColumnDef<Gallery>[] => [
     {
         id: "select",
         header: ({ table }) => {
             const headerChecked: CheckedState = table.getIsAllPageRowsSelected()
                 ? true
                 : table.getIsSomePageRowsSelected()
-                ? "indeterminate"
-                : false;
+                    ? "indeterminate"
+                    : false;
             return (
                 <Checkbox
                     checked={headerChecked}
@@ -56,7 +61,7 @@ export const columns: ColumnDef<Gallery>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "eventName",
+        accessorKey: "name",
         header: ({ column }) => {
             return (
                 <Button
@@ -69,10 +74,10 @@ export const columns: ColumnDef<Gallery>[] = [
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="w-28 ">{row.getValue("eventName")}</div>,
+        cell: ({ row }) => <div className="w-28 ">{row.getValue("name")}</div>,
     },
     {
-        accessorKey: "eventDate",
+        accessorKey: "date",
         header: ({ column }) => {
             return (
                 <Button
@@ -86,7 +91,7 @@ export const columns: ColumnDef<Gallery>[] = [
             )
         },
         cell: ({ row }) => {
-            const val = row.getValue("eventDate") as string | Date | undefined;
+            const val = row.getValue("date") as string | Date | undefined;
             const date = typeof val === "string" ? new Date(val) : (val as Date | undefined);
             if (!date || Number.isNaN(date.getTime())) return <div>N/A</div>;
             const formattedDate = new Intl.DateTimeFormat("en-US", {
@@ -98,7 +103,7 @@ export const columns: ColumnDef<Gallery>[] = [
         },
     },
     {
-        accessorKey: "eventLocation",
+        accessorKey: "location",
         header: ({ column }) => {
             return (
                 <Button
@@ -111,10 +116,10 @@ export const columns: ColumnDef<Gallery>[] = [
                 </Button>
             )
         },
-        cell: ({ row }) => <div className="w-24 truncate">{row.getValue("eventLocation")}</div>,
+        cell: ({ row }) => <div className="w-24 truncate">{row.getValue("location")}</div>,
     },
     {
-        accessorKey: "eventAttendance",
+        accessorKey: "attendance",
         header: ({ column }) => {
             return (
                 <Button
@@ -128,33 +133,32 @@ export const columns: ColumnDef<Gallery>[] = [
             )
         },
         cell: ({ row }) => {
-            const attendance = row.getValue("eventAttendance") as number | undefined;
+            const attendance = row.getValue("attendance") as number | undefined;
             return <div className="text-right w-16">{attendance != null ? attendance.toLocaleString() : 'N/A'}</div>;
         },
     },
     {
-        accessorKey: "eventBrief",
+        accessorKey: "brief",
         header: "Brief",
-        cell: ({ row }) => <div className="w-24 truncate">{row.getValue("eventBrief")}</div>,
+        cell: ({ row }) => <div className="w-24 truncate">{row.getValue("brief")}</div>,
     },
     {
-        accessorKey: "eventDescription",
+        accessorKey: "description",
         header: "Description",
-        cell: ({ row }) => <div className="w-24 truncate">{row.getValue("eventDescription")}</div>,
+        cell: ({ row }) => <div className="w-24 truncate">{row.getValue("description")}</div>,
     },
     {
-        accessorKey: "image1",
+        accessorKey: "picture1",
         header: "Preview",
         cell: ({ row }) => {
-            const imageUrl = row.getValue("image1") as string;
+            const imageUrl = row.getValue("picture1") as string;
             return (
-                <div className="flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
+                <div className="relative flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
                     {imageUrl ? (
                         <Image
                             src={imageUrl}
                             alt="Event Preview"
-                            width={40}
-                            height={40}
+                            fill
                             className="object-cover"
                             loading="lazy"
                         />
@@ -168,18 +172,17 @@ export const columns: ColumnDef<Gallery>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "image2",
+        accessorKey: "picture2",
         header: "Preview",
         cell: ({ row }) => {
-            const imageUrl = row.getValue("image2") as string;
+            const imageUrl = row.getValue("picture2") as string;
             return (
-                <div className="flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
+                <div className="relative flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
                     {imageUrl ? (
                         <Image
                             src={imageUrl}
                             alt="Event Preview"
-                            width={40}
-                            height={40}
+                            fill
                             className="object-cover"
                             loading="lazy"
                         />
@@ -193,18 +196,17 @@ export const columns: ColumnDef<Gallery>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "image3",
+        accessorKey: "picture3",
         header: "Preview",
         cell: ({ row }) => {
-            const imageUrl = row.getValue("image3") as string;
+            const imageUrl = row.getValue("picture3") as string;
             return (
-                <div className="flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
+                <div className="relative flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
                     {imageUrl ? (
                         <Image
                             src={imageUrl}
                             alt="Event Preview"
-                            width={40}
-                            height={40}
+                            fill
                             className="object-cover"
                             loading="lazy"
                         />
@@ -218,18 +220,17 @@ export const columns: ColumnDef<Gallery>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "image4",
+        accessorKey: "picture4",
         header: "Preview",
         cell: ({ row }) => {
-            const imageUrl = row.getValue("image4") as string;
+            const imageUrl = row.getValue("picture4") as string;
             return (
-                <div className="flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
+                <div className="relative flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
                     {imageUrl ? (
                         <Image
                             src={imageUrl}
                             alt="Event Preview"
-                            width={40}
-                            height={40}
+                            fill
                             className="object-cover"
                             loading="lazy"
                         />
@@ -244,7 +245,8 @@ export const columns: ColumnDef<Gallery>[] = [
     },
     {
         id: "actions",
-        cell: ({  }) => {
+        cell: ({ row }) => {
+            const event = row.original;
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -254,22 +256,12 @@ export const columns: ColumnDef<Gallery>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => {
-                            //console.log("View event details for:", event.eventId);
-                            // Implement navigation or a modal to show all event details, including all images
-                        }}>
-                            View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {
-                            //console.log("Edit event:", event.eventId);
-                            // Implement navigation or a modal for editing
-                        }}>
+                        <DropdownMenuItem onClick={() => openEditModal(event)}>
                             Edit Event
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem className="text-red-600" onClick={() => {
-                            //console.log("Delete event:", event.eventId);
-                            // Implement delete logic, possibly with a confirmation dialog
+                            deleteEvent(event.id);
                         }}>
                             Delete Event
                         </DropdownMenuItem>
@@ -278,4 +270,13 @@ export const columns: ColumnDef<Gallery>[] = [
             )
         },
     },
+]
+
+export const actions = [
+    {
+        title: "Delete Selected",
+        action: (selectedRows: Gallery[]) => {
+            selectedRows.forEach(row => deleteEvent(row.id));
+        },
+    }
 ]

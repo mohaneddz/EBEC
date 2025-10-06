@@ -38,7 +38,7 @@ export default function HeroCardContent({
                     loading="eager"
                     decoding="async"
                     className={`object-cover object-left-top absolute h-full w-full inset-0 transition-opacity duration-500`}
-                    alt={card.title}
+                    alt=''
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.6, ease: "easeInOut" }}

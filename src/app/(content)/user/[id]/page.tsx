@@ -18,7 +18,7 @@ const DEFAULT_PIC = "/imgs/DEFAULT.webp"
 export default function UserPage() {
 
   const {
-    user, allowed, openModal, handleLogOut, handleSaveChanges, visible, departments, isVisible, selectedDepartment, handleMotivationChange, handleSendRequest, closeModal, handleCloseToast, motivation, toastMessage, toastVariant, handleSelect
+    user, allowed, openModal, handleLogOut, handleSaveChanges, visible, departments, isVisible, selectedDepartment, handleMotivationChange, handleIssueSend, handleSendRequest, closeModal, handleCloseToast, motivation, toastMessage, toastVariant, handleSelect, isIssuing, setIsIssuing, issue, setIssue
   } = useUser();
 
   return (
@@ -79,6 +79,30 @@ export default function UserPage() {
             Send Request
           </Button>
         </div>
+      </Modal>
+
+      <Modal isOpen={isIssuing} onClose={() => setIsIssuing(false)} title="Issues">
+
+        <label htmlFor="motivation" className="block mb-2 text-sm font-medium text-gray-700">
+          Inform us about an issue with your department
+        </label>
+        <textarea
+          rows={4}
+          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-dark focus:border-primary-dark mb-6"
+          placeholder="Briefly explain the issue you are having..."
+          value={issue}
+          onChange={(e) => setIssue(e.target.value)}
+        />
+        <div className="center">
+          <Button
+            className="w-2/5 bg-primary-dark text-white hover:bg-primary-light"
+            onClick={handleIssueSend}
+            disabled={!issue}
+          >
+            Send Issue
+          </Button>
+        </div>
+
       </Modal>
 
       {user &&
@@ -146,11 +170,12 @@ export default function UserPage() {
           email={user?.email || "No Email"}
           role={user.user_metadata?.role || "Member"}
           department={user.user_metadata?.department || "No Department"}
-          openModal={openModal}
+          openDepartmentsModal={openModal}
           image={user.user_metadata?.image || DEFAULT_PIC}
           status={user.user_metadata?.status || "Unverified"}
           handleLogOut={handleLogOut}
           handleDeleteAccount={() => deleteUser(user.id)}
+          openIssuesModal={() => setIsIssuing(true)}
           handleSaveChanges={handleSaveChanges}
         />
       )}

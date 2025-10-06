@@ -24,6 +24,8 @@ export default function UpcomingEventsSection() {
                 const updatedEvents = data.map((event) => ({
                     id: event.id,
                     title: event.title || "Coming Soon!",
+                    date: event.date,
+                    location: event.location,
                     description: event.brief,
                     src: event.picture,
                     open: event.open,

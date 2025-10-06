@@ -11,19 +11,23 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import Image from "next/image" 
+import Image from "next/image"
 
 export interface Upcoming {
-    eventId: string;
-    eventName?: string;
-    eventDate?: Date;
-    eventLocation?: string;
-    eventImage?: string;
-    eventBrief?: string;
-    shown: boolean;
+    id: string;
+    title?: string;
+    date?: Date | null;
+    location?: string;
+    picture?: string;
+    brief?: string;
+    open: boolean;
 }
 
-export const columns: ColumnDef<Upcoming>[] = [
+export const getColumns = (
+    openEditModal?: (event: Upcoming) => void,
+    toggleOpen?: (id: string) => void,
+    clearEvent?: (id: string) => void
+): ColumnDef<Upcoming>[] => [
     {
         id: "select",
         header: ({ table }) => (
@@ -32,8 +36,8 @@ export const columns: ColumnDef<Upcoming>[] = [
                     table.getIsAllPageRowsSelected()
                         ? true
                         : table.getIsSomePageRowsSelected()
-                        ? "indeterminate"
-                        : false
+                            ? "indeterminate"
+                            : false
                 }
                 onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                 aria-label="Select all"
@@ -50,51 +54,45 @@ export const columns: ColumnDef<Upcoming>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "eventId",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Event ID
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="w-[80px] truncate">{String(row.getValue("eventId") ?? "")}</div>,
+        accessorKey: "id",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Event ID
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => <div className="w-[80px] truncate">{String(row.getValue("id") ?? "")}</div>,
     },
     {
-        accessorKey: "eventName",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Event Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="max-w-[150px] truncate">{row.getValue("eventName") || "N/A"}</div>,
+        accessorKey: "title",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Event Name
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => <div className="max-w-[150px] truncate">{row.getValue("title") || "N/A"}</div>,
     },
     {
-        accessorKey: "eventDate",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Event Date
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        accessorKey: "date",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Event Date
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => {
-            const val = row.getValue("eventDate") as string | Date | undefined;
-            const date = typeof val === "string" ? new Date(val) : (val as Date | undefined);
+            const val = row.getValue("date") as string | Date | null | undefined;
+            const date = typeof val === "string" ? new Date(val) : val;
             if (!date || Number.isNaN(date.getTime())) return <div>N/A</div>;
             const formattedDate = new Intl.DateTimeFormat("en-US", {
                 year: 'numeric',
@@ -105,25 +103,23 @@ export const columns: ColumnDef<Upcoming>[] = [
         },
     },
     {
-        accessorKey: "eventLocation",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Location
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
-        cell: ({ row }) => <div className="max-w-[120px] truncate">{row.getValue("eventLocation") || "N/A"}</div>,
+        accessorKey: "location",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Location
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
+        cell: ({ row }) => <div className="max-w-[120px] truncate">{row.getValue("location") || "N/A"}</div>,
     },
     {
-        accessorKey: "eventImage",
+        accessorKey: "picture",
         header: "Preview",
         cell: ({ row }) => {
-            const imageUrl = row.getValue("eventImage") as string;
+            const imageUrl = row.getValue("picture") as string;
             return (
                 <div className="flex items-center justify-center h-10 w-10 rounded-md overflow-hidden bg-gray-100">
                     {imageUrl ? (
@@ -145,25 +141,23 @@ export const columns: ColumnDef<Upcoming>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "eventBrief",
+        accessorKey: "brief",
         header: "Brief",
-        cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue("eventBrief") || "N/A"}</div>,
+        cell: ({ row }) => <div className="max-w-[200px] truncate">{row.getValue("brief") || "N/A"}</div>,
     },
     {
-        accessorKey: "shown",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Shown
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        accessorKey: "open",
+        header: ({ column }) => (
+            <Button
+                variant="ghost"
+                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+            >
+                Shown
+                <ArrowUpDown className="ml-2 h-4 w-4" />
+            </Button>
+        ),
         cell: ({ row }) => {
-            const isShown = row.getValue("shown") as boolean;
+            const isShown = row.getValue("open") as boolean;
             return (
                 <div className={`w-[60px] font-medium ${isShown ? 'text-green-600' : 'text-orange-600'}`}>
                     {isShown ? 'Yes' : 'No'}
@@ -185,34 +179,53 @@ export const columns: ColumnDef<Upcoming>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => {
-                            //console.log("View upcoming event details for:", event.eventId);
-                            // Add navigation or modal logic here
-                        }}>
-                            View Details
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => {
-                            //console.log("Edit upcoming event:", event.eventId);
-                            // Add edit form/modal logic here
-                        }}>
-                            Edit Event
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem onClick={() => {
-                            //console.log(`Toggle visibility for event ${event.eventId}: currently ${event.shown ? 'shown' : 'hidden'}`);
-                            // Add logic to toggle 'shown' status
-                        }}>
-                            {event.shown ? 'Hide Event' : 'Show Event'}
-                        </DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600" onClick={() => {
-                            //console.log("Delete upcoming event:", event.eventId);
-                            // Add logic to handle deletion
-                        }}>
-                            Delete Event
-                        </DropdownMenuItem>
+                        {openEditModal && (
+                            <DropdownMenuItem onClick={() => openEditModal(event)}>
+                                Edit Event
+                            </DropdownMenuItem>
+                        )}
+                        {toggleOpen && (
+                            <>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem onClick={() => toggleOpen(event.id)}>
+                                    {event.open ? 'Close Registration' : 'Open Registration'}
+                                </DropdownMenuItem>
+                            </>
+                        )}
+                        {clearEvent && (
+                            <DropdownMenuItem className="text-red-600" onClick={() => clearEvent(event.id)}>
+                                Clear Event
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
         },
     },
+]
+
+export const actions = (toggleOpen: (id: string) => void, clearEvent: (id: string) => void) => [
+    {
+        title: "Open Registration",
+        action: (selected: Upcoming[]) => {
+            selected.forEach(event => {
+                toggleOpen?.(event.id);
+            });
+        }
+    },{
+        title: "Close Registration",
+        action: (selected: Upcoming[]) => {
+            selected.forEach(event => {
+                toggleOpen?.(event.id);
+            });
+        }
+    },
+    {
+        title: "Clear Events",
+        action: (selected: Upcoming[]) => {
+            selected.forEach(event => {
+                clearEvent?.(event.id);
+            });
+        }
+    }
 ]

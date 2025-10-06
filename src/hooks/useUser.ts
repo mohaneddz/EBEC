@@ -27,10 +27,14 @@ type ToastVariant = 'info' | 'success' | 'error';
 export default function useUser() {
 	const supabase = createClient();
 
+	const departments: string[] = ['IT', 'Finance', 'Media', 'Design', 'Relex', 'Events', 'Logistics'];
+
 	const [isVisible, setIsVisible] = useState<boolean>(false);
 	const [selectedDepartment, setSelectedDepartment] = useState<string | null>(null);
-	const departments: string[] = ['IT', 'Finance', 'Media', 'Design', 'Relex', 'Events', 'Logistics'];
 	const [motivation, setMotivation] = useState<string>('');
+
+	const [isIssuing, setIsIssuing] = useState<boolean>(false);
+	const [issue, setIssue] = useState<string>('');
 
 	const [toastMessage, setToastMessage] = useState<string>('');
 	const [toastVariant, setToastVariant] = useState<ToastVariant>('info');
@@ -113,13 +117,36 @@ export default function useUser() {
 		setMotivation(e.target.value);
 	};
 
-	async function handleSendRequest () {
+	async function handleSendRequest() {
 		if (selectedDepartment) {
 			await sendRequest();
 			window.location.reload();
 			// showToast('Request sent successfully!', 'success');
 		} else {
 			showToast('Please select a department before sending a request.', 'error');
+		}
+	}
+
+	const handleIssueSend = async () => {
+		if (issue) {
+			const { error } = await supabase.from('issues').insert([
+				{
+					user_id: user?.id,
+					department: selectedDepartment ?? null,
+					issue: issue ?? '',
+					created_at: new Date().toISOString(),
+					status: 'Pending',
+				},
+			]);
+
+			if (error) {
+				console.error('Error inserting issue:', error);
+				showToast('Failed to send issue.', 'error');
+				return;
+			}
+
+			showToast('Issue sent successfully!', 'success');
+			closeModal();
 		}
 	};
 
@@ -133,6 +160,9 @@ export default function useUser() {
 
 	const closeModal = () => {
 		setIsVisible(false);
+		setMotivation('');
+		setIssue('');
+		setIsIssuing(false);
 		setSelectedDepartment(null); // Reset selection on close
 	};
 
@@ -169,12 +199,10 @@ export default function useUser() {
 		const blob = await response.blob();
 
 		// Upload to 'Profiles' bucket with userId.jpg as file name, overwrite if exists
-		const { error } = await supabaseAdmin.storage
-			.from('Profiles')
-			.upload(`public/${userId}.jpg`, blob, {
-				upsert: true,
-				contentType: 'image/jpeg',
-			});
+		const { error } = await supabaseAdmin.storage.from('Profiles').upload(`public/${userId}.jpg`, blob, {
+			upsert: true,
+			contentType: 'image/jpeg',
+		});
 
 		if (error) {
 			console.error('Error uploading image:', error);
@@ -231,7 +259,18 @@ export default function useUser() {
 			return;
 		}
 
-		setUser((prevUser) => prevUser ? { ...prevUser, user_metadata: { ...prevUser.user_metadata, display_name: displayName, image: imageUrl } } : null);
+		setUser((prevUser) =>
+			prevUser
+				? {
+						...prevUser,
+						user_metadata: {
+							...prevUser.user_metadata,
+							display_name: displayName,
+							image: imageUrl,
+						},
+				  }
+				: null
+		);
 		showToast('Changes saved successfully!', 'success');
 	};
 
@@ -256,5 +295,10 @@ export default function useUser() {
 		handleSelect,
 		handleLogOut,
 		handleSaveChanges,
+		isIssuing,
+		setIsIssuing,
+		issue,
+		setIssue,
+		handleIssueSend
 	};
 }

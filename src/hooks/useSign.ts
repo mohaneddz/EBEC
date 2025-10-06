@@ -98,7 +98,7 @@ export default function useSign() {
 		try {
 			await signUpNewUser(email, password);
 			setToast({
-				message: 'Account created successfully! Check your email to verify.',
+				message: 'Account created successfully! You will be redirected soon.',
 				type: 'success',
 			});
 			const { data: { user } } = await supabase.auth.getUser();

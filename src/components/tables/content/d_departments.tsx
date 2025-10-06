@@ -2,18 +2,26 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { getColumns, DepartmentSwitch } from "@/components/tables/columns/c_departments"
+import { getColumns, DepartmentSwitch, actions } from "@/components/tables/columns/c_departments"
 import { getSupabaseAdmin } from '@/utils/supabase/admin';
 import { getUser } from '@/server/users';
 
+
+import Modal from "@/components/global/Modal";
+
 export default function DepartmentsTable() {
   const [data, setData] = useState<DepartmentSwitch[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedMotivation, setSelectedMotivation] = useState<string>('');
 
   const fetchData = useCallback(async () => {
+    setLoading(true);
     const supabase = await getSupabaseAdmin();
     const { data: rawData, error } = await supabase.from('department_switch').select('*');
     if (error) {
       console.error('Error fetching department switch data:', error);
+      setLoading(false);
       return;
     }
     const formattedData = await Promise.all(rawData.map(async (item) => {
@@ -31,6 +39,7 @@ export default function DepartmentsTable() {
       };
     }));
     setData(formattedData);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -38,14 +47,26 @@ export default function DepartmentsTable() {
   }, [fetchData]);
 
   const removeRow = (userId: string) => {
-    setData(prev => prev.filter(item => item.user_id !== userId));
+    fetchData();
   };
 
-  const columns = getColumns(removeRow);
+  const onViewMotivation = (motivation: string) => {
+    setSelectedMotivation(motivation);
+    setIsModalOpen(true);
+  };
+
+  const columns = getColumns(removeRow, onViewMotivation);
 
   return (
     <div className="w-full">
-      <DataTable columns={columns} data={data} onReload={fetchData} />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Motivation Details"
+      >
+        <p>{selectedMotivation}</p>
+      </Modal>
+      <DataTable columns={columns} data={data} onReload={fetchData} actions={actions} loading={loading} />
     </div>
   );
 }

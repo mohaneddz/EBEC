@@ -2,17 +2,20 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { getColumns, Issues } from "@/components/tables/columns/c_issues"
-import Modal from "@/components/global/Modal";
+import { getColumns, Issues, actions } from "@/components/tables/columns/c_issues"
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
 import { getUser } from '@/server/users';
 
+import Modal from "@/components/global/Modal";
+
 export default function IssuesTable() {
     const [data, setData] = useState<Issues[]>([]);
+    const [loading, setLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedIssue, setSelectedIssue] = useState<Issues | null>(null);
 
     const fetchData = useCallback(async () => {
+        setLoading(true);
         const supabase = await getSupabaseAdmin();
         const { data: issuesData, error } = await supabase
             .from('issues')
@@ -26,6 +29,7 @@ export default function IssuesTable() {
             const userResponse = await getUser(issue.user_id);
             const user = userResponse.user;
             return {
+                id: issue.id,
                 user_id: user?.id || '',
                 email: user?.email || '',
                 name: user?.user_metadata?.display_name || '',
@@ -37,6 +41,7 @@ export default function IssuesTable() {
         }));
 
         setData(formattedData);
+        setLoading(false);
     }, []);
 
     useEffect(() => {
@@ -50,7 +55,7 @@ export default function IssuesTable() {
 
     return (
         <>
-            <DataTable columns={getColumns(onViewDetails)} data={data} onReload={fetchData} />
+            <DataTable columns={getColumns(onViewDetails)} data={data} onReload={fetchData} actions={actions} loading={loading}/>
             <Modal
                 isOpen={isModalOpen}
                 onClose={() => setIsModalOpen(false)}

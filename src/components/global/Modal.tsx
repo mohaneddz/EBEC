@@ -72,7 +72,7 @@ export default function Modal ({
                                     key={index}
                                     type="button"
                                     onClick={button.onClick}
-                                    className={`px-4 py-2 rounded-md transition-colors duration-150 ${button.className || 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                                    className={`click px-4 py-2 rounded-md transition-colors duration-150 ${button.className || 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
                                 >
                                     {button.label}
                                 </button>

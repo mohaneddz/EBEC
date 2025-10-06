@@ -10,6 +10,7 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
@@ -26,7 +27,7 @@ export interface DepartmentSwitch {
     created_at: Date;
 }
 
-export const getColumns = (removeRow: (userId: string) => void): ColumnDef<DepartmentSwitch>[] => [
+export const getColumns = (removeRow: (userId: string) => void, onViewMotivation: (motivation: string) => void): ColumnDef<DepartmentSwitch>[] => [
     {
         id: "select",
         header: ({ table }) => {
@@ -179,7 +180,11 @@ export const getColumns = (removeRow: (userId: string) => void): ColumnDef<Depar
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-green-600" onClick={() => approveSwitch(departmentSwitch.user_id, departmentSwitch.new_department, removeRow)}>
+                        <DropdownMenuItem onClick={() => onViewMotivation(departmentSwitch.motivation)}>
+                            View Motivation
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem onClick={() => approveSwitch(departmentSwitch.user_id, departmentSwitch.new_department, removeRow)}>
                             Approve
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600" onClick={() => RejectSwitch(departmentSwitch.user_id, removeRow)}>
@@ -202,3 +207,31 @@ async function RejectSwitch(userId: string, removeRow: (userId: string) => void)
     await deleteDepartmentSwitch(userId);
     removeRow(userId);
 }
+
+export const actions = [
+    {
+        title: "Accept Selected",
+        action: (table: any) => {
+            const selectedRows = table.getFilteredSelectedRowModel().rows;
+            selectedRows.forEach((row: any) => {
+                const departmentSwitch = row.original;
+                approveSwitch(departmentSwitch.user_id, departmentSwitch.new_department, (userId: string) => {
+                    // Remove from table data (handled in parent component)
+                });
+            });
+        }
+    },
+    {
+        title: "Delete Selected",
+        action: (table: any) => {
+            const selectedRows = table.getFilteredSelectedRowModel().rows;
+            selectedRows.forEach((row: any) => {
+                const departmentSwitch = row.original;
+                RejectSwitch(departmentSwitch.user_id, (userId: string) => {
+                    // Remove from table data (handled in parent component)
+                });
+            });
+        }
+    }
+];
+

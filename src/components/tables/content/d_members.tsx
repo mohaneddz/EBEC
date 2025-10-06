@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { DataTable } from "@/components/tables/data-table"
-import { getColumns, Members } from "@/components/tables/columns/c_members"
+import { actions, getColumns, Members } from "@/components/tables/columns/c_members"
 
 import { promoteUser, getUser, getAllUsers, deleteUser } from "@/server/users";
 import { changeUserDepartment } from "@/server/departments";
@@ -16,6 +16,7 @@ import { User } from '@supabase/supabase-js';
 export default function MembersTable() {
 
   const [data, setData] = useState<Members[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [selectedUser, setSelectedUser] = useState<Members | null>(null);
 
@@ -24,6 +25,7 @@ export default function MembersTable() {
   const [isChangeDepartmentModalOpen, setIsChangeDepartmentModalOpen] = useState(false);
 
   const fetchData = useCallback(async () => {
+    setLoading(true);
     const { users, error } = await getAllUsers();
 
     if (error) {
@@ -47,6 +49,7 @@ export default function MembersTable() {
     }));
 
     setData(formattedData);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
@@ -68,10 +71,11 @@ export default function MembersTable() {
     setIsChangeDepartmentModalOpen(true);
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     setIsDeleteModalOpen(false);
     deleteUser(selectedUser?.user_id || '');
     setSelectedUser(null);
+    await fetchData();
   };
 
   async function handleSaveChangeRole(role: string) {
@@ -90,7 +94,7 @@ export default function MembersTable() {
 
   return (
     <>
-      <DataTable columns={getColumns(onDelete, onPromote, onChangeDepartment)} data={data} onReload={fetchData} />
+      <DataTable columns={getColumns(onDelete, onPromote, onChangeDepartment)} data={data} onReload={fetchData} loading={loading} actions={actions} />
       <ConfirmDeleteModal
         isOpen={isDeleteModalOpen}
         onClose={() => setIsDeleteModalOpen(false)}

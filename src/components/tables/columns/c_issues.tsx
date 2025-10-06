@@ -12,14 +12,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 
+import { deleteIssue, markIssue } from "@/server/issues"
+
 export interface Issues {
+    id: number;
     user_id: string;
     email: string;
     name: string;
     department: departments;
     issue: string;
     createdAt: Date;
-    status: 'open' | 'in_progress' | 'resolved';
+    status: 'Pending' | 'Resolved';
 }
 
 export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Issues>[] {
@@ -32,8 +35,8 @@ export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Is
                         table.getIsAllPageRowsSelected()
                             ? true
                             : table.getIsSomePageRowsSelected()
-                            ? "indeterminate"
-                            : false
+                                ? "indeterminate"
+                                : false
                     }
                     onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
                     aria-label="Select all"
@@ -137,13 +140,13 @@ export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Is
                         Status
                         <ArrowUpDown className="ml-2 h-4 w-4" />
                     </Button>
-                )
+                );
             },
             cell: ({ row }) => {
-                const status = row.getValue("status") as 'open' | 'in_progress' | 'resolved' | undefined;
+                const status = row.getValue("status") as 'Pending' | 'Resolved' | undefined;
                 if (!status) return <div>N/A</div>;
                 const formattedStatus = status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ');
-                return <div className="w-[100px]">{formattedStatus}</div>;
+                return <div className={`w-[100px] ${status === 'Resolved' ? 'text-green-600' : ''}`}>{formattedStatus}</div>;
             },
         },
         {
@@ -165,14 +168,17 @@ export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Is
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={() => {
-                                //console.log("Mark issue as in progress for:", issue.user_id);
-                                // Add logic to update status
+                                markIssue(issue.id.toString(), 'Pending');
                             }}>
-                                Mark In Progress
+                                Mark as Pending
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => {
+                                markIssue(issue.id.toString(), 'Resolved');
+                            }}>
+                                Mark Resolved
                             </DropdownMenuItem>
                             <DropdownMenuItem className="text-red-600" onClick={() => {
-                                //console.log("Delete issue for:", issue.user_id);
-                                // Add logic to handle issue deletion
+                                deleteIssue(issue.id.toString());
                             }}>
                                 Delete Issue
                             </DropdownMenuItem>
@@ -183,3 +189,29 @@ export function getColumns(onViewDetails: (issue: Issues) => void): ColumnDef<Is
         },
     ];
 }
+
+export const actions = [
+    {
+        title: "Mark as Pending", action: (selectedIssues: Issues[], fetchData: () => void) => {
+            selectedIssues.forEach(issue => {
+                markIssue(issue.id.toString(), 'Pending');
+            });
+            fetchData();
+        }
+    },
+    {
+        title: "Mark Resolved", action: (selectedIssues: Issues[], fetchData: () => void) => {
+            selectedIssues.forEach(issue => {
+                markIssue(issue.id.toString(), 'Resolved');
+            });
+            fetchData();
+        }
+    },
+    {
+        title: "Delete Issues", action: (selectedIssues: Issues[], fetchData: () => void) => {
+            selectedIssues.forEach(issue => {
+                deleteIssue(issue.id.toString());
+            });
+        }
+    }
+]

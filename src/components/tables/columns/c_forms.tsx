@@ -14,7 +14,7 @@ import {
 import type { CheckedState } from "@radix-ui/react-checkbox"
 
 export interface Forms {
-    formId: string;
+    id: string;
     formTitle: string;
     formDescription: string;
     formOpenDate: Date;

@@ -7,6 +7,8 @@ import {
   LogOut,
   Cog,
 } from "lucide-react"
+import Link from "next/link"
+import { useUserInfo } from "@/hooks/useUserInfo"
 
 import {
   Avatar,
@@ -36,9 +38,11 @@ export function NavUser({
     name: string
     email: string
     avatar: string
+    id: string
   }
 }) {
   const { isMobile } = useSidebar()
+  const { handleLogOut } = useUserInfo(user.name, user.avatar)
 
   return (
     <SidebarMenu>
@@ -80,21 +84,15 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <Cog />
-                Settings
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              <Link href={`/user/${user.id}`}>
+                <DropdownMenuItem>
+                  <BadgeCheck />
+                  Account
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogOut}>
               <LogOut />
               Log out
             </DropdownMenuItem>

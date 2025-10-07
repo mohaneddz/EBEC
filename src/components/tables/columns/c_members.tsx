@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 
 import { deleteUser } from "@/server/users"
+import { updateUserStatus } from "@/server/users"
 
 import {
     DropdownMenu,
@@ -28,7 +29,7 @@ export interface Members {
     created_at: Date;
 }
 
-export function getColumns(onDelete: (user: Members) => void, onPromote: (user: Members) => void, onChangeDepartment: (user: Members) => void): ColumnDef<Members>[] {
+export function getColumns(onDelete: (user: Members) => void, onPromote: (user: Members) => void, onChangeDepartment: (user: Members) => void, onUpdateScore: (user: Members) => void, onSetActive: (user: Members) => void, onSetInactive: (user: Members) => void): ColumnDef<Members>[] {
     return [
         {
             id: "select",
@@ -216,6 +217,15 @@ export function getColumns(onDelete: (user: Members) => void, onPromote: (user: 
                             <DropdownMenuItem onClick={() => onChangeDepartment(user)}>
                                 Change Department
                             </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onUpdateScore(user)}>
+                                Update Score
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onSetActive(user)}>
+                                Set Active
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onSetInactive(user)}>
+                                Set Inactive
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 )
@@ -229,9 +239,33 @@ export const actions = [
         title: "Delete Selection",
         action: (selectedRows: Members[], onReload: () => void) => {
             selectedRows.forEach((user) => {
-                deleteUser(user.user_id);
-                
-            })
+                if (user.user_id) {
+                    deleteUser(user.user_id);
+                }
+            });
+            onReload();
+        }
+    },
+    {
+        title: "Set Active",
+        action: (selectedRows: Members[], onReload: () => void) => {
+            selectedRows.forEach((user) => {
+                if (user.user_id) {
+                    updateUserStatus(user.user_id, 'Active');
+                }
+            });
+            onReload();
+        }
+    },
+    {
+        title: "Set Inactive",
+        action: (selectedRows: Members[], onReload: () => void) => {
+            selectedRows.forEach((user) => {
+                if (user.user_id) {
+                    updateUserStatus(user.user_id, 'Inactive');
+                }
+            });
+            onReload();
         }
     },
 ]

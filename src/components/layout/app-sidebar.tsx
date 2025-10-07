@@ -1,16 +1,35 @@
 "use client"
 
+import { createClient } from "@/utils/supabase/client"
+
 import Image from "next/image"
 import Link from "next/link"
 
+interface User {
+	id: string;
+	email?: string | undefined | null;
+	app_metadata?: {
+		display_name?: string;
+		role?: string;
+		status?: string;
+		department?: string;
+	};
+	user_metadata?: {
+		display_name?: string;
+		image?: string;
+		department?: string;
+		status?: string;
+		role?: string;
+	};
+}
+
 import * as React from "react"
+import { useEffect, useState } from "react"
 import {
   User,
   Mail,
   Calendar,
-  ClipboardType,
-  Star,
-  ClipboardPen
+  Home,
 } from "lucide-react"
 
 import { NavMain } from "@/components/layout/nav-main"
@@ -18,15 +37,14 @@ import { NavUser } from "@/components/layout/nav-user"
 
 import {
   Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarRail,
   useSidebar,
+  SidebarHeader,
+  SidebarFooter,
+  SidebarContent,
+  SidebarRail,
 } from "@/components/ui/sidebar"
-import { NavTools } from "./nav-tools"
+import { Button } from "@/components/ui/button"
 
-// This is sample data.
 const data = {
   user: {
     name: "EBEC",
@@ -82,57 +100,58 @@ const data = {
         },
       ],
     },
-    {
-      title: "Forms",
-      url: "#",
-      icon: ClipboardType,
-      isActive: true,
-      items: [
-        // {
-        //   title: "Forms",
-        //   url: "/dashboard/forms/archive",
-        // },
-        {
-          title: "Submissions",
-          url: "/dashboard/forms/submissions",
-        },
-      ],
-    },
   ],
-  tools: [
-    {
-      name: "Forms Manager",
-      url: "/dashboard/tools/form_manager",
-      icon: ClipboardPen,
-    },
-    {
-      name: "Score Manager",
-      url: "/dashboard/tools/form_manager",
-      icon: Star,
-    },
-  ]
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
   const { state } = useSidebar();
+
+  const supabase = createClient();
+
+  const [user, setUser] = useState({
+    name: "EBEC",
+    email: "ebec@ensia.edu.dz",
+    avatar: "/imgs/logo.png",
+    id: "",
+  });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const { data: { user: authUser } } = await supabase.auth.getUser();
+      if (authUser) {
+        setUser({
+          name: authUser.user_metadata?.display_name || "User",
+          email: authUser.email || "",
+          avatar: authUser.user_metadata?.image || "/imgs/logo.png",
+          id: authUser.id,
+        });
+      }
+    };
+    fetchUser();
+  }, []);
 
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <Link className="flex items-center gap-4 cursor-pointer" href="/">
-          <Image src='/imgs/logo-bw.png' alt='EBEC Logo' width={40} height={40} />
-          {state === "expanded" && (
-            <span className="text-sm text-primary-light font-bold">EBEC</span>
-          )}
-        </Link>
+        <div className="flex items-center justify-between">
+          <Link className="flex items-center gap-4 cursor-pointer" href="/">
+            <Image src='/imgs/logo-bw.png' alt='EBEC Logo' width={40} height={40} />
+            {state === "expanded" && (
+              <span className="text-sm text-primary-light font-bold">EBEC</span>
+            )}
+          </Link>
+          <Button variant="ghost" size="icon" asChild>
+            <Link href="/dashboard">
+              <Home className="h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavTools tools={data.tools} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

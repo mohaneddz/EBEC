@@ -101,6 +101,10 @@ export function useUserInfo(initialName: string, initialImage: string, handleSav
         }
     };
 
+    const handleLogOut = async () => {
+        await supabase.auth.signOut();
+    };
+
     return {
         username,
         setUsername,
@@ -111,5 +115,6 @@ export function useUserInfo(initialName: string, initialImage: string, handleSav
         handleImageClick,
         handleImageChange,
         handleSave,
+        handleLogOut,
     };
 }

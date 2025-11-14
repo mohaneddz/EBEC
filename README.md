@@ -3,7 +3,7 @@
     EBEC - ENSIA’s Business & Entrepreneurship Club
 </h1>
 
-A modern, fast, fully responsive website for the **ENSIA Business & Entrepreneurship Club (EBEC)**.
+A modern, fast, fully responsive fullstack web application for the **ENSIA Business & Entrepreneurship Club (EBEC)**.
 Designed to showcase the club’s departments, events, flagship initiatives, leadership team, and entrepreneurship-focused activities—with optimized navigation, sharp visuals, and an SEO-first architecture.
 
 ---
@@ -14,6 +14,7 @@ Designed to showcase the club’s departments, events, flagship initiatives, lea
 ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge\&logo=react\&logoColor=black)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=for-the-badge\&logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge\&logo=typescript)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge\&logo=supabase\&logoColor=white)
 ![SEO](https://img.shields.io/badge/SEO_Optimized-22C55E?style=for-the-badge)
 ![Vercel](https://img.shields.io/badge/Hosted_on_Vercel-000000?style=for-the-badge\&logo=vercel)
 

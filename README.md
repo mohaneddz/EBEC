@@ -121,6 +121,11 @@ Designed to showcase the club’s departments, events, flagship initiatives, lea
 **User Panel:** Profile interface and stats.
 
 <br>
+<img src="screenshots/dashboard.avif" alt="Dashboard" width="70%"/>
+
+**Dashboard:** Admin overview and management tools.
+
+<br>
 <img src="screenshots/faq.avif" alt="FAQ" width="70%"/>
 
 **FAQ:** Answers to all common questions.

@@ -208,7 +208,7 @@ export const actions = [
         }
     },
     {
-        title: "Delete Issues", action: (selectedIssues: Issues[], fetchData: () => void) => {
+        title: "Delete Issues", action: (selectedIssues: Issues[]) => {
             selectedIssues.forEach(issue => {
                 deleteIssue(issue.id.toString());
             });

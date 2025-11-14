@@ -23,7 +23,7 @@ type UserInfoProps = {
 
 export default function UserInfo({ image, name, email, role, department, openDepartmentsModal, openIssuesModal, handleLogOut, status, handleSaveChanges }: UserInfoProps) {
 
-    const { username, setUsername, profileImage, setProfileImage, canChangeDepartment, fileInputRef, handleImageClick, handleImageChange, handleSave } = useUserInfo(name, image, handleSaveChanges);
+    const { username, setUsername, profileImage, canChangeDepartment, fileInputRef, handleImageClick, handleImageChange, handleSave } = useUserInfo(name, image, handleSaveChanges);
 
     return (
         <div className="userSection mt-10 flex flex-col items-center justify-center">

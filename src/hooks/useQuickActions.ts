@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { uploadEventImage } from "@/server/gallery";
-import { compressToAvif } from "@/utils/convertion";
 import { getSupabaseAdmin } from "@/utils/supabase/admin";
 import { createManager, updateManager, uploadManagerImage } from "@/server/managers";
 

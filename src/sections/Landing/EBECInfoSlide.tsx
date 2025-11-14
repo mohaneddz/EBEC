@@ -6,7 +6,7 @@ import { useRef } from "react";
 const baseUrl = "/imgs/general/";
 const cardNumbers = [7, 10, 15, 1, 5, 6, 11]; 
 const cards = cardNumbers.map((num, index) => ({
-    url: `${baseUrl}${num}.avif`,
+    url: `${baseUrl}${num}.webp`,
     title: ["Ideate", "Engineer", "Lead", "Pitch", "Network", "Scale", "Dominate"][index],
     id: index + 1
 }));

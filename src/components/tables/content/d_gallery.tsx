@@ -1,5 +1,7 @@
 "use client"
 
+import Image from "next/image"
+
 import { useState, useEffect, useCallback, useRef } from "react"
 import { DataTable } from "@/components/tables/data-table"
 import { actions, getColumns, Gallery } from "@/components/tables/columns/c_gallery"
@@ -17,19 +19,30 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { X, Image } from 'lucide-react'
+import { X, Image as ImgIcon } from 'lucide-react'
+
+interface DBEvent {
+  id: string;
+  name: string;
+  date: string;
+  brief: string;
+  description: string;
+  attendance: number;
+  location: string;
+  pictures: string[];
+}
 
 const ImageUpload = ({ src, onRemove, onFileSelect }: { src: string | null; onRemove: () => void; onFileSelect: (file: File | null) => void }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="relative w-20 h-20 border border-gray-300 rounded overflow-hidden group bg-slate-300">
-      {src && <img src={src} alt="" className="w-full h-full object-cover" />}
+      {src && <Image src={src} alt="" className="w-full h-full object-cover" />}
 
       {/* Overlay only on hover */}
       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity flex items-center justify-center">
         <X className="text-white cursor-pointer mr-2" onClick={onRemove} />
-        <Image className="text-white cursor-pointer" onClick={() => fileInputRef.current?.click()} />
+        <ImgIcon className="text-white cursor-pointer" onClick={() => fileInputRef.current?.click()} />
       </div>
 
       <input
@@ -61,10 +74,10 @@ export default function GalleryTable() {
       return;
     }
 
-    const formattedData = await Promise.all(galleryData.map(async (item: any) => ({
+    const formattedData = await Promise.all(galleryData.map(async (item: DBEvent) => ({
       id: item.id,
       name: item.name,
-      date: item.date,
+      date: new Date(item.date),
       brief: item.brief,
       description: item.description,
       attendance: item.attendance,
@@ -95,12 +108,12 @@ export default function GalleryTable() {
     const supabase = await getSupabaseAdmin();
 
     // Upload selected files and get URLs using editingEvent.id
-    const updatedPictures = { ...formData };
+    const updatedPictures: Partial<Gallery> = { ...formData };
     for (const key of ['picture1', 'picture2', 'picture3', 'picture4']) {
       if (selectedFiles[key]) {
         const number = parseInt(key.slice(-1));
         const publicUrl = await uploadEventImage(selectedFiles[key]!, editingEvent.id, number);
-        (updatedPictures as Record<string, any>)[key] = publicUrl;
+        (updatedPictures as Record<string, string | null>)[key] = publicUrl;
       }
     }
 

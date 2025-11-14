@@ -1,6 +1,7 @@
 'use server';
 
 import { createAdminClient } from './client';
+import { User } from '@supabase/supabase-js';
 
 export async function getTotalMembers() {
     const supabaseAdmin = await createAdminClient();
@@ -12,7 +13,13 @@ export async function getTotalMembers() {
         return { count: 0, error: 'Could not fetch total members.' };
     }
 
-    return { count: data?.users?.length || 0, error: null, active: data.users?.filter(user => user.user_metadata?.status === 'Active').length || 0 };
+    if (!data?.users) {
+        return { count: 0, error: 'Could not fetch total members.' };
+    }
+
+    const users = data.users as User[];
+
+    return { count: users.length, error: null, active: users.filter(user => user.user_metadata?.status === 'Active').length };
 }
 
 export async function getLeaderboardData() {
@@ -25,13 +32,17 @@ export async function getLeaderboardData() {
         return { data: [], error: 'Could not fetch leaderboard data.' };
     }
 
-    const result = data.users?.map((user) => ({
+    if (!data?.users) {
+        return { data: [], error: 'Could not fetch leaderboard data.' };
+    }
+
+    const result = data.users.map((user) => ({
         user_id: user.id,
         name: user.user_metadata?.display_name || 'Unknown',
         score: user.user_metadata?.score || 0,
         department: user.user_metadata?.department || 'Unknown',
         picture: user.user_metadata?.image || '/imgs/DEFAULT.webp',
-    })) || [];
+    }));
 
     return { data: result, error: null };
 }

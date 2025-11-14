@@ -8,7 +8,7 @@ import type { Variants } from "motion/react";
 import { TextGenerateEffect } from "@/components/global/TextGenerator";
 import { WobbleCard } from "@/components/main/WobbleCard";
 
-const images = ['/imgs/general/3.avif', '/imgs/general/1.avif', '/imgs/general/6.avif'];
+const images = ['/imgs/general/3.webp', '/imgs/general/1.webp', '/imgs/general/6.webp'];
 
 export default function WobbleCardSection() {
     const ref1 = useRef(null);

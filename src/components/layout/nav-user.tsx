@@ -2,10 +2,8 @@
 
 import {
   BadgeCheck,
-  Bell,
   ChevronsUpDown,
   LogOut,
-  Cog,
 } from "lucide-react"
 import Link from "next/link"
 import { useUserInfo } from "@/hooks/useUserInfo"

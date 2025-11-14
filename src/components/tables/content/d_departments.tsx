@@ -46,7 +46,7 @@ export default function DepartmentsTable() {
     fetchData();
   }, [fetchData]);
 
-  const removeRow = (userId: string) => {
+  const removeRow = () => {
     fetchData();
   };
 

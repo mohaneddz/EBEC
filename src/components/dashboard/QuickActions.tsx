@@ -5,7 +5,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'; // Assuming Select components are available
 import { compressToAvif } from "@/utils/convertion";
-import { X, Image } from 'lucide-react';
+import { X, Image as ImgIcon } from 'lucide-react';
+
+import Image from 'next/image';
 import useQuickActions from '@/hooks/useQuickActions';
 
 const ImageUpload = ({ src, onRemove, onFileSelect }: { src: string | null; onRemove: () => void; onFileSelect: (file: File | null) => void }) => {
@@ -13,12 +15,12 @@ const ImageUpload = ({ src, onRemove, onFileSelect }: { src: string | null; onRe
 
   return (
     <div className="relative w-20 h-20 border border-gray-300 rounded overflow-hidden group bg-slate-300">
-      {src && <img src={src} alt="" className="w-full h-full object-cover" />}
+      {src && <Image src={src} alt="" className="w-full h-full object-cover" fill />}
 
       {/* Overlay only on hover */}
       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity flex items-center justify-center">
         <X className="text-white cursor-pointer mr-2" onClick={onRemove} />
-        <Image className="text-white cursor-pointer" onClick={() => fileInputRef.current?.click()} />
+        <ImgIcon className="text-white cursor-pointer" onClick={() => fileInputRef.current?.click()} />
       </div>
 
       <input
@@ -43,7 +45,6 @@ export default function QuickActions() {
     setManagerDepartment,
     managerRole,
     setManagerRole,
-    managerPicture,
     setManagerPicture,
     managerPicturePreview,
     setManagerPicturePreview,

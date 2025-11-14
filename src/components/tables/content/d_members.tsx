@@ -18,7 +18,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -149,29 +148,11 @@ export default function MembersTable() {
     fetchData();
   };
 
-  const onSetActiveBulk = (selectedRows: Members[], onReload: () => void) => {
-    selectedRows.forEach((user) => {
-      if (user.user_id) {
-        updateUserStatus(user.user_id, 'Active');
-      }
-    });
-    onReload();
-  };
-
-  const onSetInactiveBulk = (selectedRows: Members[], onReload: () => void) => {
-    selectedRows.forEach((user) => {
-      if (user.user_id) {
-        updateUserStatus(user.user_id, 'Inactive');
-      }
-    });
-    onReload();
-  };
-
   const extendedActions = [
     ...actions,
     {
       title: "Update Score",
-      action: (selectedRows: Members[], onReload: () => void) => {
+      action: (selectedRows: Members[]) => {
         setBulkSelectedRows(selectedRows);
         setBulkBonusScore(0);
         setIsBulkUpdateScoreModalOpen(true);
@@ -202,7 +183,7 @@ export default function MembersTable() {
           <DialogHeader>
             <DialogTitle>Update User Score</DialogTitle>
             <DialogDescription>
-              Enter a bonus score (positive or negative) to add to the user's current score.
+              Enter a bonus score (positive or negative) to add to the user &apos s current score.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">

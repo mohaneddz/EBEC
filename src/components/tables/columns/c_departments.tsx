@@ -2,7 +2,7 @@
 
 import { switchDepartment, deleteDepartmentSwitch } from "@/server/departments"
 
-import { ColumnDef } from "@tanstack/react-table"
+import { ColumnDef, Table } from "@tanstack/react-table"
 import { MoreHorizontal, ArrowUpDown } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Button } from "@/components/ui/button"
@@ -211,11 +211,11 @@ async function RejectSwitch(userId: string, removeRow: (userId: string) => void)
 export const actions = [
     {
         title: "Accept Selected",
-        action: (table: any) => {
+        action: (table: Table<DepartmentSwitch>) => {
             const selectedRows = table.getFilteredSelectedRowModel().rows;
-            selectedRows.forEach((row: any) => {
+            selectedRows.forEach((row) => {
                 const departmentSwitch = row.original;
-                approveSwitch(departmentSwitch.user_id, departmentSwitch.new_department, (userId: string) => {
+                approveSwitch(departmentSwitch.user_id, departmentSwitch.new_department, () => {
                     // Remove from table data (handled in parent component)
                 });
             });
@@ -223,11 +223,11 @@ export const actions = [
     },
     {
         title: "Delete Selected",
-        action: (table: any) => {
+        action: (table: Table<DepartmentSwitch>) => {
             const selectedRows = table.getFilteredSelectedRowModel().rows;
-            selectedRows.forEach((row: any) => {
+            selectedRows.forEach((row) => {
                 const departmentSwitch = row.original;
-                RejectSwitch(departmentSwitch.user_id, (userId: string) => {
+                RejectSwitch(departmentSwitch.user_id, () => {
                     // Remove from table data (handled in parent component)
                 });
             });

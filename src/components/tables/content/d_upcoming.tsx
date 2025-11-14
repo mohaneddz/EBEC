@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import { useState, useEffect, useCallback, useRef } from "react"
 import { DataTable } from "@/components/tables/data-table"
 import { getColumns, Upcoming, actions } from "@/components/tables/columns/c_upcoming"
@@ -15,19 +16,19 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog"
-import { X, Image } from 'lucide-react'
+import { X, Image as ImgIcon } from 'lucide-react'
 
 const ImageUpload = ({ src, onRemove, onFileSelect }: { src: string | null; onRemove: () => void; onFileSelect: (file: File | null) => void }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   return (
     <div className="relative w-20 h-20 border border-gray-300 rounded overflow-hidden group bg-slate-300">
-      {src && <img src={src} alt="" className="w-full h-full object-cover" />}
+      {src && <Image src={src} alt="" className="w-full h-full object-cover" />}
 
       {/* Overlay only on hover */}
       <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-40 transition-opacity flex items-center justify-center">
         <X className="text-white cursor-pointer mr-2" onClick={onRemove} />
-        <Image className="text-white cursor-pointer" onClick={() => fileInputRef.current?.click()} />
+        <ImgIcon className="text-white cursor-pointer" onClick={() => fileInputRef.current?.click()} />
       </div>
 
       <input

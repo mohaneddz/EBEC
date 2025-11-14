@@ -128,7 +128,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       }
     };
     fetchUser();
-  }, []);
+  }, [supabase]);
 
   return (
     <Sidebar collapsible="icon" {...props}>

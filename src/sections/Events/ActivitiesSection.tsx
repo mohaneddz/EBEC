@@ -9,9 +9,9 @@ import { User } from '@supabase/supabase-js';
 import { createClient } from '@/utils/supabase/client';
 
 const images = [
-                '/imgs/general/12.avif',
-                '/imgs/general/1.avif',
-                '/imgs/general/8.avif'];
+                '/imgs/general/12.webp',
+                '/imgs/general/1.webp',
+                '/imgs/general/8.webp'];
 
 export default function ActivitiesSection() {
     

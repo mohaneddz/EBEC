@@ -174,7 +174,7 @@ export function getColumns(onEdit: (manager: Managers) => void): ColumnDef<Manag
 export const actions = [
     {
         title: "Delete Selection",
-        action: (selectedRows: Managers[], onReload: () => void) => {
+        action: (selectedRows: Managers[]) => {
             selectedRows.forEach(row => {
                 deleteManager(row.id);
             })

@@ -248,8 +248,8 @@ export default function MembersTable() {
             </div>
           </div>
           <DialogFooter>
-            <Button onClick={() => setIsBulkUpdateScoreModalOpen(false)}>Cancel</Button>
-            <Button onClick={handleBulkSaveUpdateScore}>Update Scores</Button>
+            <Button variant="outline" onClick={() => setIsBulkUpdateScoreModalOpen(false)}>Cancel</Button>
+            <Button variant="secondary" onClick={handleBulkSaveUpdateScore}>Update Scores</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

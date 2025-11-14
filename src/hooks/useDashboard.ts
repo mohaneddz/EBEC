@@ -20,11 +20,12 @@ export default function useDashboard() {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const { count, error } = await getTotalMembers();
+        const { count, error, active } = await getTotalMembers();
         if (error) {
           console.error(error);
         } else {
           setTotalMembers(count);
+          setActiveMembers(active);
         }
 
         // Events count
@@ -47,19 +48,11 @@ export default function useDashboard() {
           setTotalRegistrations(sum);
         }
 
-        // Active Members
-        const { count: activeCount, error: activeError } = await supabase
-          .from('members')
-          .select('*', { count: 'exact', head: true })
-          .eq('active', true);
-        if (activeError)
-          console.error('Error fetching active members:', activeError);
-        else setActiveMembers(activeCount || 0);
-
         // Upcoming Events
         const { count: upcomingCount, error: upcomingError } = await supabase
           .from('upcoming')
-          .select('*', { count: 'exact', head: true });
+          .select('*', { count: 'exact', head: true })
+          .eq('open', true);
         if (upcomingError)
           console.error('Error fetching upcoming events:', upcomingError);
         else setUpcomingEvents(upcomingCount || 0);

@@ -4,6 +4,7 @@ import React from 'react';
 import { IconArrowBackUp } from "@tabler/icons-react";
 import { createClient } from '@/utils/supabase/client';
 import { useState, useEffect } from "react";
+
 import Link from 'next/link';
 import Image from 'next/image'
 

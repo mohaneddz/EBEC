@@ -20,7 +20,7 @@ const buttonVariants = cva(
         icon:
           "border border-gray-300 shadow-xs hover:brightness-85 text-gray-400 hover:text-white click",
         secondary:
-          "bg-secondary-dark text-secondary-foreground shadow-xs hover:bg-secondary-light/80 click",
+          "bg-secondary-dark text-white shadow-xs hover:bg-secondary-light/80 click",
         ghost:
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-white underline-offset-4 hover:underline",

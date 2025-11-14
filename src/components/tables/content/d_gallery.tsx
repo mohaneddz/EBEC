@@ -94,12 +94,12 @@ export default function GalleryTable() {
 
     const supabase = await getSupabaseAdmin();
 
-    // Upload selected files and get URLs
+    // Upload selected files and get URLs using editingEvent.id
     const updatedPictures = { ...formData };
     for (const key of ['picture1', 'picture2', 'picture3', 'picture4']) {
       if (selectedFiles[key]) {
         const number = parseInt(key.slice(-1));
-        const publicUrl = await uploadEventImage(selectedFiles[key]!, formData.name || editingEvent.name, number);
+        const publicUrl = await uploadEventImage(selectedFiles[key]!, editingEvent.id, number);
         (updatedPictures as Record<string, any>)[key] = publicUrl;
       }
     }
@@ -183,7 +183,7 @@ export default function GalleryTable() {
             />
             <div className="gap-4 center">
               <ImageUpload
-                src={formData.picture1}
+                src={selectedFiles.picture1 ? URL.createObjectURL(selectedFiles.picture1) : formData.picture1}
                 onRemove={() => { setFormData({ ...formData, picture1: null }); setSelectedFiles({ ...selectedFiles, picture1: null }); }}
                 onFileSelect={async (file) => {
                   if (!file) return setSelectedFiles({ ...selectedFiles, picture1: null });
@@ -192,16 +192,16 @@ export default function GalleryTable() {
                 }}
               />
               <ImageUpload
-                src={formData.picture2}
+                src={selectedFiles.picture2 ? URL.createObjectURL(selectedFiles.picture2) : formData.picture2}
                 onRemove={() => { setFormData({ ...formData, picture2: null }); setSelectedFiles({ ...selectedFiles, picture2: null }); }}
                 onFileSelect={async (file) => {
-                  if (!file) return setSelectedFiles({ ...selectedFiles, picture1: null });
+                  if (!file) return setSelectedFiles({ ...selectedFiles, picture2: null });
                   const compressed = await compressToAvif(file);
-                  setSelectedFiles({ ...selectedFiles, picture1: compressed });
+                  setSelectedFiles({ ...selectedFiles, picture2: compressed });
                 }}
               />
               <ImageUpload
-                src={formData.picture3}
+                src={selectedFiles.picture3 ? URL.createObjectURL(selectedFiles.picture3) : formData.picture3}
                 onRemove={() => { setFormData({ ...formData, picture3: null }); setSelectedFiles({ ...selectedFiles, picture3: null }); }}
                 onFileSelect={async (file) => {
                   if (!file) return setSelectedFiles({ ...selectedFiles, picture3: null });
@@ -210,7 +210,7 @@ export default function GalleryTable() {
                 }}
               />
               <ImageUpload
-                src={formData.picture4}
+                src={selectedFiles.picture4 ? URL.createObjectURL(selectedFiles.picture4) : formData.picture4}
                 onRemove={() => { setFormData({ ...formData, picture4: null }); setSelectedFiles({ ...selectedFiles, picture4: null }); }}
                 onFileSelect={async (file) => {
                   if (!file) return setSelectedFiles({ ...selectedFiles, picture4: null });

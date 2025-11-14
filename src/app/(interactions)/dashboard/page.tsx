@@ -42,10 +42,6 @@ export default function Page() {
       {/* Quick Actions */}
       <QuickActions />
 
-      <div className="center bg-white full flex flex-1 col">
-          To be continued...
-      </div>
-
     </section>
   );
 }

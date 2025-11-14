@@ -140,7 +140,7 @@ export const getColumns = (removeRow: (userId: string) => void, onViewMotivation
     {
         accessorKey: "motivation",
         header: "Motivation",
-        cell: ({ row }) => <div className="truncate min-w-[120px]">{row.getValue("motivation")}</div>,
+        cell: ({ row }) => <div className="truncate max-w-xl min-w-[120px]">{row.getValue("motivation")}</div>,
     },
     {
         accessorKey: "created_at",

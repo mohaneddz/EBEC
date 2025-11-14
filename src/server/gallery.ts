@@ -88,7 +88,7 @@ export async function deleteEvent(eventId: string) {
 	return data;
 }
 
-export async function uploadEventImage(file: File, eventName: string, number: number) {
+export async function uploadEventImage(file: File, eventId: string, number: number) {
 	const supabaseAdmin = await createAdminClient();
 
 	// Convert to AVIF with high quality
@@ -96,7 +96,7 @@ export async function uploadEventImage(file: File, eventName: string, number: nu
 		.avif({ quality: 90 }) // high quality, can go 0-100
 		.toBuffer();
 
-	const filePath = `${eventName}/${number}.avif`;
+	const filePath = `${eventId}/${number}.avif`;
 	console.log('Uploading compressed AVIF file to path:', filePath);
 
 	const { data, error: uploadError } = await supabaseAdmin.storage

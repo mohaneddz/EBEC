@@ -12,7 +12,7 @@ export async function getTotalMembers() {
         return { count: 0, error: 'Could not fetch total members.' };
     }
 
-    return { count: data?.users?.length || 0, error: null };
+    return { count: data?.users?.length || 0, error: null, active: data.users?.filter(user => user.user_metadata?.status === 'Active').length || 0 };
 }
 
 export async function getLeaderboardData() {
@@ -25,13 +25,13 @@ export async function getLeaderboardData() {
         return { data: [], error: 'Could not fetch leaderboard data.' };
     }
 
-    const result = data.users.map((user) => ({
+    const result = data.users?.map((user) => ({
         user_id: user.id,
         name: user.user_metadata?.display_name || 'Unknown',
         score: user.user_metadata?.score || 0,
         department: user.user_metadata?.department || 'Unknown',
         picture: user.user_metadata?.image || '/imgs/DEFAULT.webp',
-    }));
+    })) || [];
 
     return { data: result, error: null };
 }

@@ -6,7 +6,7 @@ import { createClient } from '@/utils/supabase/client';
 import { useState, useEffect } from "react";
 
 import Link from 'next/link';
-import Image from 'next/image'
+import Image from 'next/image';
 
 // Removed unused imports
 

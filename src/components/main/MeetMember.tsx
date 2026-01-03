@@ -8,12 +8,20 @@ type MeetMemberProps = {
     image: string;
 };
 
+// Module-level cache to persist across component instances
+const imageCache = new Set<string>();
+
 export default function MeetMember({ name, role, image }: MeetMemberProps) {
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(!imageCache.has(image));
 
     useEffect(() => {
-        // Removed unused isVisible
-    }, []);
+        // Check if image is already cached
+        if (imageCache.has(image)) {
+            setIsLoading(false);
+        } else {
+            setIsLoading(true);
+        }
+    }, [image]);
 
     return (
         <AnimatePresence mode="wait">
@@ -32,11 +40,16 @@ export default function MeetMember({ name, role, image }: MeetMemberProps) {
                 )}
                 <Image
                     src={image}
-                    className={`w-[20rem] h-[25rem] rounded-sm shadow-md shadow-black/30 hover:shadow-xl transition-shadow duration-300 ease-in-out object-cover object-center ${isLoading ? 'opacity-0' : 'opacity-100'}`}
+                    className={`w-[20rem] h-[25rem] rounded-sm shadow-md shadow-black/30 hover:shadow-xl transition-all duration-300 ease-in-out object-cover object-center ${isLoading ? 'opacity-0' : 'opacity-100'}`}
                     alt="Picture of the Manager"
                     width={500}
                     height={500}
-                    onLoadingComplete={() => setIsLoading(false)}
+                    priority={false}
+                    loading="eager"
+                    onLoad={() => {
+                        imageCache.add(image);
+                        setIsLoading(false);
+                    }}
                 />
             </div>
             <div

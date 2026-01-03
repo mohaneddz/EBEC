@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { TextGenerateEffect } from "@/components/global/TextGenerator";
 import { departments, Department } from "@/data/departmentInfo";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createClient } from '@/utils/supabase/client';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion } from 'motion/react';
@@ -28,6 +28,8 @@ export default function DepartmentsManagers() {
   const [managers, setManagers] = useState<Manager[]>([]);
   const [flippedDepartment, setFlippedDepartment] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [isLoadingManagers, setIsLoadingManagers] = useState(true);
+  const managersCache = useRef<Record<Department, Manager[]>>({} as Record<Department, Manager[]>);
 
   function scrollUp() {
     const element = document.getElementById("cards");
@@ -42,6 +44,8 @@ export default function DepartmentsManagers() {
   const goToNextDepartment = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
+    setIsLoadingManagers(true);
+    setManagers([]); // Clear old managers immediately
 
     setTimeout(() => {
       const currentIndex = departmentOrder.indexOf(department);
@@ -54,6 +58,8 @@ export default function DepartmentsManagers() {
   const goToPrevDepartment = () => {
     if (isTransitioning) return;
     setIsTransitioning(true);
+    setIsLoadingManagers(true);
+    setManagers([]); // Clear old managers immediately
 
     setTimeout(() => {
       const currentIndex = departmentOrder.indexOf(department);
@@ -65,10 +71,19 @@ export default function DepartmentsManagers() {
 
   useEffect(() => {
     const fetchManagers = async () => {
+      // Check cache first
+      if (managersCache.current[department]) {
+        setManagers(managersCache.current[department]);
+        setIsLoadingManagers(false);
+        return;
+      }
+
+      setIsLoadingManagers(true);
       const { data, error } = await supabase.from('managers').select('*').eq('department', department);
       if (error) {
         console.error(error);
         setManagers([]);
+        setIsLoadingManagers(false);
       } else {
         // Sort by role hierarchy: president > vice president > sg > manager > co manager (to lowercase)
         const roleOrder = ['president', 'vice president', 'sg', 'manager', 'co manager'];
@@ -77,10 +92,66 @@ export default function DepartmentsManagers() {
           const bIndex = roleOrder.indexOf(b.role.toLowerCase());
           return aIndex - bIndex;
         });
+        
+        // Store in cache
+        managersCache.current[department] = sorted;
         setManagers(sorted);
+        
+        // Preload current department images
+        sorted.forEach((manager) => {
+          const img = new Image();
+          img.src = manager.picture;
+        });
+        
+        setIsLoadingManagers(false);
       }
     };
     fetchManagers();
+  }, [department]);
+
+  // Preload images and data for adjacent departments
+  useEffect(() => {
+    const preloadAdjacentDepartments = async () => {
+      const currentIndex = departmentOrder.indexOf(department);
+      const nextIndex = (currentIndex + 1) % departmentOrder.length;
+      const prevIndex = (currentIndex - 1 + departmentOrder.length) % departmentOrder.length;
+      
+      const adjacentDepartments = [departmentOrder[nextIndex], departmentOrder[prevIndex]];
+      
+      for (const dept of adjacentDepartments) {
+        // Skip if already cached
+        if (managersCache.current[dept]) {
+          // Just preload images for cached data
+          managersCache.current[dept].forEach((manager) => {
+            const img = new Image();
+            img.src = manager.picture;
+          });
+          continue;
+        }
+        
+        const { data } = await supabase.from('managers').select('*').eq('department', dept);
+        if (data) {
+          // Sort and cache
+          const roleOrder = ['president', 'vice president', 'sg', 'manager', 'co manager'];
+          const sorted = data.sort((a, b) => {
+            const aIndex = roleOrder.indexOf(a.role.toLowerCase());
+            const bIndex = roleOrder.indexOf(b.role.toLowerCase());
+            return aIndex - bIndex;
+          });
+          managersCache.current[dept] = sorted;
+          
+          // Preload images
+          sorted.forEach((manager) => {
+            const img = new Image();
+            img.src = manager.picture;
+          });
+        }
+      }
+    };
+    
+    // Delay preloading to not interfere with current department loading
+    const timer = setTimeout(preloadAdjacentDepartments, 500);
+    return () => clearTimeout(timer);
   }, [department]);
 
   return (
@@ -140,15 +211,21 @@ export default function DepartmentsManagers() {
           <AnimatePresence mode="wait">
             <motion.div
               key={department}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.1 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.2 }}
               className="flex gap-16 justify-center min-h-[30rem] items-center  flex-wrap"
             >
-              {managers.map((manager, index) => (
-                <MeetMember key={index} name={manager.full_name} role={manager.role} image={manager.picture} />
-              ))}
+              {isLoadingManagers ? (
+                <div className="flex items-center justify-center min-h-[30rem]">
+                  <div className="w-16 h-16 border-4 border-primary-light border-t-transparent rounded-full animate-spin"></div>
+                </div>
+              ) : (
+                managers.map((manager, index) => (
+                  <MeetMember key={index} name={manager.full_name} role={manager.role} image={manager.picture} />
+                ))
+              )}
             </motion.div>
           </AnimatePresence>
 

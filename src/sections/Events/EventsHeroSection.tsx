@@ -1,7 +1,7 @@
 import Image from "next/image";
 import ToUpcomingEventsButton from "@/components/events/ToUpcomingEventsButton";
 
-const image = "/imgs/general/2.avif";
+const image = "/imgs/general/8.webp";
 
 export default function EventsHeroSection() {
 

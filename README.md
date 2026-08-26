@@ -1,3 +1,5 @@
+![EBEC](screenshots/cover.avif)
+
 <h1 style="font-family: Arial, sans-serif; font-size: 36px; color: #FFD700; display: flex; align-items: center; border-bottom: 3px solid #FFD700; padding-bottom: 5px;">
     <img src="screenshots/EBEC.png" alt="EBEC Logo" style="height: 55px; margin-right: 15px; object-fit: cover;">
     EBEC - ENSIA’s Business & Entrepreneurship Club

@@ -2,6 +2,7 @@
 
 import sharp from 'sharp';
 import { createAdminClient } from './client';
+import { requireRole } from './guard';
 
 export async function updateUpcomingEvent(
 	title: string,
@@ -12,6 +13,7 @@ export async function updateUpcomingEvent(
 	open: boolean,
 	id: string
 ) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	console.log('Starting upcoming event update for id:', id, 'with data:', {
@@ -76,6 +78,7 @@ export async function updateUpcomingEvent(
 }
 
 export async function clearEvent(id: string) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	const { data, error } = await supabaseAdmin
@@ -99,6 +102,7 @@ export async function clearEvent(id: string) {
 }
 
 export async function uploadEventImage(file: File, eventId: string) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	// Convert to AVIF with high quality

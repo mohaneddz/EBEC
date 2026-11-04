@@ -2,6 +2,7 @@
 
 import sharp from 'sharp';
 import { createAdminClient } from './client';
+import { requireRole } from './guard';
 
 export async function updateEvent(
 	name: string,
@@ -13,6 +14,7 @@ export async function updateEvent(
 	pictures: string[],
 	eventId: string
 ) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	console.log('Starting event update for eventId:', eventId, 'with data:', { name, date, brief, location, attendance, description, pictures });
@@ -77,6 +79,7 @@ export async function updateEvent(
 }
 
 export async function deleteEvent(eventId: string) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	const { data, error } = await supabaseAdmin.from('events').delete().eq('id', eventId);
@@ -89,6 +92,7 @@ export async function deleteEvent(eventId: string) {
 }
 
 export async function uploadEventImage(file: File, eventId: string, number: number) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	// Convert to AVIF with high quality

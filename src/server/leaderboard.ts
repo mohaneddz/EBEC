@@ -1,9 +1,11 @@
 'use server';
 
 import { createAdminClient } from './client';
+import { requireRole } from './guard';
 import { User } from '@supabase/supabase-js';
 
 export async function getTotalMembers() {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
 
     const { data, error } = await supabaseAdmin.auth.admin.listUsers();

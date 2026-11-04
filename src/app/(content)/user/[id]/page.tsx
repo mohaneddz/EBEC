@@ -107,7 +107,7 @@ export default function UserPage() {
 
       {user &&
 
-        (allowed.includes(user.user_metadata?.role || '')) &&
+        (allowed.includes(user.app_metadata?.role || '')) &&
 
         <a href="/dashboard"
           className={"z-50 fixed hover:scale-105 acitve:scale-95 bottom-0 right-0 m-8  rounded-full bg-gradient-to-br from-primary-light to-primary-dark text-white p-4 shadow-lg hover:shadow-xl transition duration-300 ease-in-out"}>
@@ -168,7 +168,7 @@ export default function UserPage() {
         <UserInfo
           name={user.user_metadata?.display_name || "No Name"}
           email={user?.email || "No Email"}
-          role={user.user_metadata?.role || "Member"}
+          role={user.app_metadata?.role || "Member"}
           department={user.user_metadata?.department || "No Department"}
           openDepartmentsModal={openModal}
           image={user.user_metadata?.image || DEFAULT_PIC}

@@ -1,8 +1,10 @@
 'use server';
 
 import { createAdminClient } from './client';
+import { requireRole } from './guard';
 
 export async function switchDepartment(userId: string, newDepartment: string) {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
 
     const { data, error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
@@ -18,6 +20,7 @@ export async function switchDepartment(userId: string, newDepartment: string) {
 }
 
 export async function deleteDepartmentSwitch(userId: string) {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
 
     const { error } = await supabaseAdmin.from('department_switch').delete().eq('user_id', userId);
@@ -31,6 +34,7 @@ export async function deleteDepartmentSwitch(userId: string) {
 }
 
 export async function changeUserDepartment(userId: string, newDepartment: string) {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
 
     const { data, error } = await supabaseAdmin.auth.admin.updateUserById(userId, {

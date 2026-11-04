@@ -59,7 +59,7 @@ export default function MembersTable() {
         department: (userDetails?.user_metadata?.department || '') as departments,
         status: (userDetails?.user_metadata?.status as 'Active' | 'Inactive') || 'Inactive',
         score: userDetails?.user_metadata?.score || 0,
-        role: userDetails?.user_metadata?.role || 'Member',
+        role: userDetails?.app_metadata?.role || 'Member',
         created_at: new Date((user.created_at ?? userDetails?.created_at) as string),
       };
     }));

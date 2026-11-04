@@ -1,9 +1,11 @@
 'use server';
 
 import { createAdminClient } from './client';
+import { requireRole } from './guard';
 import sharp from 'sharp';
 
 export async function deleteManager(id: string){
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
 
     const { data, error } = await supabaseAdmin
@@ -19,6 +21,7 @@ export async function deleteManager(id: string){
 }
 
 export async function updateManager(id: string, updates: { picture?: string; full_name?: string; role?: string; department?: string }) {
+	await requireRole();
   const supabase = await createAdminClient();
   const { error } = await supabase
     .from('managers')
@@ -31,6 +34,7 @@ export async function updateManager(id: string, updates: { picture?: string; ful
 }
 
 export async function uploadManagerImage(file: File, managerId: string) {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
     
     // Convert file to buffer
@@ -65,6 +69,7 @@ export async function uploadManagerImage(file: File, managerId: string) {
 }
 
 export async function createManager(managerData: { id?: string; full_name: string; role: string; department: string; picture?: string }) {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
 
     const { data, error } = await supabaseAdmin

@@ -60,22 +60,6 @@ export default function useUser() {
 
 	const [visible, setVisible] = useState<boolean>(false);
 
-	async function setManager() {
-		const allowed = await isAllowedToChangeDepartment();
-		if (!allowed) {
-			showToast('You can only request to change department once a day.', 'error');
-			return;
-		}
-		if (user) {
-			supabase.auth.updateUser({
-				data: {
-					department: 'IT',
-					role: 'Manager',
-				},
-			});
-		}
-	}
-
 	async function isAllowedToChangeDepartment() {
 		try {
 			const {
@@ -279,7 +263,6 @@ export default function useUser() {
 	return {
 		user,
 		allowed,
-		setManager,
 		openModal,
 		visible,
 		departments,

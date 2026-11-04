@@ -33,7 +33,7 @@ export default async function updateSession(request: NextRequest) {
   // Protect /dashboard/** pages
   if (pathname.startsWith('/dashboard')) {
     const allowedRoles = ['Manager', 'President', 'Vice-President', 'SG'];
-    const role = user?.user_metadata?.role || null;
+    const role = user?.app_metadata?.role || null;
 
     if (!role || !allowedRoles.includes(role)) {
       const url = request.nextUrl.clone();

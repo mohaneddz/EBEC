@@ -1,8 +1,10 @@
 'use server';
 
 import { createAdminClient } from './client';
+import { requireRole, requireUser, getRole, topRoles } from './guard';
 
 export async function getUser(userId: string) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	const { data, error } = await supabaseAdmin.auth.admin.getUserById(userId);
@@ -15,6 +17,7 @@ export async function getUser(userId: string) {
 }
 
 export async function getAllUsers() {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	const { data, error } = await supabaseAdmin.auth.admin.listUsers();
@@ -28,10 +31,11 @@ export async function getAllUsers() {
 }
 
 export async function promoteUser(userId: string, newRole: string) {
+	await requireRole(topRoles);
 	const supabaseAdmin = await createAdminClient();
 
 	const { data, error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
-		user_metadata: { role: newRole },
+		app_metadata: { role: newRole },
 	});
 
 	if (error) {
@@ -43,6 +47,8 @@ export async function promoteUser(userId: string, newRole: string) {
 }
 
 export async function deleteUser(userId: string) {
+	const caller = await requireUser();
+	if (caller.id !== userId && !topRoles.includes(getRole(caller))) throw new Error('Forbidden');
 	const supabaseAdmin = await createAdminClient();
 
 	const { data, error } = await supabaseAdmin.auth.admin.deleteUser(userId);
@@ -56,6 +62,7 @@ export async function deleteUser(userId: string) {
 }
 
 export async function updateUserScore(userId: string, scoreBonus: number) {
+	await requireRole();
 	const supabaseAdmin = await createAdminClient();
 
 	const { data: userData, error: getError } = await supabaseAdmin.auth.admin.getUserById(userId);
@@ -81,6 +88,7 @@ export async function updateUserScore(userId: string, scoreBonus: number) {
 }
 
 export async function updateUserStatus(userId: string, newStatus: 'Active' | 'Inactive') {
+	await requireRole();
     const supabaseAdmin = await createAdminClient();
     const { data, error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
         user_metadata: { status: newStatus },
